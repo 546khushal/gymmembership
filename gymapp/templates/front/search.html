@@ -1,0 +1,122 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+    <style>
+        .searchbg{
+            background-color:white;
+            color:black;
+            border:1px solid gray;
+            border-radius:10px;
+            padding:10px;
+            margin-bottom: 10px;
+        }
+    </style>
+</head>
+<body>
+
+<?php
+// Database connection parameters
+$servername = "localhost";
+$username = "root";
+$password = "";
+$dbname = "gymproject";
+
+try {
+    // Create connection
+    $conn = new PDO("mysql:host=$servername;dbname=$dbname", $username, $password);
+    // Set the PDO error mode to exception
+    $conn->setAttribute(PDO::ATTR_ERRMODE, PDO::ERRMODE_EXCEPTION);
+
+    if ($_SERVER["REQUEST_METHOD"] == "POST" && isset($_POST["search_query"])) {
+        $search_query = $_POST["search_query"];
+        if (strtolower($search_query) === 'near me') {
+            // Displaying nearby gyms will be handled by JavaScript
+            echo '<script>searchNearbyGyms();</script>';
+        } else {
+            // SQL query to retrieve gym data based on search query
+            $sql = "SELECT * FROM gyms WHERE gymname LIKE :search_query OR location LIKE :search_query";
+            $stmt = $conn->prepare($sql);
+            $stmt->bindValue(':search_query', '%' . $search_query . '%');
+            $stmt->execute();
+            $found_gyms = $stmt->fetchAll(PDO::FETCH_ASSOC);
+
+            if (!empty($found_gyms)) {
+                echo "<h2>Search Results</h2>";
+                echo "<ul class='gym-list'>";
+                foreach ($found_gyms as $gym) {
+                    echo '<div class="searchbg">';
+                    echo "<li><a href='home.php?name=" . urlencode($gym['gymname']) . "'>" . $gym['gymname'] . " - " . $gym['location'] . "</a><br>" . $gym['info'] . "</li>";
+                    echo '</div>';
+                }
+                echo "</ul>";
+            } else {
+                echo "<p>No gyms found matching your search query.</p>";
+            }
+        }
+    }
+} catch(PDOException $e) {
+    echo "Connection failed: " . $e->getMessage();
+}
+
+?>
+
+<script>
+    function searchNearbyGyms() {
+        if (navigator.geolocation) {
+            navigator.geolocation.getCurrentPosition(showNearbyGyms, handleLocationError);
+        } else {
+            alert("Geolocation is not supported by this browser.");
+        }
+    }
+
+    function showNearbyGyms(position) {
+        // Get user's latitude and longitude
+        var userLat = position.coords.latitude;
+        var userLng = position.coords.longitude;
+
+        // Make an AJAX request to fetch nearby gyms from the server
+        var xhr = new XMLHttpRequest();
+        xhr.open("GET", "get_nearby_gyms.php?lat=" + userLat + "&lng=" + userLng, true);
+        xhr.onreadystatechange = function() {
+            if (xhr.readyState == 4 && xhr.status == 200) {
+                // Handle the response and display nearby gyms
+                var nearbyGyms = JSON.parse(xhr.responseText);
+                displayNearbyGyms(nearbyGyms);
+            }
+        };
+        xhr.send();
+    }
+
+    function displayNearbyGyms(gyms) {
+        var resultsDiv = document.getElementById("results");
+        resultsDiv.innerHTML = "<h2>Nearby Gyms</h2>";
+        gyms.forEach(function(gym) {
+            resultsDiv.innerHTML += "<p>" + gym.name + " - " + gym.location + "</p>";
+        });
+    }
+
+    function handleLocationError(error) {
+        switch(error.code) {
+            case error.PERMISSION_DENIED:
+                alert("User denied the request for Geolocation.");
+                break;
+            case error.POSITION_UNAVAILABLE:
+                alert("Location information is unavailable.");
+                break;
+            case error.TIMEOUT:
+                alert("The request to get user location timed out.");
+                break;
+            case error.UNKNOWN_ERROR:
+                alert("An unknown error occurred.");
+                break;
+        }
+    }
+
+    // Call searchNearbyGyms() to start the process
+    searchNearbyGyms();
+</script>
+</body>
+</html>

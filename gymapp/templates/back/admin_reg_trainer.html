@@ -1,0 +1,101 @@
+{% extends 'back/admin_base.html' %}
+
+{% load static %}
+{% block mainblock %}
+
+<div class="container">
+    <h1 class="well">Registration Form</h1>
+	<div class="col-lg-12 well">
+	<div class="row">
+				<form action="{% url 'admin_trainer' %}" method="post" enctype="multipart/form-data">
+                    {% csrf_token %} <!--security k liye -->
+					<div class="col-sm-12">
+						<div class="row">
+							<div class="col-sm-6 form-group">
+								<label>Name</label>
+								<input type="text" placeholder="Enter First Name Here.." class="form-control" id="name" name="name"><br/>
+							    <label>Mobile</label>
+								<input type="text" placeholder="Enter Mobile Number Here.." class="form-control" id="mobile" name="mobile">
+							
+                            </div>
+							<div class="card " style="width: 18rem; height: 10rem; margin-left: 1rem; margin-top: 2rem;">
+                                <div class="card-body">
+                                    <label>Upload image</label>
+                                    <input type="file" class="form-control" multiple="" id="trainerimg" name="trainerimg">
+                                </div>
+                              </div>
+                           
+						</div>					
+						<div class="form-group">
+							<label>Email</label>
+							<input placeholder="user@example.com" type="email"  class="form-control" id="email" name="email">
+						</div>
+                        <div class="col-sm-12">
+                            <div class="row">
+                                <div class="col-sm-6 form-group">
+                                    <label>Password:</label>
+                                    <input type="password" name="password" id="password" class="form-control" />
+                                    <i class="bi bi-eye-slash" id="togglePassword"></i>
+                                </div>
+                                <div class="col-sm-6 from-group">
+                                    <label>Total Member:</label>
+                                    <input type="password" name="membernumber" id="membernumber" class="form-control" />
+                                    <i class="bi bi-eye-slash" id="togglePassword"></i>
+                                 
+                                </div>
+                               
+                            </div>	
+                        
+                        
+                        <div class=" form-group">
+                            <label>Date Of Birth</label>
+                            <input type="date" class="form-control" id="dob" name="dob" pattern="\d{4}-\d{2}-\d{2}" >
+                        </div>	
+						<div class="row">
+							<div class="col-sm-4 form-group">
+								<label>Weight</label>
+								<input type="text" placeholder="Enter Your Weight Here.." class="form-control" id="weight" name="weight">
+							</div>	
+							<div class="col-sm-4 form-group">
+								<label>Height(feet)</label>
+								<input type="text" placeholder="Enter Feet Here.." class="form-control" id="heightf" name="heightf">
+							</div>	
+							<div class="col-sm-4 form-group">
+								<label>Height(inches)</label>
+								<input type="text" placeholder="Enter Inches Here.." class="form-control" id="heighti" name="heighti">
+							</div>		 
+									
+								
+						</div>	
+                        
+                        <div class="row">
+							<div class="dropdown col-sm-6 form-group">
+                                <label>Gender</label><br>
+                                <select id="gender" name="gender" >
+                                <option selected="selected" disabled> Select Gender</option>
+                                <option value="Male">Male</option>
+                                  <option value="Female">Female</option> 
+                                </select>                                 
+                            </div> 
+                            <div class="dropdown col-sm-6 form-group">
+                                <label>Amount paid</label>
+                                <input type="text"  class="form-control" id="amount" name="amount">                               
+                            </div> 	
+								
+                            		
+						</div>   
+                        
+						
+					<!--<div class="form-group">
+						<label>Website</label>
+						<input type="text" placeholder="Enter Website Name Here.." class="form-control">
+					</div>-->
+					<button type="submit" class="btn btn-lg btn-info"> SAVE </button>					
+					</div>
+				</form> 
+				</div>
+	</div>
+	</div>
+    
+    
+{% endblock %}

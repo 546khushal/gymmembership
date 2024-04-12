@@ -1,0 +1,157 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
+  
+    <title>Document</title>
+    <style>
+        /* Footer */
+
+.footer {
+            background-color: #333;
+            color: #fff;
+            padding: 5px;
+            display: flex;
+           
+            justify-content: space-between;
+            align-items: flex-start;
+            flex-wrap: wrap;
+        }
+
+        .left-content, .middle-content, .right-content {
+            flex: 1;
+            margin-bottom: 20px;
+            margin-left:50px;
+            text-align:left;
+        }
+
+        .left-content p, .right-content p {
+            margin: 5px 0;
+            margin-left:25px;
+        }
+       
+        .middle-content a {
+            color: #fff;
+            text-decoration: none;
+         
+        }
+        .middle-content ul {
+            list-style-type: none;
+            padding: 0;
+            margin: 0;
+            margin-left:-10px;
+        }
+
+        .middle-content ul li {
+            margin-bottom: 4px;
+        
+        }
+
+       .follow-us{
+        margin-top:5px;
+        list-style-type: none;
+       }
+
+        .follow-us a {
+            color: #fff;
+            text-decoration: none;
+            margin-right: 10px;
+        }
+        .follow-us ul {
+            list-style-type: none;
+            padding: 0;
+            margin: 0;
+            margin-left:20px;
+        }
+
+        .follow-us ul li {
+            margin-bottom: 4px;
+        }
+        .container2 {
+    max-width: 1200px;
+    margin: 0 auto;
+    padding-bottom:3px;
+    text-align:center;
+    color:black;
+   
+}
+.h3{
+    color:gold;
+    padding:10px;
+}
+.color{
+    background-color:white;
+}
+/*contect*/
+.fa {
+  padding: 6px;
+  font-size: 15px;
+  width: 15px;
+  height:15px;
+  text-align: center;
+  text-decoration: none;
+  margin: 5px 2px;
+  border-radius: 50%;   /*icon round*/
+}
+
+.fa:hover {
+    opacity: 0.7;
+}
+.fa-facebook {
+  background: #3B5998;
+  color: white;
+  margin-left:10px;
+  margin-right:10px;
+}
+.fa-instagram {
+  background: #125688;
+  color: white;
+  margin-left:10px;
+  margin-right:10px;
+}
+        </style>
+</head>
+<body>
+    <div class="color">
+<footer class="footer">
+    <div class="left-content">
+        <h3 class="h3">Marudhar Gym</h3>
+        <p>138 Surya colony,</p>
+        <p>Frontsite V Mart,</p>
+        <p>Bhagat ki kothi,</p>
+        <p>Pali Road,Jodhpur,</p>
+        <p>Phone: +9122 6678 7970</p>
+        <p>Email: khushalsuthar546@gmail.com</p>
+    </div>
+    <div class="middle-content">
+        <h3 class="h3">SITEMAP</h3>
+        <div class="middle-content">
+        <ul>
+            <li><a href="{% url 'about' %}">About Us</a></li>
+            <li><a href="{% url 'membership' %}">Membership</a></li>
+            <li><a href="{% url 'product' %}">Product</a></li>
+            <li><a href="{% url 'location' %}">Location</a></li>
+            <li><a href="{% url 'terms_and_conditions' %}">Terms & Conditions</a></li>
+            <li><a href="{% url 'owner' %}">Owner</a></li>
+            <li><a href="{% url 'trainer' %}">Trainer</a></li>
+        </ul>
+</div>
+    </div>
+    <div class="right-content">
+        <h3 class="h3">FOLLOW US</h3>
+        <div class="follow-us">
+        <ul>       
+            <li>  <a href="https://www.facebook.com/khushal.suthar.1426?mibextid=ZbWKwL" class="fa fa-facebook" ></a> Facebook</li>
+            <li> <a href="https://instagram.com/khushal_suthar546?utm_source=qr&igshid=MThlNWY1MzQwNA==" class="fa fa-instagram"></a>Instagram </li>
+
+        </ul>
+        </div>
+    </div>
+</footer>
+
+ 
+        </div>
+</body>
+</html>

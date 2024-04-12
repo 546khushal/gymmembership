@@ -1,0 +1,104 @@
+
+<html >
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Gym sign Page</title>
+    <style>
+        body {
+            background-image: url('backgym.jpeg');
+            background-attachment:fixed;
+            background-repeat:no-repeat;
+            opacity: 5.5;
+             background-size:cover;
+        }
+
+        .login-container {
+            max-width: 450px;
+            padding: 30px;
+            backdrop-filter: blur(4px);
+            box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+            box-shadow: 0 0 20px rgba(0, 0, 0, 0.1);
+            border-radius: 8px;
+            text-align: center;
+            margin-left:auto;
+            margin-right:auto;
+            border: solid gold;
+        }
+
+        h2 {
+            color: gold;
+            margin-bottom: 20px;
+        }
+
+        label {
+            display: block;
+            margin-bottom: 8px;
+            color: white;
+            text-align:left;
+            
+        }
+
+        input {
+            width: 100%;
+            padding: 10px;
+            margin-bottom: 15px;
+            border: 0.4px solid gold;
+            border-radius: 4px;
+            box-sizing: border-box;
+        }
+
+        button {
+            background-color: #333;
+            color: #fff;
+            padding: 10px 20px;
+            border: none;
+            border-radius: 4px;
+            cursor: pointer;
+        }
+
+        button:hover {
+            background-color: gold;
+            color:black;
+        }
+    </style>
+</head>
+<body>
+<?php include 'navbar.php';?><br/><br/>
+<div class="login-container">
+    <h2>Gym Login</h2>
+    <form>
+        <label for="name">Name:</label>
+        <input type="text" placeholder="name" name="name" required>
+
+        <label for="age">Age:</label>
+        <input type="number" placeholder="age" name="age" required>
+
+        <label for="JOINING DATE">Joining Date:</label>
+        <input type="date" placeholder="joining Date" name="join date" required>
+
+        <label>Gender :</label>
+        <label>MALE</label><input type="radio" id="Gender" name="gender" required>
+        <label>FEMALE</label><input type="radio" id="Gender" name="gender" required>
+
+        <label for="mobile-number">Mobile Number:</label>
+        <input type="tel" placeholder="mobile-number" name="mobile-number" required>
+
+        <label for="login-id">Login ID:</label>
+        <input type="text" placeholder="login-id" name="login-id" required>
+
+        <label for="login-password">Login Password:</label>
+        <input type="password" placeholder="login-password" name="login-password" required>
+
+        <label for="weight">Weight:</label>
+        <input type="number" placeholder="weight" name="weight" required>
+
+        <label for="height">Height:</label>
+        <input type="number" placeholder="height" name="height" required>
+
+        <button type="submit">Login</button>
+    </form>
+</div>
+
+</body>
+</html>

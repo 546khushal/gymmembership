@@ -1,0 +1,108 @@
+
+<html lang="en">
+<head>
+
+    <title>Gym Owner Page</title>
+    <style>
+        body {
+            background-image: url('gym2.jpg');
+            background-attachment:fixed;
+            background-repeat:no-repeat;
+            opacity: 10.5;
+            background-color:black;
+            background-size:cover;
+            height: 100vh;
+            
+        }
+        
+        .owner-container {
+            max-width: 400px;
+            padding: 20px;
+            backdrop-filter: blur(4px);
+            box-shadow: 0 0 20px rgba(0, 0, 0, 0.1);
+            border-radius: 8px;
+            text-align: center;
+            margin-left:auto;
+            margin-right:auto;
+        }
+
+        .h2m {
+            color: gold;
+            margin-bottom: 20px;
+        }
+
+        label {
+            display: block;
+            margin-bottom: 8px;
+            color: #fff;
+        }
+
+        input {
+            width: 100%;
+            padding: 10px;
+            margin-bottom: 15px;
+            border: 1px solid #ccc;
+            border-radius: 4px;
+            box-sizing: border-box;
+        }
+
+        button {
+            background-color: #333;
+            color: #fff;
+            padding: 10px 20px;
+            border: none;
+            border-radius: 4px;
+            cursor: pointer;
+        }
+
+        button:hover {
+            background-color: #555;
+        }
+
+        .membership-section {
+            margin-top: 30px;
+            border-top: 1px solid #ccc;
+            padding-top: 20px;
+        }
+
+        .pm {
+            color: #fff;
+        }
+
+        .membership-form {
+            text-align: left;
+        }
+
+        
+    </style>
+</head>
+{% include 'front/navbar.html' %}
+<body>
+
+<a href="{% url 'front/ownerwork' %}"> ownerwork</a>
+
+    <div class="owner-container">
+    <h2 class="h2m">Gym Owner Login</h2>
+    <form id="login-form">
+        <label for="owner-id">Owner ID:</label>
+        <input type="text" id="owner-id" name="owner-id" required>
+
+        <label for="owner-password">Password:</label>
+        <input type="password" id="owner-password" name="owner-password" required>
+
+        <button type="submit">Login</button>
+    </form>
+    </div>
+    {% include 'front/footer.html' %}
+</body>
+</html>
+
+    
+
+
+
+
+
+
+
+

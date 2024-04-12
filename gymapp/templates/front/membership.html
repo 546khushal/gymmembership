@@ -1,0 +1,370 @@
+<?php
+// Database connection parameters
+
+$servername = "localhost";
+$username = "root";
+$password = "";
+$dbname = "gymproject";
+
+// Create connection
+$conn = new mysqli($servername, $username, $password, $dbname);
+
+// Check connection
+if ($conn->connect_error) {
+    die("Connection failed: " . $conn->connect_error);
+}
+
+// Check if the form is submitted
+if ($_SERVER["REQUEST_METHOD"] == "POST") {
+    // Retrieve values from the form
+    $memberId = $_POST['memberid'];
+    $password = $_POST['password'];
+
+    if (!empty($memberId) && !empty($password)) {
+        // Query to check member credentials
+        $query = "SELECT * FROM memberdata WHERE memberid = '$memberId' AND password = '$password'";
+        $result = mysqli_query($conn, $query);
+
+        if ($result && mysqli_num_rows($result) > 0) {
+            // Successful login, redirect to next page
+            echo "<form id='nextPageForm' action='memberdata.php' method='post'>";
+            echo "<input type='text' name='memberid' value='$memberId'>";
+            echo "</form>";
+            echo "<script>document.getElementById('nextPageForm').submit();</script>";
+            exit();
+        } else {
+            // Incorrect credentials
+            $error = "Incorrect Member ID or Password.";
+        }
+    } else {
+        // Empty fields
+        $error = "Both Member ID and Password are required.";
+    }
+}
+
+
+// Close the database connection
+$conn->close();
+?>
+
+<html lang="en">
+<head>
+    <style>
+      body{
+           margin: 0;
+           padding: 0;
+           font-family: 'Arial', sans-serif;
+            background-color:black;
+           ;
+        }
+        .member{
+    height:800px;   
+    background-image: url('gym1.jpg');   
+    background-repeat:no-repeat;
+    background-size:cover;
+    border:5px solid gold;
+}
+
+.fontl{
+  color:white;
+    padding-top:20%;
+    margin-left:70%;
+    padding-right:20; 
+    font-family:"times now roman",times,serif;
+    font-size:45px;
+    text-shadow:3px 2px 3px black;
+}
+.font2{
+  color:white;
+  margin-left:40%;
+  font-size:20px;
+  padding-right:20px;
+  text-shadow:3px 2px 3px black; 
+ 
+}
+
+.mdiv{
+ float:right;
+ margin-right:20px;
+ width:600px;
+}
+
+
+.membership-plans {
+    max-width: 1200px;
+  
+    display: flex;
+  
+}
+header{
+  color:white;
+  font-size:25px;
+  text-align:center;
+}
+
+.plan {
+    width: 35%;
+    padding: 20px;
+    background-color: #fff;
+    box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+    border-radius: 8px;
+ 
+    margin-left:14px;
+    margin-right:14px;
+}
+
+.price {
+    font-weight: bold;
+    color: #333;
+}
+
+
+
+
+.checkdiv{
+          display:flex;
+          font-size:15px;
+        }
+        .checkdiv2{
+          color:white;
+          padding-right:15px;
+        }
+
+.membership-benefits {
+    max-width: 600px;
+    margin: 20px auto;
+}
+
+.membership-benefits ul {
+    list-style-type: none;
+    padding: 0;
+}
+
+.signup-form {
+    max-width: 600px;
+    margin: 20px auto;
+    border:3px solid gold;
+    color:white;
+    padding-left:13px;
+    padding-right:13px;
+}
+
+label {
+    display: block;
+    margin-bottom: 8px;
+    color: white;
+}
+
+input, select {
+    width: 100%;
+    padding: 10px;
+    margin-bottom: 15px;
+    border: 1px solid #ccc;
+    border-radius: 4px;
+    box-sizing: border-box;
+}
+
+button[type="submit"] {
+    background-color: #222;
+    width:100px;
+    height:30px;
+    color:white;
+}
+button[type="submit"]:hover {
+    background-color: gold;
+    color:black;
+}
+    </style>
+    <title>Document</title>
+</head>
+<body>
+<?php  require 'navbar.php';?>
+<div class="member">
+    
+<h1 class="fontl"><b><i>MEMBERSHIP<i></b></h1>
+<p class="font2">"Gym memberships offer access to fitness equipment, classes, and expert guidance for a healthier lifestyle."</p>
+<div class="mdiv" >
+<section class="signup-form">
+    <h2>Already Member</h2>
+    <p >Manage memberships and track member information:</p>
+
+    <form action="<?php echo htmlspecialchars($_SERVER["PHP_SELF"]); ?>" method="POST" class="membership-form">
+            <label for="memberid">MEMBER ID:</label>
+            <input type="text"  name="memberid" required>
+            <label for="password">PASSWORD:</label>
+            <input type="text"  name="password" required>
+
+        <button type="submit"><b>NEXT</b></button>
+        </form>
+
+</section>
+</div>
+</div>
+
+
+
+
+
+<header>
+    <h2>Join Our Gym</h2>
+    <p>Unlock a healthier, fitter you!</p>
+</header>
+
+<section class="membership-plans">
+    <h2>Membership Plans</h2>
+
+    <div class="plan">
+        <h3>Basic Plan</h3>
+        <p class="price">700/- month</p>
+        <p class="price">1800/- Three month</p>
+        <ul>
+            <li>Access 6AM to 10AM  and 5PM to 10PM</li>
+            <li>Cardio Equipment</li>
+            <li>Strength Training</li>
+        </ul>
+        
+    </div>
+
+    <div class="plan">
+        <h3>Premium Plan</h3>
+        <p class="price">1000/month</p>
+        <p class="price">2500/ Three month</p>
+        <ul>
+        <li>Access 6AM to 10AM  and 5PM to 10PM</li>
+            <li>Cardio Equipment</li>
+            <li>Strength Training</li>
+            <li>Diet plan</li>
+            <li>Personal Trainer Sessions</li>
+        </ul>
+       
+    </div>
+
+    <div class="plan">
+        <h3>Ultimate Plan</h3>
+        <p class="price">1500/month</p>
+        <p class="price">4000/ Three month</p>
+        
+        <ul>
+            <li>24/7 Access</li>
+            <li>Cardio Equipment</li>
+            <li>Strength Training</li>
+            <li>Diet plan</li>
+            <li>Personal Trainer Sessions</li>           
+            <li>Nutritional Counseling</li>
+        </ul>
+       
+    </div>
+</section>
+
+<section class="membership-benefits">
+    <h2>Membership Benefits</h2>
+
+    <ul>
+        <li>State-of-the-Art Equipment</li>
+        <li>Experienced Trainers</li>
+        <li>Personalized Workout Plans</li>
+        <li>Fitness Assessments</li>
+        <li>Changing Rooms </li>
+        <li>Filter Water</li>
+        <li>Access to Events and Challenges</li>
+    </ul>
+</section>
+
+<section class="signup-form">
+    <h2>Ready to Join?</h2>
+    <p>Fill out the form below to start your fitness journey.</p>
+
+    <form id="membership-form" class="membership-form" method="GET" action="<?php echo htmlspecialchars($_SERVER["PHP_SELF"]); ?>">
+        
+        <label for="fname">YOUR NAME:</label>
+        <input type="text" name="name" required>
+          
+        <label for="mobile">MOBILE:</label>
+        <input type="number" name="mobile" required>
+
+        <label for="address">ADDRESS:</label>
+        <input type="text" name="address">
+
+        <label for="gender">GENDER:</label>
+        <select name="gender" required>
+             <option value="male">Male</option>
+             <option value="female">Female</option>
+             <option value="other">Other</option>
+        </select>
+        <div class="checkdiv">
+            <div class="checkdiv2">
+                <input type="checkbox" name="check" required >
+            </div>
+            <div> First Read <a href="t&c.php">Terms&Condition</a> ,I am interested in a Membership at Marudhar Gym bhagat ki kothi, Jodhpur. Please call me.</div>
+        </div>
+        <button type="submit"><b>SEND</b></button>
+    </form>
+
+    <?php
+    // Check if the form is submitted
+    if ($_SERVER["REQUEST_METHOD"] == "GET") {
+        // Check if the form fields are set before accessing them
+        if (isset($_GET['name']) && isset($_GET['mobile']) && isset($_GET['gender']) && isset($_GET['address'])) {
+            // Retrieve form data
+            $name = $_GET['name'];
+            $mobile = $_GET['mobile'];
+            $gender = $_GET['gender'];
+            $address = $_GET['address'];
+            
+            // Validate form data (you can add more validation as needed)
+            if (!empty($name) && !empty($mobile) && !empty($address) && !empty($gender)) {
+                // Database connection parameters
+                $servername = "localhost";
+                $username = "root";
+                $password = "";
+                $dbname = "gymproject";
+
+                // Create connection
+                $conn = new mysqli($servername, $username, $password, $dbname);
+
+                // Check connection
+                if ($conn->connect_error) {
+                    die("Connection failed: " . $conn->connect_error);
+                }
+
+                // Check if the record already exists in the database
+                $sql_check = "SELECT * FROM newmemberdata WHERE name = ? AND mobile = ?";
+                $stmt_check = $conn->prepare($sql_check);
+                $stmt_check->bind_param("ss", $name, $mobile);
+                $stmt_check->execute();
+                $result_check = $stmt_check->get_result();
+                if ($result_check->num_rows > 0) {
+                    echo " ";
+                } else {
+                    // Prepare SQL statement to insert data into newmemberdata table
+                    $sql = "INSERT INTO newmemberdata (`name`, `mobile`, `address`, `gender`) VALUES (?, ?, ?, ?)";
+                    $stmt = $conn->prepare($sql);
+
+                    // Bind parameters and execute statement
+                    $stmt->bind_param("ssss", $name, $mobile, $address, $gender);
+                    if ($stmt->execute()) {
+                        echo "Data inserted successfully.";
+                    } else {
+                        echo "Error: " . $sql . "<br>" . $conn->error;
+                    }
+
+                    // Close the statement for insertion
+                    $stmt->close();
+                }
+
+                // Close the connection and statement for checking
+                $stmt_check->close();
+                $conn->close();
+            } else {
+                echo "Please fill in all required fields.";
+            }
+        } else {
+            echo "Please fill in all required fields.";
+        }
+    }
+    ?>
+
+</section>
+<?php include 'footer.php';?>
+</body>
+</html>

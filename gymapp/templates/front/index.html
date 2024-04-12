@@ -1,0 +1,519 @@
+{% load static %}
+<html lang="en">
+<head>
+<style>
+  
+  .map-container  {
+    height: 300px;
+    width: 300px;
+    padding-right: 10px;
+     } /* Added closing curly brace */
+
+     body {
+        background-image: url('/static/front/weight.jpeg'); /* Assuming 'weight.jpeg' is located in the 'front' directory of your static files */
+        background-attachment: fixed;
+        background-repeat: no-repeat;
+        background-color: black;
+        color: white;
+    }
+
+header {
+    margin-top: 70px;
+    color: #fff;
+    padding: 14px;
+    text-align: center;
+    font-size: 30px;
+}
+
+.b {
+    color: #ECBD00;
+}
+
+.margindiv {
+    margin-left: 40px;
+}
+
+.margindivd {
+    margin-left: 60px;
+    margin-right: 60px;
+    margin-bottom: 40px;
+    margin-top: 150px;
+}
+
+.checkdiv {
+    display: flex;
+    font-size: 15px;
+}
+
+.checkdiv2 {
+    padding-right: 15px;
+}
+
+.bg {
+    color: white;
+    padding: 6px;
+    font-size: 14px;
+    border: 2px solid #ECBD00;
+}
+
+.bg:hover {
+    background-color: #ECBD00;
+    color: black;
+}
+
+main {
+    max-width: 1200px;
+    margin: 15px auto;
+    padding: 5px;
+    backdrop-filter: blur(4px);
+    box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+    color: black;
+}
+
+.feature-box {
+    flex: 1;
+    padding: 20px;
+    border: 1px solid yellow;
+    border-radius: 8px;
+    margin: 0 10px;
+    background-color: #f9f9f9;
+    color: black;
+}
+
+.fea {
+    color: white;
+    padding: 6px;
+    font-size: 23px;
+}
+
+td:hover {
+    transform: scale(1.2);
+}
+
+.owner-container {
+    max-width: 400px;
+    padding: 20px;
+    backdrop-filter: blur(4px);
+    box-shadow: 0 0 20px rgba(0, 0, 0, 0.1);
+    border-radius: 8px;
+    text-align: center;
+    margin-top: 150px;
+    margin-right: 70px;
+}
+
+.h2m {
+    color: gold;
+    margin-bottom: 20px;
+}
+
+label {
+    display: block;
+    margin-bottom: 8px;
+    color: #fff;
+}
+
+input {
+    width: 100%;
+    padding: 10px;
+    margin-bottom: 15px;
+    border: 1px solid #ccc;
+    border-radius: 4px;
+    box-sizing: border-box;
+}
+
+button {
+    background-color: #333;
+    color: #fff;
+    padding: 10px 20px;
+    margin-top: 10px;
+    border: none;
+    border-radius: 4px;
+    cursor: pointer;
+}
+
+button:hover {
+    background-color: #555;
+}
+
+.membership-section {
+    margin-top: 20px;
+    border-top: 1px solid #ccc;
+    padding-top: 10px;
+    padding-left: 10px;
+    margin-left: auto;
+    width: 350px;
+    height: 860px;
+    border-radius: 25px;
+    border: 2px solid gold;
+}
+
+.pm {
+    color: #fff;
+}
+
+.membership-form {
+    text-align: left;
+    padding-right: 10px;
+}
+
+.divflex {
+    display: flex;
+    padding-left: 20px;
+}
+
+.container {
+    max-width: 450px;
+    margin-left: 50px;
+    background-color: #fff;
+    padding: 10px;
+    width: 60%;
+    box-shadow: 0 0 10px rgba(250, 250, 0, 0.5);
+    border-radius: 8px;
+}
+
+.h1bmi {
+    color: #333;
+    padding-left: 20px;
+}
+
+.labelbmi {
+    display: block;
+    margin-bottom: 8px;
+    color: black;
+}
+
+button {
+    background-color: #333;
+    color: #fff;
+    padding: 10px 20px;
+    border: none;
+    border-radius: 4px;
+    cursor: pointer;
+}
+
+button:hover {
+    background-color: #555;
+}
+
+.rscolor {
+    margin-top: 30px;
+    background-color: black;
+    padding: 15px;
+    border-radius: 8px;
+}
+
+   </style>
+
+    <title>Document</title>
+</head>
+<body>
+   {% include "front/navbar.html" %}
+
+<header>
+    <h1><b class="b">FITNESS</b> IS HAPPINESS</h1>
+    <h4>Exercise Really Makes You Happier<br>
+    Your Journey to <b class="b">Fitness </b>Starts Here</h4>
+    
+</header>
+
+<div class="divflex">
+<div  class="margindivd">
+  <h1 class="b">
+
+<u> DYNOMO FITNESS GYM : A 20-YEAR FITNESS LEGACY!
+  </u></h1>
+  <h3>
+  Unleash Your Potential with World-Class Facilities and Expert Trainers
+  </h3>
+  <p>
+  At FITNESS Gym, we believe in empowering your fitness journey with our  certified personal trainers, state-of-the-art equipment, and a welcoming environment. Our newly renovated 10,000 Sq. Ft. gym floor is equipped with top-tier brands like Life Fitness, Nautilus, Cybex, and Matrix, ensuring a premium workout experience.
+  </p>
+  <br>
+  <h3>
+  Exclusive Amenities for a Luxurious Fitness Experience
+      </h3>
+      <p>
+      Enjoy our 5-star amenities including new water purifier, changing areas, and 10 cameras have been installed for safety. We also offer convenient valet parking.
+      </p>
+      <br>
+      <h3>
+      Join Our Community – Flexible Membership Options Available
+      </h3>
+          <p>
+          Choose from a range of membership plans – from a single day to annual subscriptions. Every new member receives a complimentary Fitness Assessment, a Personal Training session, and a Body Composition Assessment.
+      </p>
+      <h3>
+        Sale All Fitness Product & Equipment
+      </h3>
+      <p>
+        You can purchase any gym product and equipment like weight gainer, muscle gainer, whey protein, fat burner, dumbbell set and more item you can purchase <a href="{% url 'product' %}">PRODUCT PAGE!</a> 
+
+      </p><br><br>
+
+      <div class="margindiv">
+
+  <h2>STEP UP YOUR<BR>
+  <b class="b">FITNESS CHALLENGE</b><BR>
+  WITH US</h2>
+<a class="bg" href="{% url 'owner' %}"><b>Join with us -></b></a>
+<a class="bg" href="{% url 'login' %}"><b>MEMBERSHIP</b></a><br><br>
+      </div>  
+
+
+
+      </div>
+     
+      <div class="owner-container">
+    <div class="membership-section">
+        <h2 class="h2m">SIGN-UP TODAY!</h2>
+       
+
+        <form id="membership-form" class="membership-form" method="post" action="{% url 'index' %}">
+            <label for="fname">YOUR NAME:</label>
+            <input type="text"  name="name" required>
+          
+            <label for="mobile">MOBILE:</label>
+            <input type="number"  name="mobile" required>
+             
+
+            <label for="address">ADDRESS:</label>
+            <input type="text" name="address">
+             
+
+            <label for="gender">GENDER:</label>
+            
+                <select name="gender" required>
+                     <option value="male">Male</option>
+                     <option value="female">Female</option>
+                     <option value="other">Other</option>
+                </select>
+            <div class="checkdiv">
+                
+           <div class="checkdiv2">
+           <input type="checkbox" name="check" required >
+           </div>
+            <div> First Read <a href="{% url 'terms_and_conditions' %}">Terms&Condition</a> ,I am interested in a Membership at DYNOMO FITNESS Gym bhagat ki kothi, Jodhpur. Please call me.
+            
+            </div></div>
+<button type="submit">SEND</button>
+        </form>
+
+     <!---   <?php
+    // Check if the form is submitted
+    if ($_SERVER["REQUEST_METHOD"] == "POST") {
+        // Retrieve form data
+        $name = $_POST['name'];
+        $mobile = $_POST['mobile'];
+        $gender = $_POST['gender'];
+        $address = $_POST['address'];
+        
+        // Validate form data (you can add more validation as needed)
+        if (!empty($name) && !empty($mobile) && !empty($address) && !empty($gender)) {
+            // Database connection parameters
+            $servername = "localhost";
+            $username = "root";
+            $password = "";
+            $dbname = "gymproject";
+
+            // Create connection
+            $conn = new mysqli($servername, $username, $password, $dbname);
+
+            // Check connection
+            if ($conn->connect_error) {
+                die("Connection failed: " . $conn->connect_error);
+            }
+
+            // Check if the record already exists in the database
+            $sql_check = "SELECT * FROM newmemberdata WHERE name = ? AND mobile = ?";
+            $stmt_check = $conn->prepare($sql_check);
+            $stmt_check->bind_param("ss", $name, $mobile);
+            $stmt_check->execute();
+            $result_check = $stmt_check->get_result();
+            if ($result_check->num_rows > 0) {
+                echo " ";
+            } else {
+                // Prepare SQL statement to insert data into newmemberdata table
+                $sql = "INSERT INTO newmemberdata (`name`, `mobile`, `address`, `gender`) VALUES (?, ?, ?, ?)";
+                $stmt = $conn->prepare($sql);
+
+                // Bind parameters and execute statement
+                $stmt->bind_param("ssss", $name, $mobile, $address, $gender);
+                if ($stmt->execute()) {
+                    echo "Data inserted successfully.";
+                } else {
+                    echo "Error: " . $sql . "<br>" . $conn->error;
+                }
+
+                // Close the statement for insertion
+                $stmt->close();
+            }
+
+            // Close the connection and statement for checking
+            $stmt_check->close();
+            $conn->close();
+        } else {
+            echo "Please fill in all required fields.";
+        }
+    }
+?>
+-->
+
+        
+<div class="map-container">
+<iframe src="https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d3578.0101776502406!2d73.01626427441624!3d26.261333087781523!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x39418de988e4aed1%3A0xe7317df39ad7ef9a!2sDYNOMO FITNESS%20Gym!5e0!3m2!1sen!2sin!4v1706502653702!5m2!1sen!2sin" width="335" height="300" style="border:0;" allowfullscreen="" loading="lazy" referrerpolicy="no-referrer-when-downgrade"></iframe>
+</div>
+   
+</div></div>
+ </div>
+
+ <!-- bmi calculator>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>> -->
+<div class="divflex">
+
+<div class="container">
+  <!---  <?php
+    
+    // Check if the form is submitted
+    if ($_SERVER["REQUEST_METHOD"] == "GET") {
+        // Get user input
+        $feet = $_GET['feet'];
+        $inches = $_GET['inches'];
+        $weight = $_GET['weight'];
+        $age = $_GET['age'];
+
+        // Validate user input (add more validation as needed)
+        if (!empty($feet) && !empty($inches) && !empty($weight) && !empty($age)) {
+            // Calculate BMI
+            $heightInMeters = ($feet * 0.3048) + ($inches * 0.0254);
+            $bmi = $weight / ($heightInMeters * $heightInMeters);
+
+            // Classify BMI
+            $classification = classifyBMI($bmi);
+
+        } else {
+            // Empty fields
+            $error = "All fields are required.";
+        }
+    }
+
+    function classifyBMI($bmi)
+    {
+        if ($bmi < 18.5) {
+            return "Underweight";
+        } elseif ($bmi >= 18.5 && $bmi < 24.9) {
+            return "Normal Weight";
+        } elseif ($bmi >= 25 && $bmi < 29.9) {
+            return "Overweight";
+        } else {
+            return "Obese";
+        }
+    }
+    ?>
+-->
+    <h1 class="h1bmi">BMI Calculator</h1> 
+
+    <form method="get" action="{% url 'calculate_bmi' %}">
+        {% csrf_token %} <!--security ke liye -->
+        <label for="feet" class="labelbmi">Height (Feet):</label>
+        <input type="number" name="feet" min="1" required>
+
+        <label for="inches" class="labelbmi">Height (Inches):</label>
+        <input type="number" name="inches" min="0" max="11" required>
+
+        <label for="weight" class="labelbmi">Weight (kg):</label>
+        <input type="number" name="weight" min="1" required>
+
+        <label for="age" class="labelbmi">Age:</label>
+        <input type="number" name="age" min="1" required>
+
+        <button type="submit" value="Calculate BMI">Calculate BMI</button>
+    </form>
+    <div class="rscolor">
+        {% if bmi %}
+        <p>Your BMI is: {{ bmi|floatformat:2 }}</p>
+        <p>Classification: {{ classification }}</p>
+        {% endif %}
+        {% if error %}
+        <p class="error">{{ error }}</p>
+        {% endif %}
+    <!--<?php
+    // Display BMI result if form is submitted
+    if ($_SERVER["REQUEST_METHOD"] == "GET") {
+        echo "<p>Your BMI is: " . number_format($bmi, 2) . "</p>";
+        echo "<p>Classification: $classification</p>";
+        
+    }
+    ?>
+    <?php
+    // Display error message if any
+    if (isset($error)) {
+        echo '<p class="error">' . $error . '</p>';
+    }
+    ?>
+-->
+    </div>
+
+</div>
+ 
+ 
+<div  class="margindiv">
+  <p>BMI, or Body Mass Index, is a numerical value of a person's weight in relation to their height. It is a widely used screening tool to categorize individuals into different weight status categories. The BMI is calculated using the following formula:
+ 
+<p>Where:</p>
+
+<h3>weight</h3>
+<p>weight is the person's weight in kilograms.</p>
+<h3>height</h3>
+<p>height is the person's height in meters.</p>
+<p>BMI provides a general indication of whether an individual's weight falls within a healthy range. Here are the common BMI categories and their interpretations:
+</p>
+<h3>Underweight:</h3>
+
+<p>BMI less than 18.5</br>
+Indicates that a person may be undernourished or have a health issue causing low body weight.</p>
+<h3>Normal Weight:</h3>
+
+<p>BMI between 18.5 and 24.9</br>
+Indicates a healthy weight range for most individuals.</p>
+<h3>Overweight:</h3>
+
+<p>BMI between 25 and 29.9</br>
+Suggests that a person may have excess body weight, which can be associated with health risks.</p>
+
+<h3>Obese:</h3>
+<p>BMI of 30 or greater</br>
+Indicates a significantly higher body weight, and the individual may face increased health risks associated with obesity.</p>
+  </div>
+  </div>
+ 
+<main>
+    <h2 class="fea">Featured Content</h2>
+    <div class="featured-content">
+    <table>
+            <tr><td>
+        <div class="feature-box">
+          
+            <h3>Personal Training</h3>
+            <p>Customized workout plans tailored to your goals.</p>
+        </div></td>
+        <td>
+        <div class="feature-box">
+            <h3>SHOP GYM PRODUCT</h3>
+            <p>Discover high-quality fitness equipment and <br>supplements for your ultimate workout experience.</p>
+        </div></td>
+        <td>
+        <div class="feature-box">
+            <h3>Nutrition Counseling</h3>
+            <p>Expert guidance on maintaining a balanced and healthy diet.</p>
+        </div>
+      </td>
+      </tr>
+      </table>
+    </div>
+</main>     
+
+{% include "front/footer.html" %}
+
+
+  
+</body>
+</html>

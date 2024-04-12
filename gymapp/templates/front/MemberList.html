@@ -1,0 +1,253 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Membership Management</title>
+    <style>
+        body {
+            background-image: url('gym2.jpg');
+            background-attachment: fixed;
+            background-repeat: no-repeat;
+            opacity: 10.5;
+            background-color: black;
+            background-size: cover;
+            height: 100vh;
+        }
+
+
+
+        label {
+            display: block;
+            margin-bottom: 8px;
+            color: #fff;
+        }
+
+        input {
+            width: 100%;
+            padding: 10px;
+            margin-bottom: 15px;
+            border: 1px solid #ccc;
+            border-radius: 4px;
+            box-sizing: border-box;
+        }
+
+        button {
+            background-color: #333;
+            color: #fff;
+            padding: 10px 20px;
+            border: none;
+            border-radius: 4px;
+            cursor: pointer;
+        }
+
+        button:hover {
+            background-color: #555;
+        }
+
+
+        .divalldata {
+            border: 1px solid gold;
+            padding: 20px;
+            margin: 30px;
+        
+            background-color: #f5f5f5;
+            width: 90%;
+            height:800px;
+            text-align: left;
+            overflow: auto;
+            max-height: 500px;
+        }
+
+        table {
+            width: 100%;
+            border-collapse: collapse;
+            margin-top: 20px;
+        }
+
+        th, td {
+            border: 1px solid #ddd;
+            padding: 8px;
+            text-align: left;
+        }
+
+        th {
+            background-color: #3498db;
+            color: white;
+        }
+
+        tr:nth-child(even) {
+            background-color: #f2f2f2;
+        }
+
+        tr:hover {
+            background-color: #ddd;
+        }
+
+        .update-button, .delete-button {
+            padding: 5px 10px;
+            border: none;
+            cursor: pointer;
+            color: white;
+            border-radius: 3px;
+            text-decoration: none;
+            display: inline-block;
+        }
+
+        .update-button {
+            background-color: #2ecc71;
+        }
+
+        .delete-button {
+            background-color: #e74c3c;
+        }
+
+        .search-container {
+            text-align: center;
+            margin-top: 20px;
+        }
+
+        .searchdiv {
+            float: right;
+            height: 50px;
+            width: 350px;
+            margin: 5px;
+        }
+
+        .datainput[type=text] {
+            padding: 8px;
+            margin: 5px;
+            width: 200px;
+        }
+
+        .h2data {
+            color: black;
+            font-variant: small-caps;
+        }
+
+        .img2{
+        width:50px;
+        height:40px;
+        }
+        .img2:hover{
+            width:80px;
+        height:80px;
+            
+        }
+
+
+        .success {
+            color: #27ae60;
+            margin-top: 10px;
+        }
+
+        .error {
+            color: #e74c3c;
+            margin-top: 10px;
+        }
+
+
+        
+    </style>
+</head>
+<body>
+    <?php include 'navbar.php'; ?>
+    
+    <div class="divalldata">
+            <div>
+                <h2 class="h2data">All Members List</h2>
+            </div>
+            <div class="search-container">
+                <form method="get">
+                    <div class="searchdiv">
+                        <input class="datainput" type="text" name="search" placeholder="Search by ID or Name">
+                        <button type="submit" class="datainputbutton">Submit</button>
+                    </div>
+                </form>
+            </div>
+
+            <table>
+                <tr>
+                    <th>Member ID</th>
+                    <th>Image</th>
+                    <th>Name</th>
+                    <th>Mobile</th>
+                    <th>Validity Date</th>
+                    <th>Membership Status</th>
+                    <th>Update</th>
+                    <th>Delete</th>
+                </tr>
+
+                <?php
+                // Your database connection logic here
+                $servername = "localhost";
+                $username = "root";
+                $password = "";
+                $dbname = "gymproject";
+
+                $conn = new mysqli($servername, $username, $password, $dbname);
+
+                if ($conn->connect_error) {
+                    die("Connection failed: " . $conn->connect_error);
+                }
+
+                // Delete logic
+                if ($_SERVER["REQUEST_METHOD"] == "POST" && isset($_POST['delete'])) {
+                    $memberidToDelete = $_POST['delete'];
+                    $deleteSql = "DELETE FROM memberdata WHERE memberid = '$memberidToDelete'";
+                    if ($conn->query($deleteSql) === TRUE) {
+                        echo "<script>alert('Member deleted successfully');</script>";
+                    } else {
+                        echo "<script>alert('Error deleting member: " . $conn->error . "');</script>";
+                    }
+                }
+
+                // Search logic
+                $search = isset($_GET['search']) ? $_GET['search'] : '';
+                $searchCondition = !empty($search) ? "WHERE memberid LIKE '%$search%' OR name LIKE '%$search%'" : '';
+
+                $sql = "SELECT * FROM memberdata $searchCondition";
+                $result = $conn->query($sql);
+
+                if ($result->num_rows > 0) {
+                    while ($row = $result->fetch_assoc()) {
+                        $membershipStatus = (strtotime($row['validitydate']) > time()) ? "Active" : "Expired";
+                        $statusColor = ($membershipStatus == "Active") ? "green" : "red";
+                        $validityColor = (strtotime($row['validitydate']) > time()) ? "white" : "#FF6666";
+                
+                        echo "<tr>";
+                        echo "<td>{$row['memberid']}</td>";
+                        $imagePath = htmlspecialchars($row['image']);
+                        echo "<td><img src='$imagePath' class='img2'></td>";
+
+                        echo "<td>{$row['name']}</td>";
+                        echo "<td>{$row['mobile']}</td>";
+                        
+                        echo "<td style='background-color: $validityColor;'>{$row['validitydate']}</td>";
+                        echo "<td style='background-color: $statusColor;'>$membershipStatus</td>";
+                        echo "<td><form method='post' action='data.php'>
+                            <input type='hidden' name='memberid' value='{$row['memberid']}' />
+                            <button type='submit' class='update-button'>Update</button>
+                        </form></td>";
+
+                        echo "<td>
+                            <form method='post'>
+                                <input type='hidden' name='delete' value='{$row['memberid']}' />
+                                <button type='submit' class='delete-button' onclick='return confirm(\"Are you sure you want to delete this member?\")'>Delete</button>
+                            </form>
+                        </td>";
+                        echo "</tr>";
+                    }
+                } else {
+                    echo "<tr><td colspan='5'>No records found</td></tr>";
+                }
+
+                $conn->close();
+                ?>
+            </table>
+        </div>
+    </div>
+
+    
+</body>
+</html>

@@ -1,0 +1,194 @@
+{% load static %} <!-- Add this line if you're using static files -->
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>About Gym</title>
+    <style>
+      /* Global styles */
+body {
+    font-family: Arial, sans-serif;
+    margin: 0;
+    padding: 0;
+    margin:20px;
+}
+
+.container {
+    max-width: 1200px;
+    margin: 0 auto;
+    color:black;
+}
+
+
+/* Header */
+header {
+    background-color: #ffd700; /* Golden color */
+    color: #fff;
+    text-align: center;
+    padding: 10px;
+}
+
+/* Owner details */
+#owner-details {
+    background-color: #f0f0f0; /* Light gray */
+    padding: 50px 0;
+}
+
+.owner {
+    display: flex;
+    align-items: center;
+}
+
+.owner img {
+    width: 250px;
+    height: 200px;
+    border-radius: 40%;
+    margin-right: 20px;
+}
+
+.owner-info h3 {
+    margin-top: 0;
+}
+
+/* Gym details */
+#gym-details {
+    padding: 50px 0;
+}
+
+/* Equipment */
+#equipment {
+    background-color: #f0f0f0; /* Light gray */
+    padding: 50px 0;
+}
+
+/* Gallery */
+#gallery {
+    padding: 50px 0;
+}
+
+.gallery-images {
+    display: flex;
+    flex-wrap: wrap;
+}
+
+.gallery-images img {
+    width: 300px;
+    height: 200px;
+    object-fit: cover;
+    margin: 10px;
+}
+
+/* Machines */
+#machines {
+    background-color: #f0f0f0; /* Light gray */
+    padding: 50px 0;
+}
+
+
+
+      </style>
+</head>
+<body>
+    {% include 'front/navbar.html' %}
+    <header>
+        <h1>About DYNOMO FITNESS Gym</h1>
+    </header>
+
+    <section id="owner-details">
+        <div class="container">
+            <h2>Gym Owner</h2>
+            {% with owner_name="Khushal Suthar" owner_description="Owner of DYNOMO FITNESS GYM Mr Khushal Suthar, with over 30 years of gym experience, he is the driving force behind our fitness community. With his expertise and dedication, he has transformed countless lives, inspiring them to achieve their fitness goals." owner_image="myimg.jpg" %}
+            <div class="owner">
+                <img src="{% static 'front/product_images/myimg.jpg' %}" alt="Gym Owner">
+                <div class="owner-info">
+                    <h3>{{ owner_name }}</h3>
+                    <p>{{ owner_description }}</p>
+                </div>
+            </div>
+            {% endwith %}
+<table cellspacing="8" cellpadding="8" style="color:black; font-size:17px;">
+            <tr>
+              <th>Name:</th>
+              <td>Khushal kumar</td>
+            </tr>
+            <tr>
+              <th>Email:</th>
+              <td> khushalsuthar546@gmail.com</td>
+            </tr>
+            <tr>
+              <th>Birthday:</th>
+              <td> 11 Oct, 2002</td>
+            </tr>
+            
+                 
+            <tr>
+              <th>Phone:</th>
+              <td>(+91) 7230-907-187</td>
+            </tr>
+            <tr>
+              <th>Addresh:</th>
+              <td>Hari Om Nagar,Sheoganj,Sirohi,Rajasthan</td>
+            </tr>
+
+          </table>
+
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <section id="gym-details">
+        <div class="container">
+            <h2>Our Gym</h2>
+            <p>Welcome to DYNOMO FITNESS Gym, where fitness meets excellence. With state-of-the-art facilities and personalized training programs, we are committed to sculpting a healthier and stronger you. Step into our world of fitness innovation and embark on a transformative journey towards your best self. At Marudhar Gym, we redefine fitness, one rep at a time.</p>
+            <!-- Add more gym details here -->
+        </div>
+    </section>
+
+    <section id="equipment">
+        <div class="container">
+            <h2>Gym Equipment</h2>
+            <!-- List gym equipment here -->
+            <ul>
+                <li>Treadmills</li>
+                <li>Stationary Bikes</li>
+                <li>Elliptical Machines</li>
+                <!-- Add more equipment -->
+            </ul>
+        </div>
+    </section>
+
+    <section id="gallery">
+        <div class="container">
+            <h2>Gym Gallery</h2>
+            <!-- Add gym images here -->
+            <div class="gallery-images">
+                <img src="{% static 'front/product_images/gym1.jpg' %}" alt="Gym Image 1">
+                <img src="{% static 'front/product_images/gym2.jpg' %}" alt="Gym Image 2">
+                <img src="{% static 'front/product_images/gym1.jpg' %}" alt="Gym Image 3">
+                <img src="{% static 'front/product_images/gym4.jpg' %}" alt="Gym Image 4">
+                <img src="{% static 'front/product_images/gym1.jpg' %}" alt="Gym Image 1">
+                <img src="{% static 'front/product_images/gym4.jpg' %}" alt="Gym Image 4">
+                <!-- Add more images -->
+            </div>
+        </div>
+    </section>
+
+    <section id="machines">
+        <div class="container">
+            <h2>Gym Machines</h2>
+            <!-- List gym machines here -->
+            <ul>
+                <li>Bench Press</li>
+                <li>Squat Rack</li>
+                <li>Cable Machines</li>
+                <!-- Add more machines -->
+            </ul>
+        </div>
+    </section>
+    
+
+    {% include 'front/footer.html' %}  
+</body>
+</html>

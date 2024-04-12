@@ -1,0 +1,84 @@
+{% extends 'back/admin_base.html' %}
+
+{% load static %}
+{% block mainblock %}
+<div style="margin: 1rem;  border: 2px solid rgb(44, 129, 226); border-radius: 15px;">
+    <div class="row" style="margin-top: 4rem;">
+        <div class="col-sm-3 form-group" style="margin-left: 5rem;">
+            <button type="button" class="btn btn-primary btn-lg "onclick="location.href = '{% url 'admin_register' %}'">&#128100 Member Register</button>
+        </div>
+        <div class="col-sm-3 form-group" style="margin-left: 5rem;">
+            <button type="button" class="btn btn-primary btn-lg "onclick="location.href = '{% url 'admin_active' %}'">&#128100 Active Member</button>
+        </div>
+        <div class="col-sm-3 form-group" style="margin-left: 5rem;">
+            <button type="button" class="btn btn-primary btn-lg "onclick="location.href = '{% url 'admin_expaire' %}'">&#128100 Deactivated</button>
+        </div>
+    </div>
+    <div class="row" style="margin-bottom: 4rem;">
+        <div class="col-sm-3 form-group" style="margin-left: 5rem;">
+            <button type="button" class="btn btn-primary btn-lg "onclick="location.href = '{% url 'admin_total' %}'">&#128100 Total Member</button>
+        </div>
+        <div class="col-sm-3 form-group" style="margin-left: 5rem;">
+            <button type="button" class="btn btn-primary btn-lg "onclick="location.href = '{% url 'admin_active' %}'">&#128100 Active Member</button>
+        </div>
+        <div class="col-sm-3 form-group" style="margin-left: 5rem;">
+            <button type="button" class="btn btn-primary btn-lg "onclick="location.href = '{% url 'admin_expaire' %}'">&#128100 Deactivated</button>
+        </div>
+        <!-- Add other buttons here -->
+    </div>
+</div>
+<!-- Begin Page Content -->
+<div class="container-fluid">
+    <!-- Page Heading -->
+    <h1 class="h3 mb-2 text-gray-800">Tables</h1>
+    <p class="mb-4">DataTables is a third-party plugin that is used to generate the demo table below.
+        For more information about DataTables/</p>
+    <!-- DataTales Example -->
+    <div class="card shadow mb-4">
+        <div class="card-header py-3">
+            <h6 class="m-0 font-weight-bold text-primary">DataTables Example</h6>
+        </div>
+        <div class="card-body">
+            <div class="table-responsive">
+                <table class="table table-bordered" id="dataTable" width="100%" cellspacing="0">
+                    <thead>
+                        <tr>
+                            <th>ID</th>
+                            <th>IMAGE</th>
+                            <th>NAME</th>
+                            <th>MOBILE</th>
+                            <th>Valid Date[day left]</th>
+                            <th>MEMBERSHIP</th>
+                            <th>TRAINER</th>
+                        </tr>
+                    </thead>
+                    <tfoot>
+                        <tr>
+                            <th>ID</th>
+                            <th>IMAGE</th>
+                            <th>NAME</th>
+                            <th>MOBILE</th>
+                            <th>Valid Date[day left]</th>
+                            <th>MEMBERSHIP</th>
+                            <th>TRAINER</th>
+                        </tr>
+                    </tfoot>
+                    <tbody>
+                        {% for c in data %}
+                        <tr>
+                            <td>{{c.member_id}}</td>
+                            <td><img src="{{ c.picurl }}" style="height: 4rem; width: 4rem; border-radius: 50px;"></td>
+                            <td>{{ c.name }}</td>
+                            <td>{{ c.mobile }}</td>
+                            <td>{{ c.enddate }} [{{ c.duedays }} days left]</td>
+                            <td>{{c.membershipplan}} Month</td>
+                            <td>{{ c.trainer }}</td>
+                        </tr>
+                        {% endfor %}
+                    </tbody>
+                </table>
+            </div>
+        </div>
+    </div>
+</div>
+{% endblock %}

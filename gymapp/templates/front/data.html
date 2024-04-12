@@ -1,0 +1,379 @@
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Member Management</title>
+    <style>
+        body {
+    margin: 0;
+    padding: 0;
+    font-family: 'Arial', sans-serif;
+    background-color: #f5f5f5;
+}
+
+.divflex{
+    display:flex;
+    border:2px solid black;
+    margin:20px;
+    
+   
+}
+
+
+.divsize1{
+    width:300px;
+    display:inline-block;
+    padding-left:30px;
+    padding-right:60px;
+    float:left;
+   
+    
+    
+}
+.divsize2{  
+    flex:1;
+    
+}
+.divsize3{
+    padding-left:40px;
+    margin-top:130px;
+    width:300px;
+    
+}
+.divsize4{
+ 
+    width:500px;
+    margin-top:180px;
+    margin-left:20px;
+}
+.divsize5{
+    width:300px;
+    height:80px;
+    
+    display:flex;
+    float:right;
+    
+    margin:10px;
+
+}
+.updatebutton{
+margin:15px;
+width:120px;
+height:50px;
+border:1px solid gold;
+
+
+}
+.updatebutton:hover{
+    background-color:gold;
+    border:20x solid blue;
+    color:black;
+
+}
+.img1{
+    float:right;
+    margin-right:80px;
+    margin-top:20px;
+  
+    height:140px;
+    width:110px;
+    border:2px solid #333;
+    
+}
+.h1h{
+    text-align:center;
+}
+
+
+
+form {
+    display: flex;
+    flex-direction: column;
+}
+
+label {
+    margin-bottom: 2px;
+    font-weight: bold;
+    margin-right: 10px;
+}
+p {
+    margin-bottom:10px;
+   
+    padding:4px;
+    margin-left:50px;
+}
+p:hover{
+    background-color:#313639;
+    color:white;
+    border:2px solid #333;
+    border-radius:10px;
+}
+
+input {
+    padding: 10px;
+    margin-bottom: 8px;
+    border: 1px solid #ddd;
+    border-radius: 4px;
+}
+
+button {
+    padding: 12px;
+    background-color: #3498db;
+    color: #fff;
+    border: none;
+    border-radius: 4px;
+    cursor: pointer;
+}
+
+.success {
+    color: #27ae60;
+    margin-top: 10px;
+}
+
+.error {
+    color: #e74c3c;
+    margin-top: 10px;
+}
+
+a {
+    display: block;
+    margin-top: 20px;
+    text-decoration: none;
+    color: #3498db;
+}
+
+        </style>
+</head>
+<body>
+
+<div class="container">
+<?php
+// Database connection details
+$servername = "localhost";
+$username = "root";
+$password = "";
+$dbname = "gymproject";
+
+// Create connection
+$conn = new mysqli($servername, $username, $password, $dbname);
+
+// Check connection
+if ($conn->connect_error) {
+    die("Connection failed: " . $conn->connect_error);
+}
+
+// Retrieve member information using member ID (replace 'MEMBER_ID' with the actual member ID)
+$memberid = $_POST['memberid'];
+
+$sql = "SELECT * FROM memberdata WHERE memberid = '$memberid'";
+$result = mysqli_query($conn, $sql);
+
+if ($result && mysqli_num_rows($result) > 0) {
+    $memberData = mysqli_fetch_assoc($result);
+} else {
+    echo "<p class='error'>Member Id not found. $memberid </p>";
+    exit();
+}
+
+// Initialize $dueDay
+$validityDate = new DateTime($memberData['validitydate']);
+$currentDate = new DateTime();
+$interval = $currentDate->diff($validityDate);
+$dueDay = $interval->days;
+
+
+// Check if the form is submitted for update
+if ($_SERVER["REQUEST_METHOD"] == "POST" && isset($_POST['update'])) {
+    // Get updated member data
+    $memberid = $_POST['memberid'];
+    $name = $_POST['name'];
+    $dob = $_POST['dob'];
+    $mobile = $_POST['mobile'];
+    $startdate = empty($_POST['startdate']) ? date("Y-m-d") : $_POST['startdate'];
+    $existingvaliditydate = $_POST['validitydate'];
+
+    // Convert adddays and adddayl to DateTime objects
+    $adddays = new DateTime($_POST['adddays']);
+    $adddayl = new DateTime($_POST['adddayl']);
+
+    // Calculate the difference in days between adddays and adddayl
+    $difference = $adddays->diff($adddayl)->days;
+
+    // Convert the existing validity date to a DateTime object
+    $validityDate = new DateTime($existingvaliditydate);
+
+    // Add the difference in days to the existing validity date
+    $validityDate->modify("+$difference days");
+
+    // Calculate the new value of $dueDay by subtracting the difference between the current date and the validity date
+    $currentDate = new DateTime();
+
+    // Calculate the difference between validity date and current date
+    if ($validityDate > $currentDate) {
+        $validityDateTime = new DateTime($validityDate);
+        $currentDateTime = new DateTime($currentDate);
+        $interval = $currentDateTime->diff($validityDateTime);
+        // Get the number of days difference
+        $dueDay = $interval->days;
+    }
+
+    // Determine the fee status based on $dueDay
+    $feeStatus = ($dueDay > 0) ? "Active" : "Expired";
+
+    $weight = $_POST['weight'];
+    $heightFeet = $_POST['heightfeet'];
+    $heightInch = $_POST['heightinch'];
+    $password = $_POST['password'];
+
+    // Update the database with the new validitydate and $dueDay
+    $updatesql = "UPDATE `memberdata` SET
+                `memberid`= '$memberid',
+                `name` = '$name',
+                `dob` = '$dob',
+                `mobile` = '$mobile',
+                `fee` = '$feeStatus',  
+                `validitydate` = '" . $validityDate->format('Y-m-d') . "',
+                `weight` = '$weight',
+                `heightfeet` = '$heightFeet',
+                `heightinch` = '$heightInch',
+                `password` = '$password'
+                WHERE `memberid` = '$memberid'";
+
+    $updateResult = mysqli_query($conn, $updatesql);
+
+    if ($updateResult) {
+        echo "<p class='success'>Member data updated successfully.</p>";
+    } else {
+        echo "<p class='error'>Error updating member data: " . mysqli_error($conn) . "</p>";
+    }
+}
+
+// Check if delete button is clicked
+if (isset($_POST['delete'])) {
+    // Delete member data from the database
+    $deleteQuery = "DELETE FROM memberdata WHERE memberiid = '$memberid'";
+    $deleteResult = mysqli_query($conn, $deleteQuery);
+
+    if ($deleteResult) {
+        echo "<p class='success'>Member data deleted successfully.</p>";
+        $memberData = null; // Clear member data after deletion
+    } else {
+        echo "<p class='error'>Error deleting member data: " . mysqli_error($conn) . "</p>";
+    }
+}
+?>
+
+<h1 class="h1h">MEMBER INFORMATION</h1>
+    <div class="divflex">
+    <div class="divsize1" >
+    <?php if (isset($memberData)): ?>
+        <form method="post" action="<?php echo htmlspecialchars($_SERVER["PHP_SELF"]); ?>" enctype="multipart/form-data" novalidate>
+
+            <!-- Display existing member data for editing -->
+            <label for="memberid">Member Id:</label>
+           <p> <input type="number" name="memberid" value="<?php echo $memberData['memberid']; ?>" required></p>
+
+            <label for="name">Name:</label>
+            <p> <input type="text" name="name" value="<?php echo $memberData['name']; ?>" required></p>
+
+           
+            
+            <label for="dob">Date of Birth:</label>
+            <p>  <input type="date" name="dob" value="<?php echo $memberData['dob']; ?>" required> </p>
+
+            <?php
+                // Function to calculate age based on date of birth
+               function calculateAge($dob) {
+                   $dobObject = new DateTime($dob);
+                   $currentDate = new DateTime();
+                   $age = $currentDate->diff($dobObject)->y;
+                   return $age;
+                    }
+
+                // Example usage
+                    $dob = $memberData['dob']; // Replace this with the actual date of birth in YYYY-MM-DD format
+                    $age = calculateAge($dob);
+
+                ?>
+
+            <label for="age">Age:</label>
+            <p> <input type="number" name="age" value="<?php echo $age; ?>" required></p>
+
+
+            <label for="mobile">Mobile:</label>
+            <p>  <input type="tel" name="mobile" value="<?php echo $memberData['mobile']; ?>" required></p>
+
+            
+          
+
+            <label for="fee">Member Ship:</label>
+            <p> <input type="text" name="fee" value="<?php echo $memberData['fee']; ?>" required></p>
+             
+            <label for="dueday">Add Days in Due Day:</label>
+            <p> From:<input type="date" name="adddays" required><br>
+            To: <input type="date" name="adddayl" required></p>
+
+        
+          
+            <label for="dueday">Validity Date:</label>
+            <p> <input type="date" name="validitydate" value="<?php echo $memberData['validitydate'] ; ?>"></p> 
+            <label for="dueday">Due Day:</label>
+        
+            <p><input type="text" name="dueday" value="<?php echo $dueDay; ?>"></p>
+
+
+    </div>
+    <div class="divsize2" >
+                    
+            <?php
+            // Encode the image path to prevent HTML injection
+            $imagePath = htmlspecialchars($memberData['image']);
+            ?>
+            <img src="<?php echo $imagePath; ?>" class='img1'>
+
+              
+                
+
+
+
+         <div class="divsize3">
+            <label for="weight">Weight:</label>
+            <p> <input type="number" name="weight" value="<?php echo $memberData['weight']; ?>" required></p>
+
+            
+            <label for="heightfeet">Height(Feet.inch):</label>
+            <p> Feet: <input type="number" name="heightfeet" value="<?php echo $memberData['heightfeet']; ?>" required></p>
+            <p>Inch:<input type="number" name="heightinch" value="<?php echo $memberData['heightinch']; ?>" required></p>
+
+
+            <label for="startdate">Start Date:</label>
+            <p> <input type="date" name="startdate" value="<?php echo $memberData['startdate']; ?>" required></p>
+            
+            <label for="password">Password:</label>
+                <p> <input type="text" name="password" value="<?php echo $memberData['password']; ?>" required></p>
+    </div>
+        <!--paymeent div  -->
+  <div >
+    
+   
+    
+        </div>
+       
+    
+    
+        <div class="divsize5">
+            <button type="submit" name="update" class="updatebutton"><b>Save Changes</b></button>
+            <button type="submit" name="delete"  class="updatebutton" onclick="return confirm('Are you sure you want to delete this member?')"><b>Delete</b></button>
+            
+        </div>
+        </form>
+        </div>
+    <?php endif; ?>
+
+   
+</div>
+
+</body>
+</html>

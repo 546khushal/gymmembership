@@ -1,0 +1,158 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>E-commerce Store</title>
+    <style>
+        /* Add your CSS styles here */
+        body {
+            font-family: Arial, sans-serif;
+            background-color: #f4f4f4;
+            margin: 0;
+            padding: 0;
+        }
+
+        .container {
+            max-width: 1000px;
+            margin: 20px auto;
+            padding: 20px;
+        }
+
+        .product-wrapper {
+            display: flex;
+            flex-wrap: wrap;
+            justify-content: space-between;
+            gap: 20px;
+        }
+
+        .product-card {
+            width: calc(33.33% - 20px);
+            background-color: #fff;
+            border-radius: 8px;
+            box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+            overflow: hidden;
+            position: relative;
+            margin-bottom: 20px;
+        }
+
+        .product-card img {
+            width: 250px;
+            height:280px;
+            margin-left:auto;
+            margin-right:auto;
+            display:block;
+            margin-top:8px;
+            height: auto;
+            cursor: pointer;
+        }
+
+        .product-info {
+            padding: 20px;
+        }
+
+        .product-title {
+            font-size: 18px;
+            font-weight: bold;
+            margin-bottom: 10px;
+        }
+
+        .product-price {
+            font-size: 16px;
+            color: #007bff;
+            margin-bottom: 10px;
+        }
+
+        .product-description {
+            margin-bottom: 20px;
+        }
+
+        .arrows {
+            position: absolute;
+            top: 5%;
+            transform: translateY(-50%);
+            width: 100%;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            z-index: 1;
+        }
+
+        .arrow {
+            background-color: rgba(255, 255, 255, 0.5);
+            color: #333;
+            padding: 10px;
+            border-radius: 50%;
+            cursor: pointer;
+            transition: background-color 0.3s;
+        }
+
+        .arrow:hover {
+            background-color:#f2f2f2;
+            color: black;
+        }
+
+        @media screen and (max-width: 768px) {
+            .product-card {
+                width: calc(50% - 20px);
+            }
+        }
+
+        @media screen and (max-width: 576px) {
+            .product-card {
+                width: 100%;
+            }
+        }
+    </style>
+</head>
+<body> 
+       {% url 'navbar' %}
+            <div class="container">
+                <h1>E-commerce Store</h1>
+                <div class="product-wrapper">
+                    {% for product in products %}
+                    <div class="product-card">
+                        <div class="arrows">
+                            <div class="arrow" onclick="changeImage(this, 'prev')">&lt;</div>
+                            <div class="arrow" onclick="changeImage(this, 'next')">&gt;</div>
+                        </div>
+                        {% for image in product.images.all %}
+                        <img src="{{ image.url }}" alt="Product Image" {% if forloop.counter0 != 0 %}style="display: none;"{% endif %}>
+                        {% endfor %}
+                        <div class="product-info">
+                            <div class="product-title">{{ product.name }}</div>
+                            <div class="product-price">${{ product.price }}</div>
+                            <div class="product-description">{{ product.details }}</div>
+                        </div>
+                    </div>
+                    {% endfor %}
+                </div>
+            </div>
+        </div>
+    </div>
+    <script>
+        function changeImage(element, direction) {
+            let productCard = element.closest('.product-card');
+            let images = productCard.querySelectorAll('img');
+            let currentImage = 0;
+
+            for (let i = 0; i < images.length; i++) {
+                if (images[i].style.display !== 'none') {
+                    currentImage = i;
+                    break;
+                }
+            }
+
+            if (direction === 'prev') {
+                currentImage = (currentImage - 1 + images.length) % images.length;
+            } else {
+                currentImage = (currentImage + 1) % images.length;
+            }
+
+            images.forEach(img => img.style.display = 'none');
+            images[currentImage].style.display = 'block';
+        }
+    </script>
+    { % url 'footer' % }
+</body>
+</html>
