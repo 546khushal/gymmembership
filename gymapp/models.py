@@ -88,7 +88,8 @@ class registerm(models.Model):
 
 
 
-
+class GymImage(models.Model):
+    image = models.ImageField(upload_to='gymmedia/')
 
 class Trainer(models.Model):
     trainer_id = models.AutoField(primary_key=True)

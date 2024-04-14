@@ -38,6 +38,10 @@
                 </div>
                 <div class="sidebar-brand-text mx-3">DYNOMO GYM</div>
             </a>
+            <div class="input-group mb-3" style="padding-left: 1rem ; padding-right: 1rem ;">
+                <input type="text" class="form-control " id="searchInput" onkeyup="searchPage()" placeholder="Search...">
+                
+            </div>
 
             <!-- Divider -->
             <hr class="sidebar-divider my-0">
@@ -67,8 +71,8 @@
                 <div id="collapseTwo" class="collapse" aria-labelledby="headingTwo" data-parent="#accordionSidebar">
                     <div class="bg-white py-2 collapse-inner rounded">
                         <h6 class="collapse-header">Custom Components:</h6>
-                        <a class="collapse-item" href="{% url 'admin_buttons' %}">Buttons</a>
-                        <a class="collapse-item" href="{% url 'admin_cards' %}">Cards</a>
+                        <a class="collapse-item" href="{% url 'gym_imga_upload' %}">GYM Images Upload</a>
+                        
                     </div>
                 </div>
             </li>
@@ -105,19 +109,18 @@
                 <a class="nav-link collapsed" href="#" data-toggle="collapse" data-target="#collapsePages"
                     aria-expanded="true" aria-controls="collapsePages">
                     <i class="fas fa-fw fa-folder"></i>
-                    <span>Pages</span>
+                    <span>New Register</span>
                 </a>
                 <div id="collapsePages" class="collapse" aria-labelledby="headingPages" data-parent="#accordionSidebar">
                     <div class="bg-white py-2 collapse-inner rounded">
-                        <h6 class="collapse-header">Login Screens:</h6>
-                        <a class="collapse-item" href="{% url 'admin_login' %}">Login</a>
+                    
                         <a class="collapse-item" href="{% url 'admin_register' %}">Register</a>
                         <a class="collapse-item" href="{% url 'admin_reg_trainer' %}">Trainer Register</a>
-                        <a class="collapse-item" href="{% url 'admin_forgot_password' %}">Forgot Password</a>
+                    
                         <div class="collapse-divider"></div>
                         <h6 class="collapse-header">Other Pages:</h6>
                         <a class="collapse-item" href="{% url 'admin_404' %}">404 Page</a>
-                        <a class="collapse-item" href="{% url 'admin_reg_trainer' %}">Trainer Register</a>
+                        
                         
                         <a class="collapse-item" href="{% url 'admin_blank' %}">Blank Page</a>
                     </div>
@@ -171,18 +174,7 @@
                     </button>
 
                     <!-- Topbar Search -->
-                    <form
-                        class="d-none d-sm-inline-block form-inline mr-auto ml-md-3 my-2 my-md-0 mw-100 navbar-search">
-                        <div class="input-group">
-                            <input type="text" class="form-control bg-light border-0 small" placeholder="Search for..."
-                                aria-label="Search" aria-describedby="basic-addon2">
-                            <div class="input-group-append">
-                                <button class="btn btn-primary" type="button">
-                                    <i class="fas fa-search fa-sm"></i>
-                                </button>
-                            </div>
-                        </div>
-                    </form>
+                   
 
                     <!-- Topbar Navbar -->
                     <ul class="navbar-nav ml-auto">
@@ -410,6 +402,29 @@
     <!-- Page level custom scripts -->
     <script src="{% static 'back/js/demo/chart-area-demo.js' %}"></script>
     <script src="{% static 'back/js/demo/chart-pie-demo.js' %}"></script>
+    <!-- Add this script to handle overall page search functionality -->
+<script>
+    function searchPage() {
+        // Declare variables
+        var input, filter, elements, i, txtValue;
+        input = document.getElementById("searchInput");
+        filter = input.value.toUpperCase();
+        
+        // Define the elements you want to search within
+        var elementsToSearch = document.querySelectorAll(".nav-item, .collapse-header, .collapse-item, .sidebar-heading, #sidebarToggle");
+    
+        // Loop through all elements in the page and hide those that don't match the search query
+        for (i = 0; i < elementsToSearch.length; i++) {
+            txtValue = elementsToSearch[i].textContent || elementsToSearch[i].innerText;
+            if (txtValue.toUpperCase().indexOf(filter) > -1) {
+                elementsToSearch[i].style.display = "";
+            } else {
+                elementsToSearch[i].style.display = "none";
+            }
+        }
+    }
+    </script>
+    
     {% block footerblock %}
 
 

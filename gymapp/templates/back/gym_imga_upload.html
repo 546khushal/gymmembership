@@ -1,0 +1,28 @@
+{% extends 'back/admin_base.html' %}
+
+{% load static %}
+{% block mainblock %}
+<div class="container mt-5">
+    <h1>Upload Gym Images</h1>
+    <form action="{% url 'gym_imga_upload' %}" method="post" enctype="multipart/form-data">
+        {% csrf_token %}
+        <div class=" col-md-6">
+            <input type="file" class="custom-file-input" id="image" name="image" >
+            <label class="custom-file-label" for="image">Choose file...</label>
+        </div>
+        <button type="submit" class="btn btn-primary mt-3">Upload</button>
+    </form>
+</div>
+
+
+<div class="container mt-5" style="margin-top: 5rem;">
+    <h2>Gallery</h2>
+    <div class="row">
+        {% for image in images %}
+        <div class="col-md-3 mb-4">
+            <img src="{{ image.image.url }}" class="img-fluid" alt="Gallery Image">
+        </div>
+        {% endfor %}
+    </div>
+</div>
+{% endblock %}

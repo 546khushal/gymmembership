@@ -31,12 +31,44 @@
 <div class="container-fluid">
     <!-- Page Heading -->
     <h1 class="h3 mb-2 text-gray-800">Tables</h1>
-    <p class="mb-4">DataTables is a third-party plugin that is used to generate the demo table below.
-        For more information about DataTables/</p>
+    <p class="mb-4"><!-- Add this section to handle delete success alert -->
+        {% if request.GET.member_id %}
+        <div class="alert alert-info" role="alert" id="reg-success-alert">
+            Registration Successful! Your Member ID: {{ request.GET.member_id }}, Name: {{ request.GET.member_name }}
+        </div>
+        <script>
+            // Automatically remove the alert after 5 seconds
+            setTimeout(function(){
+                var regSuccessAlert = document.getElementById('reg-success-alert');
+                if (regSuccessAlert) {
+                    regSuccessAlert.remove();
+                }
+            }, 9000); // 9000 milliseconds = 9 seconds
+        </script>
+        {% endif %}
+        
+        
+        {% if request.GET.delete_success %}
+<div class="alert alert-info" role="alert" id="delete-success-alert">
+    Delete Successful! ID: {{ request.GET.member_id }}, Name: {{ request.GET.member_name }}
+</div>
+<script>
+    // Automatically remove the alert after 5 seconds
+    setTimeout(function(){
+        var deleteSuccessAlert = document.getElementById('delete-success-alert');
+        if (deleteSuccessAlert) {
+            deleteSuccessAlert.remove();
+        }
+    }, 5000); // 5000 milliseconds = 5 seconds
+</script>
+{% endif %}
+    </p>
     <!-- DataTales Example -->
     <div class="card shadow mb-4">
         <div class="card-header py-3">
-            <h6 class="m-0 font-weight-bold text-primary">DataTables Example</h6>
+            <div class="col-sm-3 form-group">
+                <input type="text" id="searchInput" onkeyup="searchTable()" placeholder="Search by ID or Name">
+            </div>
         </div>
         <div class="card-body">
             <div class="table-responsive">
@@ -48,31 +80,39 @@
                             <th>NAME</th>
                             <th>MOBILE</th>
                             <th>Valid Date[day left]</th>
-                            <th>MEMBERSHIP</th>
-                            <th>TRAINER</th>
+                            <th>STATUS</th>
+                            <th>DETAILS</th>
+                            <th>EDIT</th>
+                            <th>DELETE</th>
                         </tr>
                     </thead>
                     <tfoot>
                         <tr>
+                            
                             <th>ID</th>
                             <th>IMAGE</th>
                             <th>NAME</th>
                             <th>MOBILE</th>
                             <th>Valid Date[day left]</th>
-                            <th>MEMBERSHIP</th>
-                            <th>TRAINER</th>
+                            <th>STATUS</th>
+                            <th>DETAILS</th>
+                            <th>EDIT</th>
+                            <th>DELETE</th>
                         </tr>
                     </tfoot>
                     <tbody>
                         {% for c in data %}
-                        <tr>
+                        <tr >
                             <td>{{c.member_id}}</td>
                             <td><img src="{{ c.picurl }}" style="height: 4rem; width: 4rem; border-radius: 50px;"></td>
-                            <td>{{ c.name }}</td>
+                            <td><a href="{% url 'admin_mdetail' member_id=c.member_id %}" >{{ c.name }}</a></td>
                             <td>{{ c.mobile }}</td>
                             <td>{{ c.enddate }} [{{ c.duedays }} days left]</td>
-                            <td>{{c.membershipplan}} Month</td>
-                            <td>{{ c.trainer }}</td>
+                            <td  style="background-color: {{ c.bg_color }}; color: {{c.color}} " >{{c.status}} </td>
+                            <td><a href="{% url 'admin_mdetail' member_id=c.member_id %}" class="btn btn-success btn-sm">View</a></td>
+                            <td><a href="{% url 'admin_medit' member_id=c.member_id %}" class="btn btn-success btn-sm">Edit</a></td>
+                            <td><a href="{% url 'admin_mdelete' member_id=c.member_id %}" class="btn btn-danger btn-sm ">Delete</a></td>
+
                         </tr>
                         {% endfor %}
                     </tbody>
@@ -81,4 +121,32 @@
         </div>
     </div>
 </div>
+<script>
+    function searchTable() {
+        // Declare variables
+        var input, filter, table, tr, td, i, txtValue;
+        input = document.getElementById("searchInput");
+        filter = input.value.toUpperCase();
+        table = document.getElementById("dataTable");
+        tr = table.getElementsByTagName("tr");
+    
+        // Loop through all table rows, and hide those who don't match the search query
+        for (i = 0; i < tr.length; i++) {
+            // Search by ID (first column)
+            td_id = tr[i].getElementsByTagName("td")[0];
+            // Search by Name (third column)
+            td_name = tr[i].getElementsByTagName("td")[2];
+            if (td_id || td_name) {
+                txtValue_id = td_id.textContent || td_id.innerText;
+                txtValue_name = td_name.textContent || td_name.innerText;
+                if (txtValue_id.toUpperCase().indexOf(filter) > -1 || txtValue_name.toUpperCase().indexOf(filter) > -1) {
+                    tr[i].style.display = "";
+                } else {
+                    tr[i].style.display = "none";
+                }
+            }
+        }
+    }
+    </script>
+
 {% endblock %}

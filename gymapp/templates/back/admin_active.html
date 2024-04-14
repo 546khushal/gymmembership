@@ -2,7 +2,124 @@
 
 {% load static %}
 {% block mainblock %}
+<div style="margin: 1rem;  border: 2px solid rgb(44, 129, 226); border-radius: 15px;">
+    <div class="row" style="margin-top: 4rem;">
+        <div class="col-sm-3 form-group" style="margin-left: 5rem;">
+            <button type="button" class="btn btn-primary btn-lg "onclick="location.href = '{% url 'admin_register' %}'">&#128100 Member Register</button>
+        </div>
+        <div class="col-sm-3 form-group" style="margin-left: 5rem;">
+            <button type="button" class="btn btn-primary btn-lg "onclick="location.href = '{% url 'admin_active' %}'">&#128100 Active Member</button>
+        </div>
+        <div class="col-sm-3 form-group" style="margin-left: 5rem;">
+            <button type="button" class="btn btn-primary btn-lg "onclick="location.href = '{% url 'admin_expaire' %}'">&#128100 Deactivated</button>
+        </div>
+    </div>
+    <div class="row" style="margin-bottom: 4rem;">
+        <div class="col-sm-3 form-group" style="margin-left: 5rem;">
+            <button type="button" class="btn btn-primary btn-lg "onclick="location.href = '{% url 'admin_total' %}'">&#128100 Total Member</button>
+        </div>
+        <div class="col-sm-3 form-group" style="margin-left: 5rem;">
+            <button type="button" class="btn btn-primary btn-lg "onclick="location.href = '{% url 'admin_active' %}'">&#128100 Active Member</button>
+        </div>
+        <div class="col-sm-3 form-group" style="margin-left: 5rem;">
+            <button type="button" class="btn btn-primary btn-lg "onclick="location.href = '{% url 'admin_expaire' %}'">&#128100 Deactivated</button>
+        </div>
+        <!-- Add other buttons here -->
+    </div>
+</div>
+<!-- Begin Page Content -->
+<div class="container-fluid">
+    <!-- Page Heading -->
+    <h1 class="h3 mb-2 text-gray-800">Tables</h1>
+    <p class="mb-4"><!-- Add this section to handle delete success alert -->
+    All Active Member
+    </p>
+</script>
 
+    </p>
+    <!-- DataTales Example -->
+    <div class="card shadow mb-4">
+        <div class="card-header py-3">
+            <div class="col-sm-3 form-group">
+                <input type="text" id="searchInput" onkeyup="searchTable()" placeholder="Search by ID or Name">
+            </div>
+        </div>
+        <div class="card-body">
+            <div class="table-responsive">
+                <table class="table table-bordered" id="dataTable" width="100%" cellspacing="0">
+                    <thead>
+                        <tr>
+                            <th>ID</th>
+                            <th>IMAGE</th>
+                            <th>NAME</th>
+                            <th>MOBILE</th>
+                            <th>Valid Date[day left]</th>
+                            <th>STATUS</th>
+                            <th>TRAINER</th>
+                            <th>EDIT</th>
+                            <th>DELETE</th>
+                        </tr>
+                    </thead>
+                    <tfoot>
+                        <tr>
+                            
+                            <th>ID</th>
+                            <th>IMAGE</th>
+                            <th>NAME</th>
+                            <th>MOBILE</th>
+                            <th>Valid Date[day left]</th>
+                            <th>STATUS</th>
+                            <th>TRAINER</th>
+                            <th>EDIT</th>
+                            <th>DELETE</th>
+                        </tr>
+                    </tfoot>
+                    <tbody>
+                        {% for c in data %}
+                        <tr >
+                            <td>{{c.member_id}}</td>
+                            <td><img src="{{ c.picurl }}" style="height: 4rem; width: 4rem; border-radius: 50px;"></td>
+                            <td>{{ c.name }}</td>
+                            <td>{{ c.mobile }}</td>
+                            <td>{{ c.enddate }} [{{ c.duedays }} days left]</td>
+                            <td >{{c.status}} </td>
+                            <td>{{ c.trainer }}</td>
+                            <td><a href="{% url 'admin_medit' member_id=c.member_id %}" class="btn btn-success btn-sm">Edit</a></td>
+                            <td><a href="{% url 'admin_mdelete' member_id=c.member_id %}" class="btn btn-danger btn-sm ">Delete</a></td>
 
-<p>active wala page</p>
-{% endblock %}  
+                        </tr>
+                        {% endfor %}
+                    </tbody>
+                </table>
+            </div>
+        </div>
+    </div>
+</div>
+<script>
+    function searchTable() {
+        // Declare variables
+        var input, filter, table, tr, td, i, txtValue;
+        input = document.getElementById("searchInput");
+        filter = input.value.toUpperCase();
+        table = document.getElementById("dataTable");
+        tr = table.getElementsByTagName("tr");
+    
+        // Loop through all table rows, and hide those who don't match the search query
+        for (i = 0; i < tr.length; i++) {
+            // Search by ID (first column)
+            td_id = tr[i].getElementsByTagName("td")[0];
+            // Search by Name (third column)
+            td_name = tr[i].getElementsByTagName("td")[2];
+            if (td_id || td_name) {
+                txtValue_id = td_id.textContent || td_id.innerText;
+                txtValue_name = td_name.textContent || td_name.innerText;
+                if (txtValue_id.toUpperCase().indexOf(filter) > -1 || txtValue_name.toUpperCase().indexOf(filter) > -1) {
+                    tr[i].style.display = "";
+                } else {
+                    tr[i].style.display = "none";
+                }
+            }
+        }
+    }
+    </script>
+{% endblock %}

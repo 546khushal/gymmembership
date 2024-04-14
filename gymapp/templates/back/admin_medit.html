@@ -1,0 +1,150 @@
+{% extends 'back/admin_base.html' %}
+
+{% load static %}
+{% block mainblock %}
+
+<div class="container">
+    <h1 class="well"> Edit Details Of {{edit.name}} With ID:{{edit.member_id}}</h1>
+	<div class="col-lg-12 well">
+	<div class="row">
+				<form action="" method="post" enctype="multipart/form-data">
+                    {% csrf_token %} <!--security k liye -->
+					<div class="col-sm-12">
+						<div class="row">
+							<div class="col-sm-6 form-group">
+								<label>Name</label>
+								<input type="text" placeholder="Enter First Name Here.." class="form-control" id="name" name="name" value="{{ edit.name}}"><br/>
+							    <label>Mobile</label>
+								<input type="text" placeholder="Enter Mobile Number Here.." class="form-control" id="mobile" name="mobile" value="{{ edit.mobile }}">
+							
+                            </div>
+							<div class="col-sm-6 form-group">
+                                
+                                    
+                                    <!-- <label>Upload image</label>
+                                        <input type="file" class="form-control" multiple="" id="memberimg" name="memberimg">-->
+                                    <img src="{{ edit.picurl }}" alt="" class="card " style="width: 8rem; height: 10rem; margin-left: 3rem; margin-top: 1rem;">
+                                
+                                
+                            </div>
+                           
+						</div>					
+						<div class="form-group">
+							<label>Email</label>
+							<input placeholder="user@example.com" type="email"  class="form-control" id="email" name="email" value="{{ edit.email}}">
+						</div>
+                        <div class="col-sm-12">
+                            <div class="row">
+                                <div class="col-sm-6 form-group">
+                                    <label>Password:</label>
+                                    <input type="password" name="password" id="password" class="form-control" value="{{ edit.passw}}"/>
+                                    <i class="bi bi-eye-slash" id="togglePassword"></i>
+                                </div>
+                                <div class="col-sm-6 from-group">
+                                    <label>XXXXXXX:</label>
+                                    <input type="password" name="rpassword" id="rpassword" class="form-control" />
+                                    <i class="bi bi-eye-slash" id="togglePassword"></i>
+                                 
+                                </div>
+                               
+                            </div>	
+                        
+                        
+                        <div class=" form-group">
+                          <label for="dob">Date of Birth:</label>
+                          <input type="date" class="form-control" id="dob" name="dob" value="{{ edit.dob|date:'Y-m-d' }}">
+
+                          
+                        </div>	
+						<div class="row">
+							<div class="col-sm-4 form-group">
+								<label>Weight</label>
+								<input type="text" placeholder="Enter Your Weight Here.." class="form-control" id="weight" name="weight" value="{{ edit.weight}}">
+							</div>	
+							<div class="col-sm-4 form-group">
+								<label>Height(feet)</label>
+								<input type="text" placeholder="Enter Feet Here.." class="form-control" id="heightf" name="heightf" value="{{ edit.heightf}}">
+							</div>	
+							<div class="col-sm-4 form-group">
+								<label>Height(inches)</label>
+								<input type="text" placeholder="Enter Inches Here.." class="form-control" id="heighti" name="heighti" value="{{ edit.heighti}}">
+							</div>		
+						</div>
+						<div class="row">
+                            <div class="dropdown col-sm-6 form-group">
+                                <label>Membership Plan</label><br>
+                                <select  id="membershipplan" name="membershipplan" value="{{ edit.membershipplan}}">
+                                <option class="dropdown-menu" selected="selected" disabled>plan on page</option>
+                                <option value="1">1 Month</option>
+                                <option value="3">3 Month</option>
+                                <option value="6">6 Month</option>
+                                <option value="9">9 Month</option>
+                                <option value="12">2 Month</option>
+                              </select>
+                              
+                            </div>
+                            <div class="dropdown col-sm-6 form-group">
+                              <label>Personal Trainer</label><br>
+                              <select id="trainer" name="trainer" value="{{ edit.trainer}}">
+                                  <option class="dropdown-menu" selected="selected" disabled>Select Trainer</option>
+                                  <option value="None">None</option> 
+                                  {% for trainer in trainers %}
+                                      <option value="{{ trainer.tname }}">{{ trainer.tname }}</option>
+                                  {% endfor %}
+                              </select>
+                          </div>
+                            
+									
+								
+						</div>	
+                        
+                        <div class="row">
+							              <div class="dropdown col-sm-6 form-group">
+                                <label>Gender</label><br>
+                                <select id="gender" name="gender" value="{{ edit.gender}}">
+                                <option class="dropdown-menu" selected="selected" disabled> Select Gender</option>
+                                <option value="Male">Male</option>
+                                  <option value="Female">Female</option> 
+                                </select>                                 
+                                </div>                                
+                            </div>  	
+							<div class="col-sm-6 form-group">
+								<label>Fee Amount</label>
+								<input type="text" placeholder="Enter Fee Amount Here.." class="form-control" id="feeamount" name="feeamount" value="{{ edit.feeamount}}">
+							</div>	
+                            		
+						</div>   
+                        <div class="row">
+                          <div class="dropdown col-sm-6 form-group">
+                            <label>Payment Method</label><br>
+                            <select id="pay" name="pay" value="{{ edit.pay}}">
+                            <option class="dropdown-menu" selected="selected" disabled> Select method</option>
+                            <option value="Cash">Cash</option>
+                              <option value="Online">Online</option> 
+                            </select>                                 
+                            </div> 
+                            <div class=" form-group col-sm-6">
+                              <label >Start From:</label>
+                              <input type="date" class="form-control" id="strat" name="start" value="{{ edit.start}}"  >
+                              
+                            </div>
+                        </div>
+						
+					<!--<div class="form-group">
+						<label>Website</label>
+						<input type="text" placeholder="Enter Website Name Here.." class="form-control">
+					</div>-->
+					<button type="submit" class="btn btn-lg btn-info">Register</button>					
+					</div>
+				</form> 
+				</div>
+	</div>
+	</div>
+  
+    <script>
+        $(".dropdown-menu li a").click(function(){
+        var selText = $(this).text();
+        $(this).parents('.btn-group').find('.dropdown-toggle').html(selText+' <span class="caret"></span>');
+        });
+    </script>
+{% endblock %}

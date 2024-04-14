@@ -64,12 +64,13 @@
                         </tr>
                     </tfoot>
                     <tbody>
-                        {% for c in registerm %}
-                        <tr><td>{{ c.member_id }}</td>
+                        {% for c in data %}
+                        <tr>
+                            <td>{{c.member_id}}</td>
                             <td><img src="{{ c.picurl }}" style="height: 4rem; width: 4rem; border-radius: 50px;"></td>
                             <td>{{ c.name }}</td>
                             <td>{{ c.mobile }}</td>
-                            <td>{{ enddate }} [{{ duedays }} days left]</td>
+                            <td>{{ c.enddate }} [{{ c.duedays }} days left]</td>
                             <td>{{c.membershipplan}} Month</td>
                             <td>{{ c.trainer }}</td>
                         </tr>

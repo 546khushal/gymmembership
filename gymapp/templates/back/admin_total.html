@@ -4,5 +4,88 @@
 {% block mainblock %}
 
 
-<p>total wala page</p>
+
+
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            background-color: #f5f5f5;
+            margin: 0;
+            padding: 0;
+        }
+
+        .container {
+            max-width: 800px;
+            margin: 20px auto;
+            padding: 20px;
+            background-color: #fff;
+            border-radius: 5px;
+            box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+        }
+
+        h1 {
+            text-align: center;
+            margin-bottom: 20px;
+        }
+
+        table {
+            width: 100%;
+            border-collapse: collapse;
+            margin-bottom: 20px;
+        }
+
+        th, td {
+            padding: 10px;
+            border-bottom: 1px solid #ddd;
+            text-align: left;
+        }
+
+        th {
+            background-color: #3498db;
+            color: white;
+        }
+
+        tr:hover {
+            background-color: #f2f2f2;
+        }
+
+        
+
+        .total-members span, .active-members span, .expired-members span {
+            font-weight: bold;
+        }
+    </style>
+</head>
+<body>
+
+
+    <div class="stats">
+                <div class="container">
+    <h1>Gym Membership Statistics</h1>
+
+    <table>
+        <tr>
+            <th>Category</th>
+            <th>Total Members</th>
+        </tr>
+        <tr class="total-members">
+            <td><a href="{% url 'admin_tables2' %}">Total Number of Members</a></td>
+            <td><span> {{ total_members }}</span></td>
+        </tr>
+        <tr class="active-members">
+            <td><a href="{% url 'admin_active' %}">Total Active Members</a></td>
+            <td><span>{{ total_active_members }}</span></td>
+        </tr>
+        <tr class="expired-members">
+            <td><a href="{% url 'admin_expaire' %}">Total Expired Members</a></td>
+            <td><span>{{ total_inactive_members }}</span></td>
+        </tr>
+    </table>
+</div>
+           </div>
+
+
+
+
+
 {% endblock %}  

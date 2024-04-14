@@ -70,22 +70,22 @@
                             <div class="dropdown col-sm-6 form-group">
                                 <label>Membership Plan</label><br>
                                 <select id="membershipplan" name="membershipplan" >
-                                <option selected="selected" disabled>plan on page</option>
+                                
                                 <option value="1">1 Month</option>
                                 <option value="3">3 Month</option>
                                 <option value="6">6 Month</option>
                                 <option value="9">9 Month</option>
-                                <option value="12">2 Month</option>
+                                <option value="12">12 Month</option>
                               </select>
                               
                             </div>
                             <div class="dropdown col-sm-6 form-group">
                               <label>Personal Trainer</label><br>
                               <select id="trainer" name="trainer">
-                                  <option selected="selected" disabled>Select Trainer</option>
+                                  
                                   <option value="None">None</option> 
-                                  {% for trainer in trainers %}
-                                      <option value="{{ trainer.tname }}">{{ trainer.tname }}</option>
+                                  {% for t in trainer %}
+                                      <option value="{{ t.tname }}">{{ t.tname }}</option>
                                   {% endfor %}
                               </select>
                           </div>
@@ -98,7 +98,7 @@
 							              <div class="dropdown col-sm-6 form-group">
                                 <label>Gender</label><br>
                                 <select id="gender" name="gender" >
-                                <option selected="selected" disabled> Select Gender</option>
+                               
                                 <option value="Male">Male</option>
                                   <option value="Female">Female</option> 
                                 </select>                                 
@@ -114,7 +114,7 @@
                           <div class="dropdown col-sm-6 form-group">
                             <label>Payment Method</label><br>
                             <select id="pay" name="pay" >
-                            <option selected="selected" disabled> Select method</option>
+                            
                             <option value="Cash">Cash</option>
                               <option value="Online">Online</option> 
                             </select>                                 

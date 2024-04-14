@@ -32,8 +32,7 @@ urlpatterns = [
     path('panel/', views.panel, name='panel'),
     path('admin_404/', views.admin_404, name='admin_404'),
     path('admin_blank/', views.admin_blank, name='admin_blank'),
-    path('admin_buttons/', views.admin_buttons, name='admin_buttons'),
-    path('admin_cards/', views.admin_cards, name='admin_cards'),
+   
     path('admin_charts/', views.admin_charts, name='admin_charts'),
     path('admin_forgot_password/', views.admin_forgot_password, name='admin_forgot_password'),
     path('admin_home/', views.admin_home, name='admin_home'),
@@ -52,6 +51,15 @@ urlpatterns = [
      path('admin_active/', views.admin_active, name='admin_active'),
     path('admin_total/', views.admin_total, name='admin_total'),
     path('admin_tables2/', views.admin_tables2, name='admin_tables2'),
+    path('admin_mdelete/<int:member_id>/', views.admin_mdelete, name='admin_mdelete'),
+    path('admin_medit/<int:member_id>/', views.admin_medit, name='admin_medit'),
+    path('admin_mdetail/<int:member_id>/', views.admin_mdetail, name='admin_mdetail'),
+    path('admin_tdelete/<int:trainer_id>/', views.admin_tdelete, name='admin_tdelete'),
+    path('admin_tedit/<int:trainer_id>/', views.admin_tedit, name='admin_tedit'),
+    path('admin_tdetail/<int:trainer_id>/', views.admin_tdetail, name='admin_tdetail'),
+    path('gym_imga_upload/', views.gym_imga_upload, name='gym_imga_upload'),
+
+
    
     # Add other URL patterns as needed
 ]
