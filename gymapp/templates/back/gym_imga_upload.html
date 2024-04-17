@@ -15,14 +15,36 @@
 </div>
 
 
-<div class="container mt-5" style="margin-top: 5rem;">
-    <h2>Gallery</h2>
-    <div class="row">
-        {% for image in images %}
-        <div class="col-md-3 mb-4">
-            <img src="{{ image.image.url }}" class="img-fluid" alt="Gallery Image">
+<table class="table table-bordered" id="dataTable">
+    <thead>
+        <tr>
+            <th>ID</th>
+            <th>Image</th>
+            <th>DELETE</th>
+        </tr>
+    </thead>
+    <tbody>
+        {% if request.GET.delete_success %}
+        <div class="alert alert-info" role="alert" id="delete-success-alert">
+            Delete Successful! ID: {{ request.GET.image_id }}
         </div>
+        <script>
+            // Automatically remove the alert after 5 seconds
+            setTimeout(function(){
+                var deleteSuccessAlert = document.getElementById('delete-success-alert');
+                if (deleteSuccessAlert) {
+                    deleteSuccessAlert.remove();
+                }
+            }, 5000); // 5000 milliseconds = 5 seconds
+        </script>
+        {% endif %}
+        {% for image in images %}
+        <tr>
+            <td>{{ image.id}}</td>
+            <td><img src="{{ image.image.url }}" class="img-fluid" style="height: 180px; width: 280px;" alt="Gallery Image"></td>
+            <td><a href="{% url 'gym_imgdelete' image_id=image.id %}" class="btn btn-danger btn-sm ">Delete</a></td>
+        </tr>
         {% endfor %}
-    </div>
-</div>
+    </tbody>
+</table>
 {% endblock %}

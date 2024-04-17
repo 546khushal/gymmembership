@@ -1,11 +1,13 @@
 from django.shortcuts import render,redirect
 from .models import registerm
 from .models import Trainer
+from .models import Onsite
 from datetime import datetime, timedelta
 from django.utils.timezone import make_aware
 from django.urls import reverse
 
 from .models import GymImage
+from .models import GymImages
 
 from django.http import HttpResponse
 from .models import Product  # Import your Product model
@@ -17,7 +19,7 @@ import os
 from django.core.files.storage import FileSystemStorage   #similar file dalte hai to url conflict ko solve krega
 
 def index(request):
-    images = GymImage.objects.all()
+    images = GymImages.objects.all()
     if request.method == 'POST':
         name = request.POST.get('name')
         mobile = request.POST.get('mobile')
@@ -146,7 +148,27 @@ def memberdata(request):
 def Memberlist(request):
     return render(request,'front/Memberlist.html')
 def Membership(request):
+   
     return render(request,'front/membership.html')
+
+def detail_login(request):
+    if request.method == 'POST':
+        member_id = request.POST.get('memberid')
+        password = request.POST.get('password')
+
+        # Check if the credentials exist in the database
+        try:
+            member = registerm.objects.get(member_id=member_id, passw=password)
+        except registerm.DoesNotExist:
+            # If the member_id or password is incorrect, display an error message or redirect to login page
+            return render(request, 'back/error.html', {'error': 'Invalid credentials'})
+        
+        # If the credentials are correct, redirect to the member_mdetail page with the member_id
+        return redirect('admin_mdetail', member_id=member.member_id)
+
+    return render(request, 'membership.html')
+
+
 def product(request):
      products = Product.objects.all()  # Fetch all products from the database
      return render(request, 'front/product.html', {'products': products})
@@ -453,11 +475,85 @@ def gym_imga_upload(request):
                 for chunk in file.chunks():
                     destination.write(chunk)
             # Create GymImage object for the file
-            GymImage.objects.create(image=os.path.join('gymmedia', filename))
+            GymImages.objects.create(image=os.path.join('gymmedia', filename))
         return redirect('gym_imga_upload')
-    images = GymImage.objects.all()
+    images = GymImages.objects.all()
     return render(request, 'back/gym_imga_upload.html', {'images': images})
     
+def gym_imgdelete(request,image_id):
+    try:
+        im = GymImages.objects.get(pk=image_id)
+        im.delete()
+        # Redirect with delete_success parameter and member information
+        return redirect(reverse('gym_imga_upload') + f'?delete_success=true&image_id={image_id}')
+    except registerm.DoesNotExist:
+        # Handle if the object does not exist
+        # Redirect back to the admin tables page
+        return redirect('gym_imga_upload')
+    
+
+def custom_site(request):
+    if request.method == "POST":
+        # Retrieve form data
+        gymname = request.POST.get("gymname")
+        gymemail = request.POST.get("gymemail")
+        mobile = request.POST.get("mobile")
+        gymtime = request.POST.get("gymtime")
+        address = request.POST.get("address")
+        instalink = request.POST.get("instalink")
+        fblink = request.POST.get("fblink")
+        ytlink = request.POST.get("ytlink")
+        ownername = request.POST.get("ownername")
+        experience = request.POST.get("experience")
+        opend = request.POST.get("opend")
+        
+        GymImage.objects.all().delete()  # Delete all existing entries
+        
+        ownerimg = request.FILES.get("ownerimg")
+        if ownerimg:
+            # Check image size and format
+            if ownerimg.content_type.startswith('image'):
+                if ownerimg.size < 5000000:
+                    fs = FileSystemStorage()
+                    filename = fs.save(ownerimg.name, ownerimg)
+                    url = fs.url(filename)
+                    # Create a new GymImage object and save it
+                    gym_image = GymImage.objects.create(
+                       
+                        gymname=gymname,
+                        gymemail=gymemail,
+                        mobile=mobile,
+                        gymtime=gymtime,
+                        picname=filename,
+                        picurl=url,
+                        address=address,
+                        instalink=instalink,
+                        fblink=fblink,
+                        ytlink=ytlink,
+                        ownername=ownername,
+                        experience=experience,
+                        opend=opend
+                    )
+                    return redirect('display_gym_info')  # Redirect to avoid resubmission
+                else:
+                    error = "Please upload an image with size less than 5MB."
+            else:
+                error = "Please upload a valid image format."
+        else:
+            error = "Please upload an image."
+            
+        return render(request, 'back/error.html', {'error': error}) 
+
+    gym = GymImage.objects.all()  # Query all GymImage objects
+    return render(request, 'back/custom_site.html', {'gym_images': gym})
+
+        
+def display_gym_info(request):
+    gym_images = GymImage.objects.all()
+    return render(request, 'back/custom_site.html', {'gym_images': gym_images})        
+
+
+
 
 
 
@@ -534,4 +630,100 @@ def admin_total(request):
 
     return render(request, 'back/admin_total.html', {'total_members': total_members,'total_active_members': total_active_members,'total_inactive_members': total_inactive_members
     })
+def admin_siteuser(request):
+    datasite = Onsite.objects.all()
 
+    return render(request, 'back/admin_siteuser.html', {'datasite': datasite})
+
+
+def memberfromsite(request):
+    if request.method == "POST":
+        # Handle form submission
+        name = request.POST.get("name")
+        mobile = request.POST.get("mobile")
+        email = request.POST.get("email")
+        gender = request.POST.get("gender")
+        
+        # Check if a user with similar name and mobile already exists
+        existing_user = Onsite.objects.filter(name=name, mobile=mobile).exists()
+        if existing_user:
+            error="! User already exists with similar Name and Mobile number."
+            return render(request, 'front/membership.html', {'error': error})
+        
+        # Save form data to the Onsite table
+        Onsite.objects.create(name=name, email=email, mobile=mobile, gender=gender)
+        
+        # Query all Onsite objects including the newly added one
+        datasite = Onsite.objects.all()
+
+        return render(request, 'back/admin_siteuser.html', {'datasite': datasite})
+    else:
+        # If it's a GET request, render the empty form
+        return render(request, 'back/admin_siteuser.html')
+
+
+def admin_onsitereg(request,siteuser_id):
+    siteuser = Onsite.objects.get(pk=siteuser_id)
+
+    return render(request, 'back/admin_onsitereg.html', {'siteuser': siteuser})    
+    
+
+def admin_onsiteedit(request):
+    if request.method == "POST":
+        # Retrieve form data
+        name = request.POST.get("name")
+        mobile = request.POST.get("mobile")
+        email = request.POST.get("email")
+        gender = request.POST.get("gender")
+        passw = request.POST.get("password")
+        dob = request.POST.get("dob")
+        weight = request.POST.get("weight")
+        heightf = request.POST.get("heightf")
+        heighti = request.POST.get("heighti")
+        start = request.POST.get("start")
+        membershipplan = request.POST.get("membershipplan")
+        trainer = request.POST.get("trainer")
+        feeamount = request.POST.get("feeamount")
+        pay = request.POST.get("pay") 
+        siteuser_id = request.POST.get("siteuser_id")
+        
+        # Get the Onsite object
+        site = Onsite.objects.get(pk=siteuser_id)
+        # Delete the existing Onsite entry
+        site.delete()
+
+        try:
+            # Check if an image was uploaded
+            img = request.FILES['memberimg']
+            # Check image size and format
+            if img.content_type.startswith('image') and img.size < 5000000:
+                fs = FileSystemStorage()
+                filename = fs.save(img.name, img)
+                url = fs.url(filename)
+                # Create a new entry in the registerm table
+                data = registerm.objects.create(
+                    name=name,
+                    mobile=mobile,
+                    email=email,
+                    gender=gender,
+                    passw=passw,
+                    picname=filename,
+                    picurl=url,
+                    dob=dob,
+                    weight=weight,
+                    heightf=heightf,
+                    heighti=heighti,
+                    start=start,
+                    membershipplan=membershipplan,
+                    trainer=trainer,
+                    feeamount=feeamount,
+                    pay=pay
+                )  
+                return redirect('admin_tables2')  # Redirect to avoid resubmission
+            else:
+                error = "Please upload a valid image with size less than 5MB."
+        except Exception as e:
+            error = "An error occurred: " + str(e)
+        return render(request, 'back/error.html', {'error': error})    
+
+    return render(request, 'back/admin_table2.html')

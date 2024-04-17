@@ -87,9 +87,38 @@ class registerm(models.Model):
     pay = models.CharField(max_length=10,choices=PAYMENT_CHOICES)  # Payment method
 
 
-
-class GymImage(models.Model):
+class GymImages(models.Model):
     image = models.ImageField(upload_to='gymmedia/')
+class GymImage(models.Model):
+    
+    gymname = models.CharField(max_length=100)
+    gymemail = models.EmailField()
+    mobile = models.CharField(max_length=15)
+    gymtime = models.CharField(max_length=100)
+    address = models.CharField(max_length=255)
+    instalink = models.URLField(blank=True)
+    fblink = models.URLField(blank=True)
+    ytlink = models.URLField(blank=True)
+    ownername = models.CharField(max_length=100)
+    picname = models.FileField()
+    picurl = models.FileField(default="-")
+    experience = models.CharField(max_length=50)
+    opend =models.CharField(max_length=20)
+     
+class Onsite(models.Model):
+    GENDER_CHOICES = [
+        ('male', 'Male'),
+        ('female', 'Female'),
+        ('other', 'Other')
+    ]
+    id = models.AutoField(primary_key=True)
+    name = models.CharField(max_length=100)
+    gender = models.CharField(max_length=10, choices=GENDER_CHOICES)
+    mobile = models.CharField(max_length=15)
+    email = models.EmailField()    
+    created_at = models.DateTimeField(auto_now_add=True)
+
+
 
 class Trainer(models.Model):
     trainer_id = models.AutoField(primary_key=True)

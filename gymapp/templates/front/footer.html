@@ -1,157 +1,187 @@
+{% load static %}
 <!DOCTYPE html>
 <html lang="en">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
-  
-    <title>Document</title>
+    <!-- Bootstrap CSS -->
+    <!-- Custom fonts for this template-->
+    <link href="{% static 'back/vendor/fontawesome-free/css/all.min.css' %}" rel="stylesheet" type="text/css">
+    <link
+        href="https://fonts.googleapis.com/css?family=Nunito:200,200i,300,300i,400,400i,600,600i,700,700i,800,800i,900,900i"
+        rel="stylesheet">
+
+    <!-- Custom styles for this template-->
+    <link href="{% static 'back/css/sb-admin-2.min.css' %}" rel="stylesheet"><title>Footer</title>
     <style>
         /* Footer */
-
-.footer {
+        .footer {
             background-color: #333;
             color: #fff;
-            padding: 5px;
+            padding: 20px;
+        }
+
+        .footer-content {
             display: flex;
-           
             justify-content: space-between;
             align-items: flex-start;
             flex-wrap: wrap;
         }
 
-        .left-content, .middle-content, .right-content {
+        .footer-section {
             flex: 1;
             margin-bottom: 20px;
-            margin-left:50px;
-            text-align:left;
         }
 
-        .left-content p, .right-content p {
+        .footer-section h3 {
+            color: gold;
+            padding: 10px;
+        }
+
+        .footer-section p {
             margin: 5px 0;
-            margin-left:25px;
         }
-       
-        .middle-content a {
-            color: #fff;
-            text-decoration: none;
-         
-        }
-        .middle-content ul {
-            list-style-type: none;
-            padding: 0;
-            margin: 0;
-            margin-left:-10px;
-        }
-
-        .middle-content ul li {
-            margin-bottom: 4px;
-        
-        }
-
-       .follow-us{
-        margin-top:5px;
-        list-style-type: none;
-       }
 
         .follow-us a {
             color: #fff;
             text-decoration: none;
             margin-right: 10px;
         }
-        .follow-us ul {
-            list-style-type: none;
-            padding: 0;
-            margin: 0;
-            margin-left:20px;
+        
+        .fa {
+            padding: 6px;
+            font-size: 15px;
+            width: 15px;
+            height: 15px;
+            text-align: center;
+            text-decoration: none;
+            margin: 5px 2px;
+            border-radius: 50%;   /*icon round*/
         }
 
-        .follow-us ul li {
-            margin-bottom: 4px;
+        .fa:hover {
+            opacity: 0.7;
         }
-        .container2 {
-    max-width: 1200px;
-    margin: 0 auto;
-    padding-bottom:3px;
-    text-align:center;
-    color:black;
-   
-}
-.h3{
-    color:gold;
-    padding:10px;
-}
-.color{
-    background-color:white;
-}
-/*contect*/
-.fa {
-  padding: 6px;
-  font-size: 15px;
-  width: 15px;
-  height:15px;
-  text-align: center;
-  text-decoration: none;
-  margin: 5px 2px;
-  border-radius: 50%;   /*icon round*/
-}
 
-.fa:hover {
-    opacity: 0.7;
-}
-.fa-facebook {
-  background: #3B5998;
-  color: white;
-  margin-left:10px;
-  margin-right:10px;
-}
-.fa-instagram {
-  background: #125688;
-  color: white;
-  margin-left:10px;
-  margin-right:10px;
-}
-        </style>
+        .fa-facebook {
+            background: #3B5998;
+            color: white;
+            margin-left: 10px;
+            margin-right: 10px;
+        }
+
+        .fa-instagram {
+            background: #125688;
+            color: white;
+            margin-left: 10px;
+            margin-right: 10px;
+        }
+    </style>
 </head>
 <body>
-    <div class="color">
-<footer class="footer">
-    <div class="left-content">
-        <h3 class="h3">Marudhar Gym</h3>
-        <p>138 Surya colony,</p>
-        <p>Frontsite V Mart,</p>
-        <p>Bhagat ki kothi,</p>
-        <p>Pali Road,Jodhpur,</p>
-        <p>Phone: +9122 6678 7970</p>
-        <p>Email: khushalsuthar546@gmail.com</p>
-    </div>
-    <div class="middle-content">
-        <h3 class="h3">SITEMAP</h3>
-        <div class="middle-content">
-        <ul>
-            <li><a href="{% url 'about' %}">About Us</a></li>
-            <li><a href="{% url 'membership' %}">Membership</a></li>
-            <li><a href="{% url 'product' %}">Product</a></li>
-            <li><a href="{% url 'location' %}">Location</a></li>
-            <li><a href="{% url 'terms_and_conditions' %}">Terms & Conditions</a></li>
-            <li><a href="{% url 'owner' %}">Owner</a></li>
-            <li><a href="{% url 'trainer' %}">Trainer</a></li>
-        </ul>
-</div>
-    </div>
-    <div class="right-content">
-        <h3 class="h3">FOLLOW US</h3>
-        <div class="follow-us">
-        <ul>       
-            <li>  <a href="https://www.facebook.com/khushal.suthar.1426?mibextid=ZbWKwL" class="fa fa-facebook" ></a> Facebook</li>
-            <li> <a href="https://instagram.com/khushal_suthar546?utm_source=qr&igshid=MThlNWY1MzQwNA==" class="fa fa-instagram"></a>Instagram </li>
+    <footer class="footer">
+        <div class="container">
+            <div class="row footer-content">
+                <div class="col-md-3 footer-section">
+                    <h3 class="h3">Marudhar Gym</h3>
+                    <p>138 Surya colony,</p>
+                    <p>Frontsite V Mart,</p>
+                    <p>Bhagat ki kothi,</p>
+                    <p>Pali Road,Jodhpur,</p>
+                    <p>Phone: +9122 6678 7970</p>
+                    <p>Email: khushalsuthar546@gmail.com</p>
+                </div>
+                <div class="col-md-2 footer-section">
+                    <h3 class="h3">Sitemap</h3>
+                    <ul>
+                        <li><a href="{% url 'about' %}">About Us</a></li>
+                        <li><a href="{% url 'membership' %}">Membership</a></li>
+                        <li><a href="{% url 'product' %}">Product</a></li>
+                        <li><a href="{% url 'location' %}">Location</a></li>
+                        <li><a href="{% url 'terms_and_conditions' %}">Terms & Conditions</a></li>
+                        <li><a href="{% url 'owner' %}">Owner</a></li>
+                        <li><a href="{% url 'trainer' %}">Trainer</a></li>
+                    </ul>
+                </div>
+                <div class="col-md-3 footer-section">
+                    <h3 class="h3">Gym Time</h3>
+                        
+                        <p>Monday-saturady</p>
+                        <p>Morning: 5:00 AM - 11:00 AM </p>
+                        <p>Evining:  4:00 AM - 10:00 PM </p>
+                </div>
+                
+                   
+                        <div class="col-md-4 footer-section">
+                        <div class="container">
+                            <h3 class="h2">Message Box</h2>
+                            <form id="messageForm" method="POST" action="{% url 'admin_index' %}">
+                                {% csrf_token %}
+                                <div class="form-group">
+                                    <label for="mobileNumber">Mobile Number:</label>
+                                    <input type="text" class="form-control" id="mobileNumber" name="mobileNumber" required>
+                                </div>
+                                <div class="form-group">
+                                    <label for="message" cl>Message:</label>
+                                    <textarea class="form-control" id="message" name="message" rows="2"></textarea>
+                                </div>
+                                <button type="submit" class="btn btn-primary">Send</button>
+                            </form>
+                        </div>
+                </div>
+            </div>
+            <div class="row " style="width: 40rem; margin-left: auto; margin-right: auto;">
+                <div class="col-md-3">
+                    <p><a href="https://www.facebook.com/khushal.suthar.1426?mibextid=ZbWKwL" class="fa fa-facebook"></a> facebook</p>
+                       
+                </div>
+                <div class="col-md-3">
+                    <p><a href="https://www.facebook.com/khushal.suthar.1426?mibextid=ZbWKwL" class="fa fa-facebook"></a> facebook</p>
+                    
+                </div>
+                <div class="col-md-3">
+                    <p><a href="https://instagram.com/khushal_suthar546?utm_source=qr&igshid=MThlNWY1MzQwNA==" class="fa fa-instagram"></a> Instagram</p>
+                     
+                </div>
+                <div class="col-md-3">
+                    <p><a href="https://www.facebook.com/khushal.suthar.1426?mibextid=ZbWKwL" class="fa fa-facebook"></a> facebook</p>
+                    
+                </div>
 
-        </ul>
+
+            </div>
         </div>
-    </div>
-</footer>
+    </footer>
 
  
-        </div>
+
+    <!-- Bootstrap core JavaScript-->
+<script src="{% static 'back/vendor/jquery/jquery.min.js' %}"></script>
+<script src="{% static 'back/vendor/bootstrap/js/bootstrap.bundle.min.js' %}"></script>
+<script src="{% static 'back/vendor/bootstrap/js/bootstrap_datepicker.js' %}"></script>
+
+<!-- Core plugin JavaScript-->
+<script src="{% static 'back/vendor/jquery-easing/jquery.easing.min.js' %}"></script>
+
+<!-- Custom scripts for all pages-->
+<script src="{% static 'back/js/sb-admin-2.min.js' %}"></script>
+
+<!-- Page level plugins -->
+<script src="{% static 'back/vendor/chart.js/Chart.min.js' %}"></script>
+
+<!-- Page level custom scripts -->
+<script src="{% static 'back/js/demo/chart-area-demo.js' %}"></script>
+<script src="{% static 'back/js/demo/chart-pie-demo.js' %}"></script>
+<!-- Add this script to handle overall page search functionality -->
+
+    <!-- Your custom script -->
+    <script>
+        $(document).ready(function() {
+            // Show message box modal when clicking on the footer link
+            $('#messageLink').click(function() {
+                $('#messageBoxModal').modal('show');
+            });
+        });
+    </script>
 </body>
 </html>

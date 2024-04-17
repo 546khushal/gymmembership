@@ -18,6 +18,10 @@ urlpatterns = [
     path('memberdata/', views.memberdata, name='memberdata'),
     path('Memberlist/', views.Memberlist, name='Memberlist'),
     path('Membership/', views.Membership, name='membership'),
+    path('detail_login/',  views.detail_login, name='detail_login'),
+    path('memberfromsite/',  views.memberfromsite, name='memberfromsite'),
+
+   
   #  path('navbar/', views.navbar, name='navbar'),
     path('owner/', views.owner, name='owner'),
     path('ownerwork/', views.ownerwork, name='ownerwork'),
@@ -58,8 +62,13 @@ urlpatterns = [
     path('admin_tedit/<int:trainer_id>/', views.admin_tedit, name='admin_tedit'),
     path('admin_tdetail/<int:trainer_id>/', views.admin_tdetail, name='admin_tdetail'),
     path('gym_imga_upload/', views.gym_imga_upload, name='gym_imga_upload'),
-
-
+    path('gym_imgdelete/<int:image_id>/', views.gym_imgdelete, name='gym_imgdelete'),
+    path('admin_siteuser/', views.admin_siteuser, name='admin_siteuser'),
+    path('admin_onsitereg<int:siteuser_id>/', views.admin_onsitereg, name='admin_onsitereg'),
+    path('admin_onsiteedit/', views.admin_onsiteedit, name='admin_onsiteedit'),
+    path('custom_site/', views.custom_site, name='custom_site'),
+    path('display_gym_info/', views.display_gym_info, name='display_gym_info'),
+    
    
     # Add other URL patterns as needed
 ]

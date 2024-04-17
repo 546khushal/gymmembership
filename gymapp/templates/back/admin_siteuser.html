@@ -1,0 +1,38 @@
+{% extends 'back/admin_base.html' %}
+
+{% load static %}
+{% block mainblock %}
+
+<div class="container mt-5" style="overflow-x:auto;">
+    <h2>Member Table</h2>
+    {{ error }}
+    <table class="table table-striped" style="width:100%; table-layout: fixed;">
+        <thead>
+            <tr>
+                <th>ID</th>
+                <th>Name</th>
+                <th>Mobile</th>
+                <th>Email</th>
+                <th>On Date</th>
+                <th>Edit</th>
+            </tr>
+        </thead>
+        <tbody style="overflow-y: scroll; height: 300px;">
+            
+            {% for data in datasite %}
+            <tr>
+                <td>{{ data.id}}</td>
+                <td>{{ data.name }}</td>
+                <td>{{ data.mobile }}</td>
+                <td>{{ data.email }}</td>
+                <td>{{ data.created_at}}</td>
+                <td><a href="{% url 'admin_onsitereg' siteuser_id=data.id %}" class="btn btn-success  ">Register</a></td>
+            </tr>
+            {% endfor %}
+            <!-- Add more rows for each member -->
+        </tbody>
+    </table>
+</div>
+  
+    
+{% endblock %}

@@ -1,0 +1,152 @@
+{% extends 'back/admin_base.html' %}
+
+{% load static %}
+{% block mainblock %}
+<div class="container">
+    <h1 class="well">Edit Information On Site </h1>
+    <div class="col-lg-12 well">
+        <form action="{% url 'custom_site' %}"   method="POST" enctype="multipart/form-data">
+            {% csrf_token %}
+            <div class="row">
+                <div class="form-group col-md-6">
+                    <label for="gymname">Gym Name:</label>
+                    <input type="text" class="form-control" id="gymname" name="gymname" required>
+                </div>
+                <div class="form-group col-md-6">
+                    <label for="gymemail">Gym Email:</label>
+                    <input type="email" class="form-control" id="gymemail" name="gymemail" required>
+                </div>
+            </div>
+            <div class="row">    
+                <div class="form-group col-md-6">
+                    <label for="mobile">Mobile:</label>
+                    <input type="text" class="form-control" id="mobile" name="mobile" required>
+                </div>
+                <div class="form-group col-md-6">
+                    <label for="gymtime">Gym Time:</label>
+                    <input type="text" class="form-control" id="gymtime" name="gymtime" required>
+                </div>
+            </div>    
+            <div class="row">
+                <div class="form-group col-md-8">
+                    <label for="address">Address:</label>
+                    <input type="text" class="form-control" id="address" name="address" required>
+                </div>
+                <div class="form-group col-md-4">
+                    <label >GYM Opening On:</label>
+                    <input type="text" class="form-control" id="opend" name="opend" required>
+                    <p style="font-size: 12px;">type to gym open date here Ex: xx/xx/xxx,xx-xx-xxxx</p>
+                </div>
+            </div>
+            <div class="row">
+                <div class="form-group col-md-4">
+                    <label for="ownername">Owner Name:</label>
+                    <input type="text" class="form-control" id="ownername" name="ownername" required>
+                </div>
+                <div class="form-group col-md-4">
+                    <label for="ownername">Owner Image:</label>
+                    <input type="file" class="form-control" id="ownerimg" name="ownerimg" required>
+                </div>
+                
+            </div>
+            <div class="row">
+                <div class="form-group col-md-8">
+                    <label for="experience">Experience:</label>
+                    <input type="text" class="form-control" id="experience" name="experience" required>
+                    <p style="font-size: 12px;">Type for Experience year in GYM(ex:2 years,2 month)</p>
+                </div>
+            </div>    
+            <div class="row">
+                <div class="form-group col-md-8">
+                    <label for="instalink">Instagram Link:</label>
+                    <input type="text" class="form-control" id="instalink" name="instalink">
+                </div>
+            </div>    
+            <div class="row"> 
+                <div class="form-group col-md-8">
+                    <label for="fblink">Facebook Link:</label>
+                    <input type="text" class="form-control" id="fblink" name="fblink">
+                </div>
+            </div>    
+            <div class="row">    
+                <div class="form-group col-md-8">
+                    <label for="ytlink">YouTube Link:</label>
+                    <input type="text" class="form-control" id="ytlink" name="ytlink">
+                </div>
+            </div>    
+               
+                <button type="submit" class="btn btn-primary">Submit</button>
+        </form>
+    </div>
+</div>
+
+
+
+
+<div class="container">
+    <h1 class="well">Gym Information</h1>
+    <div class="col-lg-12 well">
+        <table class="table">
+            <tbody>
+                {% for gym_image in gym_images %}
+                <tr>
+                    <th>Owner Image:</th>
+                    <td><img src="{{ gym_image.picurl }}" alt="Owner Image" style="max-width: 100px;"></td>
+                </tr>
+                <tr>
+                    <th>Gym Name:</th>
+                    <td>{{ gym_image.gymname }}</td>
+                </tr>
+                <tr>
+                    <th>Gym Email:</th>
+                    <td>{{ gym_image.gymemail }}</td>
+                </tr>
+                <tr>
+                    <th>Mobile:</th>
+                    <td>{{ gym_image.mobile }}</td>
+                </tr>
+                <tr>
+                    <th>Gym Time:</th>
+                    <td>{{ gym_image.gymtime }}</td>
+                </tr>
+                <tr>
+                    <th>Address:</th>
+                    <td>{{ gym_image.address }}</td>
+                </tr>
+                <tr>
+                    <th>Insta Link:</th>
+                    <td>{{ gym_image.instalink }}</td>
+                </tr>
+                <tr>
+                    <th>Facebook Link:</th>
+                    <td>{{ gym_image.fblink }}</td>
+                </tr>
+                <tr>
+                    <th>YouTube Link:</th>
+                    <td>{{ gym_image.ytlink }}</td>
+                </tr>
+                <tr>
+                    <th>Owner Name:</th>
+                    <td>{{ gym_image.ownername }}</td>
+                </tr>
+                <tr>
+                    <th>Experience:</th>
+                    <td>{{ gym_image.experience }}</td>
+                </tr>
+                <tr>
+                    <th>Opening Date:</th>
+                    <td>{{ gym_image.opend }}</td>
+                </tr>
+                <tr>
+                    <th>
+
+                    </th>
+                </tr>
+                {% endfor %}
+            </tbody>
+        </table>
+    </div>
+</div>
+
+
+{% endblock %}
