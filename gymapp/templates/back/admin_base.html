@@ -84,16 +84,38 @@
                 <a class="nav-link collapsed" href="#" data-toggle="collapse" data-target="#collapseUtilities"
                     aria-expanded="true" aria-controls="collapseUtilities">
                     <i class="fas fa-fw fa-wrench"></i>
-                    <span>Utilities</span>
+                    <span>Products</span>
                 </a>
                 <div id="collapseUtilities" class="collapse" aria-labelledby="headingUtilities"
                     data-parent="#accordionSidebar">
                     <div class="bg-white py-2 collapse-inner rounded">
-                        <h6 class="collapse-header">Custom Utilities:</h6>
-                        <a class="collapse-item" href="{% url 'admin_utilities_color' %}">Colors</a>
-                        <a class="collapse-item" href="{% url 'admin_utilities_border' %}">Borders</a>
-                        <a class="collapse-item" href="{% url 'admin_utilities_animation' %}">Animations</a>
-                        <a class="collapse-item" href="{% url 'admin_utilities_other' %}">Other</a>
+                        <h6 class="collapse-header">Product Management:</h6>
+                        <a class="collapse-item" href="{% url 'add_product' %}">Add Product</a>
+                        <a class="collapse-item" href="{% url 'product_list' %}">List product</a>  
+                    </div>
+                </div>
+                <div id="collapseUtilities" class="collapse" aria-labelledby="headingUtilities"
+                    data-parent="#accordionSidebar">
+                    <div class="bg-white py-2 collapse-inner rounded">
+                        <h6 class="collapse-header">Protein Management:</h6>
+                        <a class="collapse-item" href="{% url 'add_protein' %}">Add Protein</a>
+                        <a class="collapse-item" href="{% url 'protein_list' %}">List protein</a>  
+                    </div>
+                </div>
+                <div id="collapseUtilities" class="collapse" aria-labelledby="headingUtilities"
+                    data-parent="#accordionSidebar">
+                    <div class="bg-white py-2 collapse-inner rounded">
+                        <h6 class="collapse-header">Equipment Management:</h6>
+                        <a class="collapse-item" href="{% url 'add_equipment' %}">Add Equipment</a>
+                        <a class="collapse-item" href="{% url 'equipment_list' %}">List Equipment</a>  
+                    </div>
+                </div>
+                <div id="collapseUtilities" class="collapse" aria-labelledby="headingUtilities"
+                    data-parent="#accordionSidebar">
+                    <div class="bg-white py-2 collapse-inner rounded">
+                        <h6 class="collapse-header">Blog Management:</h6>
+                        <a class="collapse-item" href="{% url 'add_blog' %}">Blog section</a>
+                         
                     </div>
                 </div>
             </li>

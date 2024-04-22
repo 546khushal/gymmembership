@@ -29,6 +29,17 @@ urlpatterns = [
     path('productdata/', views.productdata, name='productdata'),
     path('signup/', views.signup, name='signup'),
     path('trainer/', views.trainer, name='trainer'),
+
+    path('pro_about/', views.pro_about, name='pro_about'),
+    path('pro_home2/', views.pro_home2, name='pro_home2'),
+    path('pro_home3/', views.pro_home3, name='pro_home3'),
+    path('pro_blog_detail/<int:blog_id>/', views.pro_blog_detail, name='pro_blog_detail'),
+    path('pro_blog/', views.pro_blog, name='pro_blog'),
+    path('pro_contact/', views.pro_contact, name='pro_contact'),
+    path('pro_index/', views.pro_index, name='pro_index'),
+    path('pro_product_detail/', views.pro_product_detail, name='pro_product_detail'),
+    path('pro_product/', views.pro_product, name='pro_product'),
+    path('pro_shoping_cart/', views.pro_shoping_cart, name='pro_shoping_cart'),
    
    
    
@@ -44,10 +55,7 @@ urlpatterns = [
     path('admin_login/', views.admin_login, name='admin_login'),
     path('admin_register/', views.admin_register, name='admin_register'),
     path('admin_tables/', views.admin_tables, name='admin_tables'),
-    path('admin_utilities_animation/', views.admin_utilities_animation, name='admin_utilities_animation'),
-    path('admin_utilities_border/', views.admin_utilities_border, name='admin_utilities_border'),
-    path('admin_utilities_color/', views.admin_utilities_color, name='admin_utilities_color'),
-    path('admin_utilities_other/', views.admin_utilities_other, name='admin_utilities_other'),
+
     path('error/', views.error, name='error'),
     path('admin_reg_trainer/', views.admin_reg_trainer, name='admin_reg_trainer'),
     path('admin_trainer/', views.admin_trainer, name='admin_trainer'),
@@ -68,6 +76,30 @@ urlpatterns = [
     path('admin_onsiteedit/', views.admin_onsiteedit, name='admin_onsiteedit'),
     path('custom_site/', views.custom_site, name='custom_site'),
     path('display_gym_info/', views.display_gym_info, name='display_gym_info'),
+
+     # URL pattern for the product list page
+    path('product_list', views.product_list, name='product_list'),
+    # URL pattern for adding a new product
+    path('add_product/', views.add_product, name='add_product'),
+    # URL pattern for editing a product (assuming you have a product_id)
+    path('edit_product/<int:product_id>/', views.edit_product, name='edit_product'),
+    # URL pattern for deleting a product (assuming you have a product_id)
+    path('delete_product/<int:product_id>/', views.delete_product, name='delete_product'),
+
+     # URL pattern for the product list page
+    path('protein_list', views.protein_list, name='protein_list'),
+    path('add_protein/', views.add_protein, name='add_protein'),
+    path('edit_protein/<int:product_id>/', views.edit_protein, name='edit_protein'),
+    path('delete_protein/<int:product_id>/', views.delete_protein, name='delete_protein'),
+
+     # URL pattern for the product list page
+    path('equipment_list', views.equipment_list, name='equipment_list'),
+    path('add_equipment/', views.add_equipment, name='add_equipment'),
+    path('edit_equipment/<int:product_id>/', views.edit_equipment, name='edit_equipment'),
+    path('delete_equipment/<int:product_id>/', views.delete_equipment, name='delete_equipment'),
+    
+    path('add_blog/', views.add_blog, name='add_blog'),
+    path('delete_blog/<int:blog_id>/', views.delete_blog, name='delete_blog'),
     
    
     # Add other URL patterns as needed

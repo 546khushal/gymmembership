@@ -1,5 +1,6 @@
 from django.db import models
 from django.utils import timezone
+import uuid
 
 class NewMemberData(models.Model):
     name = models.CharField(max_length=100)
@@ -10,10 +11,7 @@ class NewMemberData(models.Model):
     def __str__(self):
         return self.name
     
-class Product(models.Model):
-    name = models.CharField(max_length=100)
-    price = models.DecimalField(max_digits=10, decimal_places=2)
-    details = models.TextField()
+
 
 '''
 class MemberData(models.Model):
@@ -94,8 +92,16 @@ class GymImage(models.Model):
     gymname = models.CharField(max_length=100)
     gymemail = models.EmailField()
     mobile = models.CharField(max_length=15)
-    gymtime = models.CharField(max_length=100)
-    address = models.CharField(max_length=255)
+    mgymtime = models.CharField(max_length=100)
+    egymtime = models.CharField(max_length=100)
+    maplink = models.CharField(max_length=1000)
+    addressline1  = models.CharField(max_length=255)
+    addressline2  = models.CharField(max_length=255)
+    addressline3  = models.CharField(max_length=255)
+    addressline4  = models.CharField(max_length=255)
+    addressline5  = models.CharField(max_length=255)
+    addressline6  = models.CharField(max_length=255)
+    
     instalink = models.URLField(blank=True)
     fblink = models.URLField(blank=True)
     ytlink = models.URLField(blank=True)
@@ -143,6 +149,51 @@ class Trainer(models.Model):
     gender = models.CharField(max_length=10, choices=gender_choices)
     amount = models.TextField()
     membernumber =models.TextField()
+
+
+class Product(models.Model):
+    name = models.CharField(max_length=100)
+    price = models.DecimalField(max_digits=10, decimal_places=2)
+    details = models.TextField()
+    count = models.IntegerField(default=0)  # Example field, you can adjust as needed
+    image = models.ImageField(upload_to='product_images')
+
+class ProductImage(models.Model):
+    product = models.ForeignKey(Product, related_name='images', on_delete=models.CASCADE)
+    image = models.ImageField(upload_to='product_images')   
+
+
+class supliment(models.Model):
+    sname = models.CharField(max_length=100)
+    sprice = models.DecimalField(max_digits=10, decimal_places=2)
+    sdetails = models.TextField()
+    scount = models.IntegerField(default=0)  # Example field, you can adjust as needed
+    simage = models.ImageField(upload_to='product_images')
+
+class suplimentImage(models.Model):
+    sproduct = models.ForeignKey(supliment, related_name='images', on_delete=models.CASCADE)
+    simage = models.ImageField(upload_to='product_images')  
+
+class equipment(models.Model):
+    ename = models.CharField(max_length=100)
+    eprice = models.DecimalField(max_digits=10, decimal_places=2)
+    edetails = models.TextField()
+    ecount = models.IntegerField(default=0)  # Example field, you can adjust as needed
+    eimage = models.ImageField(upload_to='product_images')
+
+class equipmentImage(models.Model):
+    eproduct = models.ForeignKey(equipment, related_name='images', on_delete=models.CASCADE)
+    eimage = models.ImageField(upload_to='product_images')  
+
+
+class Blog(models.Model):
+    title = models.CharField(max_length=200)
+    content = models.TextField()
+    author = models.CharField(max_length=200)
+    date = models.DateField(null=True)
+    categories = models.CharField(max_length=200)
+    image = models.ImageField(upload_to='blog_images/') 
+    extra  =  models.CharField(max_length=200)        
 
 def __str__(self):
     return self.tname 

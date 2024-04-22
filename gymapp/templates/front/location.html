@@ -5,108 +5,107 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Document</title>
+    <!-- Bootstrap CSS -->
+    <link href="{% static 'back/vendor/fontawesome-free/css/all.min.css' %}" rel="stylesheet" type="text/css">
+    <link href="https://fonts.googleapis.com/css?family=Nunito:200,200i,300,300i,400,400i,600,600i,700,700i,800,800i,900,900i" rel="stylesheet">
+    <link href="{% static 'back/css/sb-admin-2.min.css' %}" rel="stylesheet">
     <style>
-    body {
-    margin: 0;
-    padding: 0;
-    font-family: 'Arial', sans-serif;
-   background-image: url('/static/front/backgym.jpeg');
-    background-attachment:fixed;
-    background-repeat:no-repeat;
-    background-size:cover;
-    background-color:black;
-  
-    
-
-}
-
-
-.content {
-    max-width: 1200px;
-    margin: 20px auto;
-    display: flex;
-    justify-content: space-between;
-}
-.location-details {
-    
-    padding-left:30px;
-    color:rgb(250, 250, 250);
-    font-size:20px;
-}
-
-
-
-.map-container {
-    border : 3px solid gold;
-    padding-left:10px;
-    padding-right:10px;
-    padding-top:10px;
-    padding-bottom:10px;
-    
-}
-
-.location{
-    height:700px;   
-    background-image: url('gym3.jpg');   
-    background-repeat:no-repeat;
-    background-size:cover;
-    border:5px solid gold;
-}
-
-.fontl{
-    color:rgb(238, 233, 233);
-    padding-top:20%;
-    padding-left:20px; 
-    font-family:"times now roman",times,serif;
-    font-size:45px;
-    text-shadow:6px 5px 5px black;
-}
-.font2{
-  color:rgb(226, 217, 217); 
-  font-size:20px;
-  padding-left:20px;
-  text-shadow:3px 2px 3px white; 
- 
-}
-</style>
+        /* Your custom CSS styles here */
+        body {
+            margin: 0;
+            padding: 0;
+            font-family: 'Arial', sans-serif;
+            background-image: url('/static/front/backgym.jpeg');
+            background-attachment: fixed;
+            background-repeat: no-repeat;
+            background-size: cover;
+            background-color: black;
+        }
+        /* Additional custom styles */
+        .location {
+            height: 700px;
+            background-image: url('gym3.jpg');
+            background-repeat: no-repeat;
+            background-size: cover;
+            border: 5px solid gold;
+            text-align: left;
+            padding-left: 3rem;
+            color: #fce717; /* Changed to gold */
+            padding-top: 20%;
+        }
+        .location h1 {
+            font-family: "times new roman", times, serif;
+            font-size: 45px;
+            text-shadow: 6px 5px 5px black;
+        }
+        .location p {
+            font-size: 20px;
+            color: #e2e2e2; /* Changed to light gray */
+            text-shadow: 3px 2px 3px #ffe864; /* Changed to light gold */
+        }
+        .content {
+            max-width: 1200px;
+            margin: 20px auto;
+            display: flex;
+            justify-content: space-between;
+        }
+        .map-container {
+            border: 3px solid gold;
+            padding: 10px;
+            width: 50%; /* Adjust width as needed */
+        }
+        .location-details {
+            padding-left: 30px;
+            color: #fff; /* Changed to white */
+            font-size: 20px;
+            width: 40%; /* Adjust width as needed */
+        }
+        /* Media query for responsiveness */
+        @media screen and (max-width: 768px) {
+            .content {
+                flex-direction: column;
+                align-items: center;
+            }
+            .map-container, .location-details {
+                width: 100%; /* Full width on small screens */
+                margin-bottom: 20px; /* Add margin between sections */
+            }
+        }
+    </style>
 </head>
 <body>
     {% include 'front/navbar.html' %}
 
-<body>
-
-<div class="location">
-
-<h1 class="fontl"><b><i>LOCATION<i></b></h1>
-<p class="font2">"Discover our gym's prime location, conveniently situated for easy access, offering a motivating fitness environment."</p>
-
-</div>
-</div>
-
-
-
-
-<div class="content">
-    <div class="map-container">
-    <iframe src="https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d3578.0101776502406!2d73.01626427441624!3d26.261333087781523!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x39418de988e4aed1%3A0xe7317df39ad7ef9a!2sMarudhar%20Gym!5e0!3m2!1sen!2sin!4v1706502653702!5m2!1sen!2sin" width="650" height="500"  allowfullscreen="" loading="lazy" referrerpolicy="no-referrer-when-downgrade"></iframe>
-
+    <div class="location">
+        <h1><b><i>LOCATION</i></b></h1>
+        <p>"Discover our gym's prime location, conveniently situated for easy access, offering a motivating fitness environment."</p>
     </div>
 
-    <div class="location-details">
-        <h2>Contact Information</h2>
-        <p>Email: khushalsuthar546@gmail.com</p>
-        
-        <p><b>Address:</b> Marudhar GYM,  street no. 2 Surya colony, Bhagat ki kothi, Jodhpur</p>
-        <p><b> Phone:</b> +91 22 6678 7970</p>
-        <p><b>Mobile:</b> +91 99200 84402</p>
-
-        <p><b>Business Hours:</b>
-        <p>6 am – 12 am Monday – Saturday</p>
-        <p>Sunday Holiday</p>
-        <h2>Details</h2>
-        <p>Welcome to our location page. Here, you can find information about our address, contact details, and view our location on the map.</p>
+    <div class="content">
+        {% for gym in gyms %}
+        <div class="map-container">
+            <iframe src="{{ gym.maplink }}" width="100%" height="500" allowfullscreen="" loading="lazy" referrerpolicy="no-referrer-when-downgrade"></iframe>
+        </div>
+       
+        <div class="location-details">
+            <h2>Contact Information</h2>
+            <p>Email: {{ gym.gymemail }}</p>
+            <p><b>Address:</b> {{ gym.addressline1 }}, {{ gym.addressline2 }}, {{ gym.addressline3 }}, {{ gym.addressline4 }}, {{ gym.addressline5 }}, {{ gym.addressline6 }}</p>
+            <p><b>Phone:</b> +91 {{ gym.mobile }}</p>
+            <p><b>Business Hours:</b></p>
+            <p>Morning Time: {{ gym.mgymtime }} AM</p>
+            <p>Evening Time: {{ gym.egymtime }} PM</p>
+            <h2>Details</h2>
+            <p>Welcome to our location page. Here, you can find information about our address, contact details, and view our location on the map.</p>
+        </div>
+        {% endfor %}
     </div>
-</div>
-{% include 'front/footer.html' %}
+
+    {% include 'front/footer.html' %}
+
+    <!-- Bootstrap core JavaScript-->
+    <script src="{% static 'back/vendor/jquery/jquery.min.js' %}"></script>
+    <script src="{% static 'back/vendor/bootstrap/js/bootstrap.bundle.min.js' %}"></script>
+    <script src="{% static 'back/vendor/bootstrap/js/bootstrap_datepicker.js' %}"></script>
 </body>
 </html>

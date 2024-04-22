@@ -40,23 +40,53 @@
             height: 160px;
             
         }
+        .video-background {
+      position: fixed;
+      right: 0;
+      bottom: 0;
+      min-width: 100%;
+      min-height: 100%;
+      width: auto;
+      height: auto;
+      z-index: -1000;
+      background-size: cover;
+      
+    }
+    .video-content {
+      position: relative;
+      z-index: 1;
+      color: #fff;
+      text-align: center;
+      padding: 20px;
+    }
+
+
     </style>
    
 
 </head>
 <body style="background-image: url('/static/front/weight.jpeg');background-color: black; background-repeat: no-repeat; color: white;">
     {% include "front/navbar.html" %}
+    <video autoplay muted loop class="video-background">
+        <source src="{% static 'front/product_images/sitevi.mp4' %}" type="video/mp4">
+        Your browser does not support the video tag.
+      </video>
+    
+      
 
-    <header class="text-center text-white mt-5">
+    {% for gym in gyms %}
+    
+
+    <header class="text-center text-white" style="margin-top: 200px;">
         <h1><b style="color: gold;">FITNESS</b> IS HAPPINESS</h1>
         <h4>Exercise Really Makes You Happier<br>Your Journey to <b style="color: gold;">Fitness </b>Starts Here</h4>
     </header>
 
-    <div class="container mt-3">
-        <div class="row">
+    <div style="width: 92%; margin-left: auto; margin-right: auto;">
+        <div class="row col-md-12" >
             <div class="col-md-8">
                 
-                    <h1 style="color: gold; margin-top: 7rem;">DYNOMO FITNESS GYM : A 20-YEAR FITNESS LEGACY!</h1>
+                    <h1 style="color: gold; margin-top: 7rem;">{{ gym.gymname }} FITNESS GYM : A 20-YEAR FITNESS LEGACY!</h1>
                     <h3 style="color: #fff;">Unleash Your Potential with World-Class Facilities and Expert Trainers</h3>
                     <p>At FITNESS Gym, we believe in empowering your fitness journey with our certified personal trainers, state-of-the-art equipment, and a welcoming environment. Our newly renovated 10,000 Sq. Ft. gym floor is equipped with top-tier brands like Life Fitness, Nautilus, Cybex, and Matrix, ensuring a premium workout experience.</p>
                     <br>
@@ -95,13 +125,13 @@
                             </select>
                             <div class="form-check mt-3">
                                 <input class="form-check-input" type="checkbox" name="check" required>
-                                <label class="form-check-label">First Read <a href="{% url 'terms_and_conditions' %}">Terms & Condition</a>, I am interested in a Membership at DYNOMO FITNESS Gym bhagat ki kothi, Jodhpur. Please call me.</label>
+                                <label class="form-check-label">First Read <a href="{% url 'terms_and_conditions' %}">Terms & Condition</a>, I am interested in a Membership at {{ gym.gymname }} FITNESS Gym bhagat ki kothi, Jodhpur. Please call me.</label>
                             </div>
                             <button type="submit" class="btn btn-primary mt-3">SEND</button>
                         </form>
                     </div>
                     <div style="padding-top: 5px;">
-                        <iframe src="https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d3578.0101776502406!2d73.01626427441624!3d26.261333087781523!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x39418de988e4aed1%3A0xe7317df39ad7ef9a!2sDYNOMO%20FITNESS%20Gym!5e0!3m2!1sen!2sin!4v1706502653702!5m2!1sen!2sin" width="335" height="300" style="border:0;" allowfullscreen="" loading="lazy" referrerpolicy="no-referrer-when-downgrade"></iframe>
+                        <iframe src="{{ gym.maplink }}" width="335" height="300" style="border:0;" allowfullscreen="" loading="lazy" referrerpolicy="no-referrer-when-downgrade"></iframe>
                     </div>
                 </div>
             </div>
@@ -200,7 +230,7 @@
             </div>
         </div>
     </main>
-
+    {% endfor %}
     {% include "front/footer.html" %}
 <!-- Bootstrap core JavaScript-->
 <script src="{% static 'back/vendor/jquery/jquery.min.js' %}"></script>
@@ -220,6 +250,8 @@
 <script src="{% static 'back/js/demo/chart-area-demo.js' %}"></script>
 <script src="{% static 'back/js/demo/chart-pie-demo.js' %}"></script>
 <!-- Add this script to handle overall page search functionality -->
+  
+  
 
 
 </body>

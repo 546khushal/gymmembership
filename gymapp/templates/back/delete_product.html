@@ -1,0 +1,14 @@
+<!-- delete_product.html -->
+
+{% extends 'back/admin_base.html' %}
+
+{% load static %}
+
+{% block mainblock %}
+    <h1>Delete Product</h1>
+    <p>Are you sure you want to delete '{{ product.name }}'?</p>
+    <form method="post">
+        {% csrf_token %}
+        <input type="submit" value="Yes, Delete">
+    </form>
+    {% endblock  %}

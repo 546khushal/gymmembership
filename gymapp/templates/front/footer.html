@@ -78,37 +78,40 @@
         }
     </style>
 </head>
-<body>
+<body style="color: #fff;">
+    {% for gym in gyms %}
     <footer class="footer">
         <div class="container">
             <div class="row footer-content">
                 <div class="col-md-3 footer-section">
-                    <h3 class="h3">Marudhar Gym</h3>
-                    <p>138 Surya colony,</p>
-                    <p>Frontsite V Mart,</p>
-                    <p>Bhagat ki kothi,</p>
-                    <p>Pali Road,Jodhpur,</p>
-                    <p>Phone: +9122 6678 7970</p>
-                    <p>Email: khushalsuthar546@gmail.com</p>
+                    <h3 class="h3">{{ gym.gymname }}</h3>
+                    <p class="text-white">{{ gym.addressline1}},</p>
+                    <p class="text-white">{{ gym.addressline2}},</p>
+                    <p class="text-white">{{ gym.addressline3}},</p>
+                    <p class="text-white">{{ gym.addressline4}},</p>
+                    <p class="text-white">{{ gym.addressline5}}</p>
+                    <p class="text-white">{{ gym.addressline6}}</p>
+                    <p class="text-white">Phone: +91 {{ gym.mobile }}</p>
+                    <p class="text-white">Email: {{ gym.gymemail }} </p>
                 </div>
                 <div class="col-md-2 footer-section">
                     <h3 class="h3">Sitemap</h3>
                     <ul>
-                        <li><a href="{% url 'about' %}">About Us</a></li>
-                        <li><a href="{% url 'membership' %}">Membership</a></li>
-                        <li><a href="{% url 'product' %}">Product</a></li>
-                        <li><a href="{% url 'location' %}">Location</a></li>
-                        <li><a href="{% url 'terms_and_conditions' %}">Terms & Conditions</a></li>
-                        <li><a href="{% url 'owner' %}">Owner</a></li>
-                        <li><a href="{% url 'trainer' %}">Trainer</a></li>
+                        <li class="text-white"><a href="{% url 'about' %}">About Us</a></li>
+                        <li class="text-white"><a href="{% url 'membership' %}">Membership</a></li>
+                        <li class="text-white"><a href="{% url 'product' %}">Product</a></li>
+                        <li class="text-white"><a href="{% url 'location' %}">Location</a></li>
+                        <li class="text-white"><a href="{% url 'terms_and_conditions' %}">Terms & Conditions</a></li>
+                        <li class="text-white"><a href="{% url 'owner' %}">Owner</a></li>
+                        <li class="text-white"><a href="{% url 'trainer' %}">Trainer</a></li>
                     </ul>
                 </div>
                 <div class="col-md-3 footer-section">
                     <h3 class="h3">Gym Time</h3>
                         
-                        <p>Monday-saturady</p>
-                        <p>Morning: 5:00 AM - 11:00 AM </p>
-                        <p>Evining:  4:00 AM - 10:00 PM </p>
+                        <p class="text-white">Monday-saturady</p>
+                        <p class="text-white">Morning: {{ gym.mgymtime }}AM </p>
+                        <p class="text-white">Evining:  {{ gym.egymtime }} PM </p>
                 </div>
                 
                    
@@ -118,11 +121,11 @@
                             <form id="messageForm" method="POST" action="{% url 'admin_index' %}">
                                 {% csrf_token %}
                                 <div class="form-group">
-                                    <label for="mobileNumber">Mobile Number:</label>
+                                    <label for="mobileNumber" class="text-white">Mobile Number:</label>
                                     <input type="text" class="form-control" id="mobileNumber" name="mobileNumber" required>
                                 </div>
                                 <div class="form-group">
-                                    <label for="message" cl>Message:</label>
+                                    <label for="message" class="text-white">Message:</label>
                                     <textarea class="form-control" id="message" name="message" rows="2"></textarea>
                                 </div>
                                 <button type="submit" class="btn btn-primary">Send</button>
@@ -132,19 +135,19 @@
             </div>
             <div class="row " style="width: 40rem; margin-left: auto; margin-right: auto;">
                 <div class="col-md-3">
-                    <p><a href="https://www.facebook.com/khushal.suthar.1426?mibextid=ZbWKwL" class="fa fa-facebook"></a> facebook</p>
+                    <p><a href= "{{ gym.fblink }}" class="fa fa-facebook"> facebook</a></p>
                        
                 </div>
                 <div class="col-md-3">
-                    <p><a href="https://www.facebook.com/khushal.suthar.1426?mibextid=ZbWKwL" class="fa fa-facebook"></a> facebook</p>
+                    <p><a href="{{ gym.fblink }}" class="fa fa-facebook">facebook</a> </p>
                     
                 </div>
                 <div class="col-md-3">
-                    <p><a href="https://instagram.com/khushal_suthar546?utm_source=qr&igshid=MThlNWY1MzQwNA==" class="fa fa-instagram"></a> Instagram</p>
+                    <p><a href= "{{ gym.instalink }}" class="fa fa-instagram"> Instagram</a></p>
                      
                 </div>
                 <div class="col-md-3">
-                    <p><a href="https://www.facebook.com/khushal.suthar.1426?mibextid=ZbWKwL" class="fa fa-facebook"></a> facebook</p>
+                    <p><a href="{{ gym.fblink }}" class="fa fa-facebook"> facebook</a></p>
                     
                 </div>
 
@@ -152,7 +155,7 @@
             </div>
         </div>
     </footer>
-
+    {% endfor %}
  
 
     <!-- Bootstrap core JavaScript-->

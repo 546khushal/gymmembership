@@ -106,7 +106,7 @@
     </style>
 </head>
 <body> 
-       {% url 'navbar' %}
+    {% include 'front/navbar.html' %}
             <div class="container">
                 <h1>E-commerce Store</h1>
                 <div class="product-wrapper">
@@ -117,19 +117,20 @@
                             <div class="arrow" onclick="changeImage(this, 'next')">&gt;</div>
                         </div>
                         {% for image in product.images.all %}
-                        <img src="{{ image.url }}" alt="Product Image" {% if forloop.counter0 != 0 %}style="display: none;"{% endif %}>
-                        {% endfor %}
-                        <div class="product-info">
-                            <div class="product-title">{{ product.name }}</div>
-                            <div class="product-price">${{ product.price }}</div>
-                            <div class="product-description">{{ product.details }}</div>
+                        <img src="{{ image.image.url }}" alt="Product Image" {% if forloop.first %}style="display: block;"{% else %}style="display: none;"{% endif %}>
+                    {% endfor %}
+                        <div class="product-info"  >
+                            <div class="product-title text-dark ">{{ product.details }}</div>
+                            <div class="product-price text-dark ">${{ product.name }}</div>
+                          
+                            <div class="product-description text-dark">{{ product.price }}</div>
                         </div>
                     </div>
                     {% endfor %}
                 </div>
             </div>
-        </div>
-    </div>
+        
+
     <script>
         function changeImage(element, direction) {
             let productCard = element.closest('.product-card');
@@ -153,6 +154,6 @@
             images[currentImage].style.display = 'block';
         }
     </script>
-    { % url 'footer' % }
+   {% include 'front/footer.html' %}
 </body>
 </html>

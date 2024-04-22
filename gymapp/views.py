@@ -8,6 +8,10 @@ from django.urls import reverse
 
 from .models import GymImage
 from .models import GymImages
+from .models import Product, ProductImage
+from .models import supliment, suplimentImage
+from .models import equipment, equipmentImage
+from .models import Blog
 
 from django.http import HttpResponse
 from .models import Product  # Import your Product model
@@ -20,6 +24,7 @@ from django.core.files.storage import FileSystemStorage   #similar file dalte ha
 
 def index(request):
     images = GymImages.objects.all()
+    gyms =GymImage.objects.all()
     if request.method == 'POST':
         name = request.POST.get('name')
         mobile = request.POST.get('mobile')
@@ -37,7 +42,7 @@ def index(request):
         else:
             return render("Please fill in all required fields.")
     
-    return render(request, 'front/index.html',{'images': images})
+    return render(request, 'front/index.html',{'images': images ,'gyms':gyms})
 
 def terms_and_conditions_view(request):
     return render(request, 'front/terms_and_conditions.html')
@@ -74,7 +79,9 @@ def classify_bmi(bmi):
 
 
 def about(request):
-    return render(request,'front/about.html')
+    images = GymImages.objects.all()
+    gyms =GymImage.objects.all()
+    return render(request,'front/about.html',{'gyms':gyms,'images':images})
 
 def login(request):
     return render(request,'front/login.html')
@@ -131,7 +138,8 @@ def data(request):
     return render(request,'front/data.html')
 
 def footer(request):
-    return render(request,'front/footer.html')
+    gyms = GymImage.objects.all()
+    return render(request,'front/footer.html',{'gyms':gyms})
 
 #def navbar(request):
   #  return render(request,'navbar.html')
@@ -139,7 +147,8 @@ def footer(request):
 
 
 def location(request):
-    return render(request,'front/location.html')
+    gyms =GymImage.objects.all()
+    return render(request,'front/location.html',{'gyms':gyms})
 
 def NewMemberData(request):
     return render(request,'front/NewMemberData.html')
@@ -148,8 +157,8 @@ def memberdata(request):
 def Memberlist(request):
     return render(request,'front/Memberlist.html')
 def Membership(request):
-   
-    return render(request,'front/membership.html')
+    gyms =GymImage.objects.all()
+    return render(request,'front/membership.html',{'gyms':gyms})
 
 def detail_login(request):
     if request.method == 'POST':
@@ -170,12 +179,70 @@ def detail_login(request):
 
 
 def product(request):
-     products = Product.objects.all()  # Fetch all products from the database
-     return render(request, 'front/product.html', {'products': products})
+     gyms =GymImage.objects.all() 
+     products = Product.objects.all()
+     
+     return render(request, 'front/product.html', {'products': products,'gyms':gyms})
 def productdata(request):
     return render(request,'front/productdata.html')
 def trainer(request):
     return render(request,'front/trainer.html')
+
+
+
+
+
+
+def pro_about(request):
+    return render(request, 'front/pro_about.html')
+
+def pro_home2(request):
+    return render(request, 'front/pro_home2.html')
+
+def pro_home3(request):
+    return render(request, 'front/pro_home3.html')
+
+def pro_blog_detail(request, blog_id):
+    # Retrieve the desired Blog object using its ID
+    blog_entry = Blog.objects.get(id=blog_id)
+    return render(request, 'front/pro_blog_detail.html', {'blogd': [blog_entry]})
+
+def pro_blog(request):
+    blog = Blog.objects.all()
+    return render(request, 'front/pro_blog.html',{'blog':blog})
+
+def pro_contact(request):
+    gyms =GymImage.objects.all() 
+    return render(request, 'front/pro_contact.html',{'data':gyms})
+
+def pro_index(request):
+    products = Product.objects.all()
+    gyms =GymImage.objects.all() 
+    supliments =supliment.objects.all()
+    equipments =equipment.objects.all()
+
+    return render(request, 'front/pro_index.html', {'products': products,'gyms':gyms,'supliments':supliments,'equipments':equipments})
+
+
+def pro_product_detail(request):
+    return render(request, 'front/pro_product_detail.html')
+
+def pro_product(request):
+    products = Product.objects.all()
+    gyms =GymImage.objects.all() 
+    supliments =supliment.objects.all()
+    equipments =equipment.objects.all()
+    return render(request, 'front/pro_product.html',{'products': products,'gyms':gyms,'supliments':supliments,'equipments':equipments})
+
+def pro_shoping_cart(request):
+    return render(request, 'front/pro_shoping_cart.html')
+
+
+
+
+
+
+
 
 #adimn back k liye 
 def panel(request):
@@ -372,35 +439,37 @@ def admin_mdelete(request, member_id):
         # Redirect back to the admin tables page
         return redirect('admin_tables2')
     
+
 def admin_medit(request, member_id):
     edit = registerm.objects.get(pk=member_id)
-    error = ""  # Define error variable
 
     if request.method == "POST":
-                # Update other fields
-            edit.name = request.POST.get("name")
-            edit.mobile = request.POST.get("mobile")
-            edit.email = request.POST.get("email")
-            edit.passw = request.POST.get("password")
-            edit.dob = request.POST.get("dob")
-            edit.weight = request.POST.get("weight")
-            edit.heightf = request.POST.get("heightf")
-            edit.heighti = request.POST.get("heighti")
-            edit.start = request.POST.get("start")
-            edit.membershipplan = request.POST.get("membershipplan")
-            edit.trainer = request.POST.get("trainer")
-            edit.gender = request.POST.get("gender")
-            edit.feeamount = request.POST.get("feeamount")
-            edit.pay = request.POST.get("pay")    
-            
-            edit.save()
+        # Update other fields
+        edit.name = request.POST.get("name")
+        edit.mobile = request.POST.get("mobile")
+        edit.email = request.POST.get("email")
+        edit.passw = request.POST.get("password")
+        edit.dob = request.POST.get("dob")
+        edit.weight = request.POST.get("weight")
+        edit.heightf = request.POST.get("heightf")
+        edit.heighti = request.POST.get("heighti")
+        edit.start = request.POST.get("start")
+        edit.membershipplan = request.POST.get("membershipplan")
+        edit.trainer = request.POST.get("trainer")
+        edit.gender = request.POST.get("gender")
+        edit.feeamount = request.POST.get("feeamount")
+        edit.pay = request.POST.get("pay")
 
+        try:
+            edit.save()
             # Redirect with success message
             return redirect(reverse('admin_tables2') + f'?member_id={edit.member_id}&member_name={edit.name}')
-        
-        
+        except ValueError as e:
+            # Handle validation errors
+            error_message = str(e)
+            return redirect(error_message)
 
-    return render(request, 'back/admin_medit.html', {'edit': edit, 'error': error})
+    return render(request, 'back/admin_medit.html', {'edit': edit})
 
 
 def admin_tdetail(request,trainer_id):
@@ -450,17 +519,7 @@ def admin_reg_trainer(request):
     return render(request,'back/admin_reg_trainer.html')
 
 
-def admin_utilities_animation(request):
-    return render(request,'back/admin_utilities_animation.html')
 
-def admin_utilities_border(request):
-    return render(request,'back/admin_utilities_border.html')
-
-def admin_utilities_color(request):
-    return render(request,'back/admin_utilities_color.html')
-
-def admin_utilities_other(request):
-    return render(request,'back/admin_utilities_other.html')
 
 def error(request):
     return render(request,'back/error.html')
@@ -498,8 +557,16 @@ def custom_site(request):
         gymname = request.POST.get("gymname")
         gymemail = request.POST.get("gymemail")
         mobile = request.POST.get("mobile")
-        gymtime = request.POST.get("gymtime")
-        address = request.POST.get("address")
+        mgymtime = request.POST.get("mgymtime")
+        egymtime = request.POST.get("egymtime")
+        addressline1 = request.POST.get("addressl1")
+        addressline2 = request.POST.get("addressl2")
+        addressline3 = request.POST.get("addressl3")
+        addressline4 = request.POST.get("addressl4")
+        addressline5 = request.POST.get("addressl5")
+        addressline6 = request.POST.get("addressl6")
+        maplink = request.POST.get("maplink")
+
         instalink = request.POST.get("instalink")
         fblink = request.POST.get("fblink")
         ytlink = request.POST.get("ytlink")
@@ -523,10 +590,17 @@ def custom_site(request):
                         gymname=gymname,
                         gymemail=gymemail,
                         mobile=mobile,
-                        gymtime=gymtime,
+                        mgymtime=mgymtime,
+                        egymtime=egymtime,
                         picname=filename,
                         picurl=url,
-                        address=address,
+                        addressline1=addressline1,
+                        addressline2=addressline2,
+                        addressline3=addressline3,
+                        addressline4=addressline4,
+                        addressline5=addressline5,
+                        addressline6=addressline6,
+                        maplink =maplink,
                         instalink=instalink,
                         fblink=fblink,
                         ytlink=ytlink,
@@ -727,3 +801,220 @@ def admin_onsiteedit(request):
         return render(request, 'back/error.html', {'error': error})    
 
     return render(request, 'back/admin_table2.html')
+
+
+
+
+
+def add_product(request):
+    if request.method == 'POST':
+        # Get form data
+        name = request.POST.get('name')
+        price = request.POST.get('price')
+        details = request.POST.get('details')
+        images = request.FILES.getlist('images')  # Get list of uploaded images
+
+        # Create a new Product instance
+        product = Product.objects.create(name=name, price=price, details=details)
+
+        # Create ProductImage instances for each uploaded image
+        for image in images:
+            ProductImage.objects.create(product=product, image=image)
+
+        # Redirect to the product list page or another page
+        return redirect('product_list')
+    else:
+        # Render the form page if it's a GET request
+        return render(request, 'back/add_product.html')
+
+def edit_product(request, product_id):
+    product = Product.objects.get(id=product_id)
+    
+    if request.method == 'POST':
+        product.name = request.POST.get('product_name')
+        product.price = request.POST.get('product_price')
+        product.details = request.POST.get('product_details')
+        product.count = request.POST.get('product_count', 0)  # Assuming product count is optional
+        product.save()
+
+        # Update product images
+        for i in range(1, 5):
+            image_field = f'product_image{i}'
+            image = request.FILES.get(image_field)
+            if image:
+                ProductImage.objects.create(product=product, image=image)
+
+        return redirect('product_list')  # Redirect to product list page
+
+    return render(request, 'back/edit_product.html', {'product': product})
+
+def delete_product(request, product_id):
+    product = Product.objects.get(id=product_id)
+    product.delete()
+    return redirect('product_list')  # Redirect to product list page
+
+def product_list(request):
+    products = Product.objects.all()
+    return render(request, 'back/product_list.html', {'products': products})
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+def add_protein(request):
+    if request.method == 'POST':
+        # Get form data
+        name = request.POST.get('name')
+        price = request.POST.get('price')
+        details = request.POST.get('details')
+        images = request.FILES.getlist('images')  # Get list of uploaded images
+
+        # Create a new Product instance
+        product = supliment.objects.create(sname=name, sprice=price, sdetails=details)
+
+        # Create ProductImage instances for each uploaded image
+        for image in images:
+           suplimentImage.objects.create(sproduct=product, simage=image)
+
+        # Redirect to the product list page or another page
+        return redirect('protein_list')
+    else:
+        # Render the form page if it's a GET request
+        return render(request, 'back/add_protein.html')
+
+def edit_protein(request, product_id):
+    product = supliment.objects.get(id=product_id)
+    
+    if request.method == 'POST':
+        product.sname = request.POST.get('product_name')
+        product.sprice = request.POST.get('product_price')
+        product.sdetails = request.POST.get('product_details')
+        product.scount = request.POST.get('product_count', 0)  # Assuming product count is optional
+        product.save()
+
+        # Update product images
+        for i in range(1, 5):
+            image_field = f'product_image{i}'
+            image = request.FILES.get(image_field)
+            if image:
+                suplimentImage.objects.create(supliment=product, simage=image)
+
+        return redirect('protein_list')  # Redirect to product list page
+
+    return render(request, 'back/edit_protein.html', {'supliment': product})
+
+def delete_protein(request, product_id):
+    product = supliment.objects.get(id=product_id)
+    product.delete()
+    return redirect('protein_list')  # Redirect to product list page
+
+def protein_list(request):
+    products =supliment.objects.all()
+    return render(request, 'back/protein_list.html', {'supliment': products})
+
+
+
+
+
+
+
+
+
+
+
+def add_equipment(request):
+    if request.method == 'POST':
+        # Get form data
+        name = request.POST.get('name')
+        price = request.POST.get('price')
+        details = request.POST.get('details')
+        images = request.FILES.getlist('images')  # Get list of uploaded images
+
+        # Create a new Product instance
+        product = equipment.objects.create(ename=name, eprice=price, edetails=details)
+
+        # Create ProductImage instances for each uploaded image
+        for image in images:
+            equipmentImage.objects.create(equipment=product, eimage=image)
+
+        # Redirect to the product list page or another page
+        return redirect('equipment_list')
+    else:
+        # Render the form page if it's a GET request
+        return render(request, 'back/add_equipment.html')
+
+def edit_equipment(request, product_id):
+    product = equipment.objects.get(id=product_id)
+    
+    if request.method == 'POST':
+        product.ename = request.POST.get('product_name')
+        product.eprice = request.POST.get('product_price')
+        product.edetails = request.POST.get('product_details')
+        product.ecount = request.POST.get('product_count', 0)  # Assuming product count is optional
+        product.save()
+
+        # Update product images
+        for i in range(1, 5):
+            image_field = f'product_image{i}'
+            image = request.FILES.get(image_field)
+            if image:
+                equipmentImage.objects.create(equipment=product, eimage=image)
+
+        return redirect('equipment_list')  # Redirect to product list page
+
+    return render(request, 'back/edit_equipment.html', {'equipment': product})
+
+def delete_equipment(request, product_id):
+    product = equipment.objects.get(id=product_id)
+    product.delete()
+    return redirect('equipment_list')  # Redirect to product list page
+
+def equipment_list(request):
+    products = equipment.objects.all()
+    return render(request, 'back/equipment_list.html', {'equipment': products})
+
+
+def add_blog(request):
+    blogd = Blog.objects.all()
+    if request.method == 'POST':
+        # Get form data from POST request
+        title = request.POST.get('title')
+        content = request.POST.get('content')
+        author = request.POST.get('author')
+        date = request.POST.get('date')
+        categories = request.POST.get('categories')
+        image = request.FILES.get('image')
+
+        # Create a new blog object
+        blog = Blog(
+            title=title,
+            content=content,
+            author=author,
+            date=datetime.strptime(date, '%Y-%m-%d').date(),  # Assuming date is in 'YYYY-MM-DD' format
+            categories=categories,
+            image=image
+        )
+        blog.save()
+        blog = Blog.objects.all()
+        return render(request, 'back/add_blog.html', {'blogs': blog})
+    else:
+        
+        return render(request, 'back/add_blog.html', {'blogs': blogd})
+    
+def delete_blog(request, blog_id):
+    blog = Blog.objects.get(id=blog_id)
+    blog.delete() 
+    
+    return redirect('add_blog')
+    

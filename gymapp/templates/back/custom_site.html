@@ -18,18 +18,22 @@
                 </div>
             </div>
             <div class="row">    
-                <div class="form-group col-md-6">
+                <div class="form-group col-md-4">
                     <label for="mobile">Mobile:</label>
                     <input type="text" class="form-control" id="mobile" name="mobile" required>
                 </div>
-                <div class="form-group col-md-6">
-                    <label for="gymtime">Gym Time:</label>
-                    <input type="text" class="form-control" id="gymtime" name="gymtime" required>
+                <div class="form-group col-md-4">
+                    <label for="gymtime">Gym Morning Time:</label>
+                    <input type="text" class="form-control" id="mgymtime" name="mgymtime" required>
+                </div>
+                <div class="form-group col-md-4">
+                    <label for="gymtime">Gym  Evening Time:</label>
+                    <input type="text" class="form-control" id="egymtime" name="egymtime" required>
                 </div>
             </div>    
             <div class="row">
                 <div class="form-group col-md-8">
-                    <label for="address">Address:</label>
+                    <label for="address">:</label>
                     <input type="text" class="form-control" id="address" name="address" required>
                 </div>
                 <div class="form-group col-md-4">
@@ -38,6 +42,36 @@
                     <p style="font-size: 12px;">type to gym open date here Ex: xx/xx/xxx,xx-xx-xxxx</p>
                 </div>
             </div>
+            <div class="row">
+                <div class="form-group col-md-5">
+                    <label for="address">Address line 1:</label>
+                    <input type="text" class="form-control" id="addressl1" name="addressl1" required>
+                </div>
+                <div class="form-group col-md-5">
+                    <label for="address">Address line 2:</label>
+                    <input type="text" class="form-control" id="addressl2" name="addressl2" required>
+                </div>
+            </div>  
+            <div class="row">
+                <div class="form-group col-md-5">
+                    <label for="address">Address line 3:</label>
+                    <input type="text" class="form-control" id="addressl3" name="addressl3" required>
+                </div>
+                <div class="form-group col-md-5">
+                    <label for="address">Address line 4:</label>
+                    <input type="text" class="form-control" id="addressl4" name="addressl4" required>
+                </div>
+            </div>
+            <div class="row">
+                <div class="form-group col-md-5">
+                    <label for="address">Address line 5:</label>
+                    <input type="text" class="form-control" id="addressl5" name="addressl5" required>
+                </div>
+                <div class="form-group col-md-5">
+                    <label for="address">Address line 6:</label>
+                    <input type="text" class="form-control" id="addressl6" name="addressl6" required>
+                </div>
+            </div>  
             <div class="row">
                 <div class="form-group col-md-4">
                     <label for="ownername">Owner Name:</label>
@@ -55,7 +89,14 @@
                     <input type="text" class="form-control" id="experience" name="experience" required>
                     <p style="font-size: 12px;">Type for Experience year in GYM(ex:2 years,2 month)</p>
                 </div>
-            </div>    
+            </div>  
+            <div class="row"> 
+                <div class="form-group col-md-8">
+                    <label for="maplink">Map Link:</label>
+                    <input type="text" class="form-control" id="maplink" name="maplink">
+                    <p style="font-size: 12px;">paste your gym iframe linke from map</p>
+                </div>
+            </div>  
             <div class="row">
                 <div class="form-group col-md-8">
                     <label for="instalink">Instagram Link:</label>
@@ -86,7 +127,7 @@
 <div class="container">
     <h1 class="well">Gym Information</h1>
     <div class="col-lg-12 well">
-        <table class="table">
+        <table class="table table-bordered" >
             <tbody>
                 {% for gym_image in gym_images %}
                 <tr>
@@ -106,12 +147,20 @@
                     <td>{{ gym_image.mobile }}</td>
                 </tr>
                 <tr>
-                    <th>Gym Time:</th>
-                    <td>{{ gym_image.gymtime }}</td>
+                    <th>Gym  Morning Time:</th>
+                    <td>{{ gym_image.mgymtime }}</td>
+                </tr>
+                <tr>
+                    <th>Gym  Evening Time:</th>
+                    <td>{{ gym_image.egymtime }}</td>
                 </tr>
                 <tr>
                     <th>Address:</th>
-                    <td>{{ gym_image.address }}</td>
+                    <td>{{ gym_image.addressline1 }}<br>{{ gym_image.addressline2 }}<br>{{ gym_image.addressline3 }}<br>{{ gym_image.addressline4 }}<br>{{ gym_image.addressline5 }}<br>{{ gym_image.addressline6 }}<br></td>
+                </tr>
+                <tr>
+                    <th>Map iframe  Link:</th>
+                    <td>{{ gym_image.maplink }}</td>
                 </tr>
                 <tr>
                     <th>Insta Link:</th>

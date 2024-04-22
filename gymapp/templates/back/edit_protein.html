@@ -1,0 +1,55 @@
+{% extends 'back/admin_base.html' %}
+
+{% load static %}
+
+{% block mainblock %}
+
+<div class="container mt-4">
+    <h1>Edit Product</h1>
+    <form action="{% url 'edit_protein' supliment.id %}" method="post" enctype="multipart/form-data" class="mt-4">
+        {% csrf_token %}
+        <div class="form-group col-md-8">
+            <label for="product_name">Name:</label>
+            <input type="text" id="product_name" name="product_name" value="{{ supliment.sname }}" class="form-control">
+        </div>
+
+        <div class="form-group col-md-8">
+            <label for="product_price">Price:</label>
+            <input type="text" id="product_price" name="product_price" value="{{supliment.sprice }}" class="form-control">
+        </div>
+
+        <div class="form-group col-md-8">
+            <label for="product_details">Details:</label>
+            <textarea id="product_details" name="product_details" class="form-control">{{ supliment.sdetails }}</textarea>
+        </div>
+
+        <div class="form-group col-md-8">
+            <label for="product_count">Count:</label>
+            <input type="number" id="product_count" name="product_count" value="{{ supliment.scount }}" class="form-control">
+        </div>
+
+        <div class="form-group">
+            <label for="product_image1">Image 1:</label>
+            <input type="file" id="product_image1" name="product_image1" class="form-control-file">
+        </div>
+
+        <div class="form-group">
+            <label for="product_image2">Image 2:</label>
+            <input type="file" id="product_image2" name="product_image2" class="form-control-file">
+        </div>
+
+        <div class="form-group">
+            <label for="product_image3">Image 3:</label>
+            <input type="file" id="product_image3" name="product_image3" class="form-control-file">
+        </div>
+
+        <div class="form-group">
+            <label for="product_image4">Image 4:</label>
+            <input type="file" id="product_image4" name="product_image4" class="form-control-file">
+        </div>
+
+        <button type="submit" class="btn btn-primary">Update Product</button>
+    </form>
+</div>
+
+{% endblock %}

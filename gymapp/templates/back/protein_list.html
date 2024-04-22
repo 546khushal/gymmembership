@@ -1,0 +1,45 @@
+<!-- product_list.html -->
+{% extends 'back/admin_base.html' %}
+
+{% load static %}
+
+{% block mainblock %}
+<div class="container">
+    <h1 class="mt-5 mb-3">protein List</h1>
+    <table class="table">
+        <thead class="thead-dark">
+            <tr>
+                <th scope="col">#</th>
+                <th scope="col">Image</th>
+                <th scope="col">Name</th>
+                <th scope="col">Price</th>
+                <th scope="col">Description</th>
+                <th scope="col">Actions</th>
+            </tr>
+        </thead>
+        <tbody>
+            {% for product in supliment %}
+            <tr>
+                <th scope="row">{{ forloop.counter }}</th>
+                <!-- Loop through all product images -->
+                <td>
+                    {% for image in product.images.all %}
+                        <img src="{{ image.simage.url }}" alt="{{ product.sname }}" style="max-width: 100px;">
+                    {% endfor %}
+                </td>
+                <td>{{ product.sname }}</td>
+                <td>${{ product.sprice }}</td>
+                <td>{{ product.sdetails }}</td>
+                <td>
+                    <a href="{% url 'edit_protein' product.id %}" class="btn btn-primary btn-sm">Edit</a>
+                    <a href="{% url 'delete_protein' product.id %}" class="btn btn-danger btn-sm">Delete</a>
+                </td>
+            </tr>
+        {% endfor %}
+        
+
+        </tbody>
+    </table>
+</div>
+
+    {% endblock  %}

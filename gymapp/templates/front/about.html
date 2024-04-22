@@ -91,44 +91,45 @@ header {
 </head>
 <body>
     {% include 'front/navbar.html' %}
+    {% for gym in gyms %}
     <header>
-        <h1>About DYNOMO FITNESS Gym</h1>
+        <h1>About {{ gym.gymname }} FITNESS Gym</h1>
     </header>
 
     <section id="owner-details">
         <div class="container">
             <h2>Gym Owner</h2>
-            {% with owner_name="Khushal Suthar" owner_description="Owner of DYNOMO FITNESS GYM Mr Khushal Suthar, with over 30 years of gym experience, he is the driving force behind our fitness community. With his expertise and dedication, he has transformed countless lives, inspiring them to achieve their fitness goals." owner_image="myimg.jpg" %}
+           
             <div class="owner">
-                <img src="{% static 'front/product_images/myimg.jpg' %}" alt="Gym Owner">
+                <img src="{{ gym.picurl }}" alt="Gym Owner">
                 <div class="owner-info">
-                    <h3>{{ owner_name }}</h3>
-                    <p>{{ owner_description }}</p>
+                    <h3>{{ gym.ownername }}</h3>
+                    <p>"Owner of {{ gym.gymname }} FITNESS GYM {{ gym.ownername }}, with {{ gym.experience }} of gym experience, he is the driving force behind our fitness community. With his expertise and dedication, he has transformed countless lives, inspiring them to achieve their fitness goals."</p>
                 </div>
             </div>
-            {% endwith %}
+        
 <table cellspacing="8" cellpadding="8" style="color:black; font-size:17px;">
             <tr>
               <th>Name:</th>
-              <td>Khushal kumar</td>
+              <td>{{ gym.ownername }}</td>
             </tr>
             <tr>
               <th>Email:</th>
-              <td> khushalsuthar546@gmail.com</td>
+              <td>{{ gym.gymemail }}</td>
             </tr>
             <tr>
-              <th>Birthday:</th>
-              <td> 11 Oct, 2002</td>
+              <th>Gym Startup:</th>
+              <td>{{ gym.opend }}</td>
             </tr>
             
                  
             <tr>
               <th>Phone:</th>
-              <td>(+91) 7230-907-187</td>
+              <td>(+91){{ gym.mobile }}</td>
             </tr>
             <tr>
               <th>Addresh:</th>
-              <td>Hari Om Nagar,Sheoganj,Sirohi,Rajasthan</td>
+              <td>{{ gym.addressline1 }},{{ gym.addressline2 }},{{ gym.addressline3 }},{{ gym.addressline4 }},{{ gym.addressline5 }},{{ gym.addressline6 }},</td>
             </tr>
 
           </table>
@@ -141,7 +142,7 @@ header {
     <section id="gym-details">
         <div class="container">
             <h2>Our Gym</h2>
-            <p>Welcome to DYNOMO FITNESS Gym, where fitness meets excellence. With state-of-the-art facilities and personalized training programs, we are committed to sculpting a healthier and stronger you. Step into our world of fitness innovation and embark on a transformative journey towards your best self. At Marudhar Gym, we redefine fitness, one rep at a time.</p>
+            <p>Welcome to {{ gym.gymname }} FITNESS Gym, where fitness meets excellence. With state-of-the-art facilities and personalized training programs, we are committed to sculpting a healthier and stronger you. Step into our world of fitness innovation and embark on a transformative journey towards your best self. At {{ gym.gymname }} GYM, we redefine fitness, one rep at a time.</p>
             <!-- Add more gym details here -->
         </div>
     </section>
@@ -159,21 +160,18 @@ header {
         </div>
     </section>
 
-    <section id="gallery">
-        <div class="container">
-            <h2>Gym Gallery</h2>
-            <!-- Add gym images here -->
-            <div class="gallery-images">
-                <img src="{% static 'front/product_images/gym1.jpg' %}" alt="Gym Image 1">
-                <img src="{% static 'front/product_images/gym2.jpg' %}" alt="Gym Image 2">
-                <img src="{% static 'front/product_images/gym1.jpg' %}" alt="Gym Image 3">
-                <img src="{% static 'front/product_images/gym4.jpg' %}" alt="Gym Image 4">
-                <img src="{% static 'front/product_images/gym1.jpg' %}" alt="Gym Image 1">
-                <img src="{% static 'front/product_images/gym4.jpg' %}" alt="Gym Image 4">
-                <!-- Add more images -->
+    
+        <div style="border: 2px solid #222020; padding:5px; margin: 30px;">
+            <h2 style="color:#080808; text-align: center; padding: 15px;">OUR GALLERY</h2>
+            <div class="row col-md-12">
+                 {% for image in images %}
+                <div class="col-md-4">
+                <img class="d-block w-100" style=" height: 300px; margin:15px; border: 1px solid gray; border-radius: 4px;" src="{{ image.image.url }}" alt="Image">
+                </div>
+                {% endfor %}
             </div>
-        </div>
-    </section>
+     </div>
+   
 
     <section id="machines">
         <div class="container">
@@ -187,7 +185,7 @@ header {
             </ul>
         </div>
     </section>
-    
+    {% endfor %}
 
     {% include 'front/footer.html' %}  
 </body>

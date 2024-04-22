@@ -1,0 +1,170 @@
+{% extends 'back/admin_base.html' %}
+
+{% load static %}
+
+{% block mainblock %}
+<head>
+<style>
+    /* Add your CSS styles here */
+    /* CSS for Product Page */
+    /* Body styles */
+    body {
+        font-family: Arial, sans-serif;
+        background: linear-gradient(to right, gold, red, pink, blue);
+        color: #fff;
+        margin: 20px;
+        padding: 0;
+    }
+
+    .container {
+        max-width: 90%;
+        margin: 20px auto;
+        padding: 20px;
+        background: linear-gradient(to top, gold, red, pink, blue);
+        border-radius: 8px;
+        box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+    }
+
+    h1 {
+        text-align: center;
+        color: #333;
+    }
+
+    /* Form styles */
+    form {
+        margin-top: 20px;
+    }
+
+    label {
+        display: block;
+        font-weight: bold;
+        margin-bottom: 5px;
+        color: #333;
+    }
+
+    input[type="text"],
+    input[type="number"],
+    textarea {
+        width: 100%;
+        padding: 10px;
+        margin-bottom: 15px;
+        border: 1px solid gold;
+        border-radius: 4px;
+        box-sizing: border-box;
+    }
+
+    textarea {
+        height: 100px;
+    }
+
+    input[type="file"] {
+        display: block;
+    }
+
+    input[type="submit"] {
+        background-color: #3498db;
+        color: #fff;
+        padding: 10px 20px;
+        border: none;
+        border-radius: 4px;
+        cursor: pointer;
+        font-size: 16px;
+    }
+
+    input[type="submit"]:hover {
+        background-color: #2980b9;
+    }
+
+    /* Table styles */
+    table {
+        width: 100%;
+        border-collapse: collapse;
+        margin-top: 20px;
+        color: black;
+    }
+
+    th,
+    td {
+        border: 1px solid #ddd;
+        padding: 5px;
+        text-align: left;
+    }
+
+    th {
+        background-color: #3498db;
+        color: #fff;
+    }
+
+    tr:nth-child(even) {
+        background-color: #f2f2f2;
+    }
+</style>
+</head>
+<body>
+<div class="container">
+    <h1>Owner Product Management</h1>
+
+    <!-- Product Add Form -->
+    <h2>Add New Product</h2>
+    <form action="{% url 'add_equipment' %}" method="post" enctype="multipart/form-data">
+        {% csrf_token %}
+        <label for="product_name">Product Name:</label>
+        <input type="text" id="product_name" name="product_name" required><br>
+        <label for="product_price">Product Price:</label>
+        <input type="number" id="product_price" name="product_price" required><br>
+        <label for="product_details">Product Details:</label><br>
+        <textarea id="product_details" name="product_details" required></textarea><br>
+        <label for="product_image1">Product Image 1:</label>
+        <input type="file" id="product_image1" name="product_image1" required><br>
+        <label for="product_image2">Product Image 2:</label>
+        <input type="file" id="product_image2" name="product_image2"><br>
+        <label for="product_image3">Product Image 3:</label>
+        <input type="file" id="product_image3" name="product_image3"><br>
+        <label for="product_image4">Product Image 4:</label>
+        <input type="file" id="product_image4" name="product_image4"><br>
+        <input type="submit" name="add_product" value="Add Product">
+    </form>
+
+    <!-- Display Existing Products -->
+    <h2>Existing Products</h2>
+    <table class="table">
+        <thead>
+            <tr>
+                <th>SR</th>
+                <th>Product Name</th>
+                <th>Product Price</th>
+                <th>Product Details</th>
+                <th>Product Images</th>
+                <th>Product Count</th>
+                <th>Action</th>
+                <th>Delete</th>
+            </tr>
+        </thead>
+        <tbody>
+            {% for product in products %}
+            <tr>
+                <td>{{ product.eid }}</td>
+                <td>{{ product.ename }}</td>
+                <td>{{ product.eprice }}</td>
+                <td>{{ product.edetails }}</td>
+                <td>
+                    {% for image in product.images %}
+                    <img src="{{ eimage.url }}" alt="Product Image" style="width:50px;height:50px;">
+                    {% endfor %}
+                </td>
+                <td>{{ product.count }}</td>
+                <td>
+                    <a href="{% url 'edit_product' product.id %}" class="btn btn-primary">Edit</a>
+                </td>
+                <td>
+                    <a href="{% url 'delete_product' product.id %}" class="btn btn-danger">Delete</a>
+                </td>
+            </tr>
+            {% endfor %}
+        </tbody>
+    </table>
+</div>
+</body>
+
+
+{% endblock %}
