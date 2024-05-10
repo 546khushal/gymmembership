@@ -5,13 +5,14 @@ from .models import Onsite
 from datetime import datetime, timedelta
 from django.utils.timezone import make_aware
 from django.urls import reverse
+from django.db.models import Sum
 
 from .models import GymImage
 from .models import GymImages
 from .models import Product, ProductImage
 from .models import supliment, suplimentImage
 from .models import equipment, equipmentImage
-from .models import Blog
+from .models import Blog, messages
 
 from django.http import HttpResponse
 from .models import Product  # Import your Product model
@@ -22,33 +23,36 @@ from django.conf import settings
 import os
 from django.core.files.storage import FileSystemStorage   #similar file dalte hai to url conflict ko solve krega
 
+
 def index(request):
     images = GymImages.objects.all()
-    gyms =GymImage.objects.all()
+    gyms = GymImage.objects.all()
+    trainer = Trainer.objects.all()
+    
     if request.method == 'POST':
         name = request.POST.get('name')
         mobile = request.POST.get('mobile')
         gender = request.POST.get('gender')
-        address = request.POST.get('address')
+        email = request.POST.get('email')
         
-        if name and mobile and gender and address:
-            # Check if the record already exists in the database
-            if not NewMemberData.objects.filter(name=name, mobile=mobile).exists():
-                # Record doesn't exist, create a new one
-                NewMemberData.objects.create(name=name, mobile=mobile, address=address, gender=gender)
-                return render("Data inserted successfully.")
-            else:
-                return render("Record already exists.")
-        else:
-            return render("Please fill in all required fields.")
+         # Check if a user with similar name and mobile already exists in registerm
+        existing_user_registerm = registerm.objects.filter(name=name, mobile=mobile).exists()
+        
+        # Check if a user with similar name and mobile already exists in Onsite
+        existing_user_onsite = Onsite.objects.filter(name=name, mobile=mobile).exists()
+        
+        if existing_user_registerm or existing_user_onsite:
+            error="! User already exists with similar Name and Mobile number."
+            return render(request, 'front/index.html', {'error': error,'gyms':gyms,'images':images})
+        
+        # Save form data to the Onsite table
+        Onsite.objects.create(name=name, email=email, mobile=mobile, gender=gender)
+        
+       # Redirect to admin_siteuser.html
+        error_msg = " submitted successfully! Contect with Owner to provide ID"
+        return render(request,'front/index.html',{'error':error_msg,'gyms':gyms,'images':images})
     
-    return render(request, 'front/index.html',{'images': images ,'gyms':gyms})
-
-def terms_and_conditions_view(request):
-    return render(request, 'front/terms_and_conditions.html')
-
-def calculate_bmi(request):
-    if request.method == 'GET':
+    elif request.method == 'GET':
         feet = float(request.GET.get('feet', 0))
         inches = float(request.GET.get('inches', 0))
         weight = float(request.GET.get('weight', 0))
@@ -59,13 +63,20 @@ def calculate_bmi(request):
             bmi = weight / (height_in_meters * height_in_meters)
             classification = classify_bmi(bmi)
 
-            return render(request, 'front/index.html', {'bmi': bmi, 'classification': classification})
+            # Render BMI result only if calculation is successful
+            bmi_result_html = f"<p>Your BMI is: <b>{bmi:.2f}</b></p>\n"
+            bmi_result_html += f"<p>Classification: <b>{classification}</b></p>\n"
+            bmi_result_html += "<script>saveScrollPosition();</script>"
         else:
             error = "All fields are required."
-            return render(request, 'front/index.html', {'error': error})
-    else:
-        error = "Invalid request method."
-        return render(request, 'front/index.html', {'error': error})
+            bmi_result_html = f"<p class='error'><h6>{error}</h6></p>\n"
+
+        return render(request, 'front/index.html', {'bmi_result_html': bmi_result_html, 'images': images, 'gyms': gyms,'trainer':trainer})
+
+def terms_and_conditions_view(request):
+    return render(request, 'front/terms_and_conditions.html')
+
+
 
 def classify_bmi(bmi):
     if bmi < 18.5:
@@ -84,7 +95,27 @@ def about(request):
     return render(request,'front/about.html',{'gyms':gyms,'images':images})
 
 def login(request):
-    return render(request,'front/login.html')
+    if request.method == 'POST':
+        member_id = request.POST.get('memberid')
+        password = request.POST.get('password')
+
+        try:
+            member = registerm.objects.get(member_id=member_id, passw=password)
+        except registerm.DoesNotExist:
+            return render(request, 'back/error.html', {'error': 'Invalid credentials'})
+        
+        return redirect('track', member_id=member.member_id)
+
+    return render(request, 'front/login.html')
+
+def track(request, member_id):
+    member = registerm.objects.get(pk=member_id)
+    end_date = calculateEndDate(member.start.strftime('%Y-%m-%d'), member.membershipplan)
+    due_days = calculateDueDays(end_date)
+    member.enddate = end_date
+    member.duedays = due_days
+            
+    return render(request, 'front/track.html', {'details': member})
 
 def ActivateMember(request):
     return render(request,'front/ActivateMember.html')
@@ -93,7 +124,22 @@ def ActivatedMember(request):
     return render(request,'front/ActivatedMember.html')
 
 def owner(request):
-    return render(request,'front/owner.html')
+    if request.method == 'POST':
+        owner_id = request.POST.get('owner-id')
+        owner = request.POST.get('admin')
+        password = request.POST.get('owner-password')
+
+        # Check if the provided credentials match the predefined values
+        if owner_id == '101' and owner == 'khushal' and password == 'khushal':
+            # Redirect to admin_index.html if credentials are correct
+            return redirect('admin_index')
+        else:
+            # If credentials are incorrect, render the login form again with an error message
+            return render(request, 'front/owner.html', {'error': 'Invalid credentials. Please try again.'})
+    else:
+        # Render the login form
+        return render(request, 'front/owner.html')
+
 ########################################ownerwork start
 def ownerwork(request):
     search = request.GET.get('search', '')
@@ -128,18 +174,38 @@ def ownerwork(request):
 
 ##############################ownerwork end 
 
-def signup(request):
-    return render(request,'front/signup.html')
+
+
 
 def AddMember(request):
     return render(request,'front/AddMember.html')
 
-def data(request):
-    return render(request,'front/data.html')
+
 
 def footer(request):
     gyms = GymImage.objects.all()
-    return render(request,'front/footer.html',{'gyms':gyms})
+    if request.method == 'POST':
+        mn = request.POST.get('mobileNumber')
+        msg = request.POST.get('message')
+        
+        messages.objects.create(msgfrom=mn, msg=msg)
+        return redirect('index')
+    return render(request,'front/footer.html',{'gyms':gyms,})
+def delete_message(request, message_id):
+    try:
+        # Retrieve the message instance using the message ID
+        message = messages.objects.get(pk=message_id)
+        
+        # Delete the message
+        message.delete()
+        
+        # Redirect to the admin page
+        return redirect('admin_index')
+    
+    except messages.DoesNotExist:
+        # Handle the case when the message does not exist
+        # You can show an error message or redirect to another page
+        return redirect('admin_index')
 
 #def navbar(request):
   #  return render(request,'navbar.html')
@@ -152,10 +218,7 @@ def location(request):
 
 def NewMemberData(request):
     return render(request,'front/NewMemberData.html')
-def memberdata(request):
-    return render(request,'front/memberdata.html')
-def Memberlist(request):
-    return render(request,'front/Memberlist.html')
+
 def Membership(request):
     gyms =GymImage.objects.all()
     return render(request,'front/membership.html',{'gyms':gyms})
@@ -170,50 +233,250 @@ def detail_login(request):
             member = registerm.objects.get(member_id=member_id, passw=password)
         except registerm.DoesNotExist:
             # If the member_id or password is incorrect, display an error message or redirect to login page
-            return render(request, 'back/error.html', {'error': 'Invalid credentials'})
+            return render(request, 'front/membership.html', {'error': 'Invalid credentials'})
         
         # If the credentials are correct, redirect to the member_mdetail page with the member_id
-        return redirect('admin_mdetail', member_id=member.member_id)
+        return redirect('track', member_id=member.member_id)
 
-    return render(request, 'membership.html')
+    return render(request, 'front/membership.html')
 
 
-def product(request):
-     gyms =GymImage.objects.all() 
-     products = Product.objects.all()
-     
-     return render(request, 'front/product.html', {'products': products,'gyms':gyms})
-def productdata(request):
-    return render(request,'front/productdata.html')
+
+
 def trainer(request):
     return render(request,'front/trainer.html')
 
 
+from django.core.mail import send_mail
+from .models import Orderpoduct, Ordersupli, Orderequ
 
+def buy_nowp(request):
+    if request.method == 'POST':
+        product_id = request.POST.get('product_id')  # Retrieve the product ID
+        customer_name = request.POST.get('name')
+        product_name = request.POST.get('pname')
+        email = request.POST.get('email')
+        mobile = request.POST.get('mobile')
+        address = request.POST.get('address')
+        price = request.POST.get('price')  # Retrieve the price from the form
+
+        try:
+            # Retrieve the Product instance using the product_id
+            product_instance = Product.objects.get(id=product_id)
+        except Product.DoesNotExist:
+            # Handle case where the product does not exist
+            return render(request, 'back/error.html', {'error_message': 'Product does not exist.'})
+
+        # Create the order with the Product instance
+        order=Orderpoduct.objects.create(
+            product=product_instance,
+            customer_name=customer_name,
+            product_name=product_name,
+            mobile=mobile,
+            address=email + address,
+            price=price
+        )
+
+        # Send email confirmation to the user
+        #send_mail(
+        ##    'Order Confirmation',
+        ##    f'Your order has been confirmed. Thank you for shopping with us!',
+         #   'khushalsutharksp@gmail.com',
+         ##   [email],
+          #  fail_silently=False,
+        #)
+
+        return render(request, 'front/order_success.html', {'order': order})
+    else:
+        return render(request, 'front/pro_product.html')
+    
+
+def buy_nowe(request):
+    if request.method == 'POST':
+        product_id = request.POST.get('product_id')  # Retrieve the product ID
+        customer_name = request.POST.get('name')
+        product_name = request.POST.get('pname')
+        email = request.POST.get('email')
+        mobile = request.POST.get('mobile')
+        address = request.POST.get('address')
+        price = request.POST.get('price')  # Retrieve the price from the form
+
+        try:
+            # Retrieve the Product instance using the product_id
+            product_instance = equipment.objects.get(id=product_id)
+        except equipment.DoesNotExist:
+            # Handle case where the product does not exist
+            return render(request, 'back/error.html', {'error_message': 'equipment does not exist.'})
+
+        # Create the order with the Product instance
+        order=Orderequ.objects.create(
+            product=product_instance,
+            customer_name=customer_name,
+            product_name=product_name,
+            mobile=mobile,
+            address=email + address,
+            price=price
+        )
+
+        # Send email confirmation to the user
+        #send_mail(
+        ##    'Order Confirmation',
+        ##    f'Your order has been confirmed. Thank you for shopping with us!',
+         #   'khushalsutharksp@gmail.com',
+         ##   [email],
+          #  fail_silently=False,
+        #)
+
+        return render(request, 'front/order_success.html', {'order': order})
+    else:
+        return render(request, 'front/pro_product.html')
+    
+        
+def buy_nows(request):
+    if request.method == 'POST':
+        product_id = request.POST.get('product_id')  # Retrieve the product ID
+        customer_name = request.POST.get('name')
+        product_name = request.POST.get('pname')
+        email = request.POST.get('email')
+        mobile = request.POST.get('mobile')
+        address = request.POST.get('address')
+        price = request.POST.get('price')  # Retrieve the price from the form
+
+        try:
+            # Retrieve the Product instance using the product_id
+            product_instance = supliment.objects.get(id=product_id)
+        except supliment.DoesNotExist:
+            # Handle case where the product does not exist
+            return render(request, 'back/error.html', {'error_message': 'supliment does not exist.'})
+
+        # Create the order with the Product instance
+        order=Ordersupli.objects.create(
+            product=product_instance,
+            customer_name=customer_name,
+            product_name=product_name,
+            mobile=mobile,
+            address=email + address,
+            price=price
+        )
+
+        # Send email confirmation to the user
+        #send_mail(
+        ##    'Order Confirmation',
+        ##    f'Your order has been confirmed. Thank you for shopping with us!',
+         #   'khushalsutharksp@gmail.com',
+         ##   [email],
+          #  fail_silently=False,
+        #)
+
+        return render(request, 'front/order_success.html', {'order': order})
+    else:
+        return render(request, 'front/pro_product.html')
+    
+
+def order_list(request):
+    # Get all data from OrderProduct, OrderSupli, and OrderEqu models
+    msg = messages.objects.all()
+    order_products = Orderpoduct.objects.all()
+    order_suplis = Ordersupli.objects.all()
+    order_equ = Orderequ.objects.all()
+
+    # Combine all data into a single list
+    all_orders = list(order_products) + list(order_suplis) + list(order_equ)
+
+    return render(request, 'back/order_list.html', {'all_orders': all_orders,'messages':msg})
+
+def delete_order_item(request, order_id):
+    try:
+        order_product = Orderpoduct.objects.get(pk=order_id)
+        order_product.delete()
+        return redirect('order_list')
+    except Orderpoduct.DoesNotExist:
+        pass
+
+    try:
+        order_supli = Ordersupli.objects.get(pk=order_id)
+        order_supli.delete()
+        return redirect('order_list')
+    except Ordersupli.DoesNotExist:
+        pass
+
+    try:
+        order_equ = Orderequ.objects.get(pk=order_id)
+        order_equ.delete()
+        return redirect('order_list')
+    except Orderequ.DoesNotExist:
+        pass
+
+    # Handle the case when the order item is not found
+    # You can return an error page or redirect to another URL
+    return redirect('order_list')
+
+def order_success(request):
+    return render(request, 'front/order_success.html')
+
+from django.http import HttpResponse
+from django.template.loader import render_to_string
+
+def download_slip(request, order_id):
+    try:
+        # Try to get the order from each type of order model
+        order_product = Orderpoduct.objects.get(id=order_id)
+    except Orderpoduct.DoesNotExist:
+        order_product = None
+
+    try:
+        order_supli = Ordersupli.objects.get(id=order_id)
+    except Ordersupli.DoesNotExist:
+        order_supli = None
+
+    try:
+        order_equ = Orderequ.objects.get(id=order_id)
+    except Orderequ.DoesNotExist:
+        order_equ = None
+
+    # Check which order type was found and render the appropriate template
+    if order_product:
+        order = order_product
+        template_name = 'front/order_success.html'
+    elif order_supli:
+        order = order_supli
+        template_name = 'front/order_success.html'
+    elif order_equ:
+        order = order_equ
+        template_name = 'front/order_success.html'
+    else:
+        # If no order type is found, return a 404 response
+        return HttpResponse("Order does not exist.", status=404)
+
+    # Render the order slip template to HTML string
+    slip_html = render_to_string(template_name, {'order': order})
+    # Create an HTTP response with the HTML content as a file attachment
+    response = HttpResponse(slip_html, content_type='text/html')
+    response['Content-Disposition'] = 'attachment; filename="order_slip.html"'
+    return response
 
 
 
 def pro_about(request):
-    return render(request, 'front/pro_about.html')
+    gyms =GymImage.objects.all()
+    return render(request, 'front/pro_about.html',{'gyms':gyms})
 
-def pro_home2(request):
-    return render(request, 'front/pro_home2.html')
 
-def pro_home3(request):
-    return render(request, 'front/pro_home3.html')
 
 def pro_blog_detail(request, blog_id):
     # Retrieve the desired Blog object using its ID
     blog_entry = Blog.objects.get(id=blog_id)
-    return render(request, 'front/pro_blog_detail.html', {'blogd': [blog_entry]})
+    gyms =GymImage.objects.all()
+    return render(request, 'front/pro_blog_detail.html', {'blogd': [blog_entry],'gyms':gyms})
 
 def pro_blog(request):
     blog = Blog.objects.all()
-    return render(request, 'front/pro_blog.html',{'blog':blog})
+    gyms =GymImage.objects.all()
+    return render(request, 'front/pro_blog.html',{'blog':blog,'gyms':gyms})
 
 def pro_contact(request):
     gyms =GymImage.objects.all() 
-    return render(request, 'front/pro_contact.html',{'data':gyms})
+    return render(request, 'front/pro_contact.html',{'data':gyms,'gyms':gyms})
 
 def pro_index(request):
     products = Product.objects.all()
@@ -225,7 +488,8 @@ def pro_index(request):
 
 
 def pro_product_detail(request):
-    return render(request, 'front/pro_product_detail.html')
+    gyms =GymImage.objects.all()
+    return render(request, 'front/pro_product_detail.html',{'gyms':gyms})
 
 def pro_product(request):
     products = Product.objects.all()
@@ -243,34 +507,96 @@ def pro_shoping_cart(request):
 
 
 
-
 #adimn back k liye 
 def panel(request):
-    return render(request,'back/admin_home.html')
+    msg = messages.objects.all()
+    return render(request,'back/admin_home.html',{'messages':msg})
 def admin_404(request):
-    return render(request,'back/admin_404.html')
+    msg = messages.objects.all()
+    return render(request,'back/admin_404.html',{'messages':msg})
 
 def admin_blank(request):
-    return render(request,'back/admin_blank.html')
+    msg = messages.objects.all()
+    return render(request,'back/admin_blank.html',{'messages':msg})
+def admin_base(request):
+    msg = messages.objects.all()
+    return render(request,'back/admin_base.html',{'messages':msg})
 
 def admin_charts(request):
-    return render(request,'back/admin_charts.html')
+    msg = messages.objects.all()
+    return render(request,'back/admin_charts.html',{'messages':msg})
 
 def admin_forgot_password(request):
     return render(request,'back/admin_forgot_password.html')
 
 def admin_home(request):
-    return render(request,'back/admin_home.html')
+    msg = messages.objects.all()
+    return render(request,'back/admin_home.html',{'messages':msg})
+
+def calculate_annual_earnings():
+    # Get the current year
+    current_year = datetime.now().year
+    
+    # Initialize total earnings for the year
+    total_earnings = 0
+    
+    # Iterate over each month of the year
+    for month in range(1, 13):
+        # Filter the registerm table based on the criteria for the current month and year
+        online_earnings = registerm.objects.filter(start__month=month, start__year=current_year, pay='online').aggregate(total=Sum('feeamount'))['total'] or 0
+        cash_earnings = registerm.objects.filter(start__month=month, start__year=current_year, pay='cash').aggregate(total=Sum('feeamount'))['total'] or 0
+        
+        # Accumulate the earnings for the current month
+        total_earnings += (online_earnings + cash_earnings)
+    
+    return total_earnings
+
+def calculate_monthly_earnings():
+    # Get the current month and year
+    current_month = datetime.now().month
+    current_year = datetime.now().year
+    
+    # Filter records for the current month
+    monthly_records = registerm.objects.filter(start__month=current_month, start__year=current_year)
+    
+    # Calculate earnings for cash payments
+    cash_earnings = monthly_records.filter(pay='Cash').aggregate(total_cash=Sum('feeamount'))['total_cash'] or 0
+    
+    # Calculate earnings for online payments
+    online_earnings = monthly_records.filter(pay='Online').aggregate(total_online=Sum('feeamount'))['total_online'] or 0
+    
+    # Calculate total earnings for the month
+    total_earnings = cash_earnings + online_earnings
+    
+    return total_earnings
 
 def admin_index(request):
-    return render(request,'back/admin_index.html')
+    msg = messages.objects.all()
+    all_members = registerm.objects.all()
+    monthly_earnings = calculate_monthly_earnings()
+    annual_earnings = calculate_annual_earnings()
+    
+    # Filter active members
+    active_members = []
+    for memb in all_members:
+        if memb.start:
+            end_date = calculateEndDate(memb.start.strftime('%Y-%m-%d'), memb.membershipplan)
+            due_days = calculateDueDays(end_date)
+            if  due_days <= 4 and due_days >=0:
+                memb.duedays = due_days
+                active_members.append(memb)  # Append member to active_members list
+
+    return render(request, 'back/admin_index.html', {'messages': msg, 'active_members': active_members, 'data': all_members,'mtotalearn': monthly_earnings,'ytotalearn':annual_earnings})
+
 
 def admin_login(request):
-    return render(request,'back/admin_login.html')
+    msg = messages.objects.all()
+    return render(request,'back/admin_login.html',{'messages':msg})
 
 def admin_register(request):
     trainer = Trainer.objects.all()
-    return render(request,'back/admin_register.html',{'trainer':trainer})
+    msg = messages.objects.all()
+    return render(request,'back/admin_register.html',{'trainer':trainer,'messages':msg})
 
 
 def calculateEndDate(startdate, membershipplan):
@@ -307,6 +633,7 @@ def calculateDueDays(enddate):
         return None
     
 def admin_tables(request):
+    msg = messages.objects.all()
     if request.method == "POST":
         # Handle form submission
         name = request.POST.get("name")
@@ -347,14 +674,15 @@ def admin_tables(request):
         except KeyError:
             error = "Please upload an image."
         
-        return render(request, 'back/error.html', {'error': error}) 
+        return render(request, 'back/error.html', {'error': error,'messages':msg}) 
          
     else:
         error = "Please upload a valid image format."
-        return render(request, 'back/error.html', {'error': error}) 
+        return render(request, 'back/error.html', {'error': error,'messages':msg}) 
 
     
 def admin_trainer(request):
+    msg = messages.objects.all()
     if request.method == "POST":
         # Handle form submission
         name = request.POST.get("name")
@@ -389,17 +717,18 @@ def admin_trainer(request):
         except Exception:
             error = "Please upload an image."
 
-        return render(request, 'back/error.html', {'error': error}) 
+        return render(request, 'back/error.html', {'error': error,'messages':msg}) 
         
     else:
         # Handle GET request (rendering the form)
         trainers = Trainer.objects.all()  # Query all Trainer objects
-        return render(request, 'back/admin_trainer.html', {'trainers': trainers})
+        return render(request, 'back/admin_trainer.html', {'trainers': trainers,'messages':msg})
 
 
 
 
 def admin_tables2(request):
+    msg = messages.objects.all()
     data = registerm.objects.all()
     for item in data:
         if item.start:
@@ -423,7 +752,7 @@ def admin_tables2(request):
             item.status = "Unknown"
             item.bg_color = "white"  # Default background color
 
-    return render(request, 'back/admin_tables2.html', {'data': data})
+    return render(request, 'back/admin_tables2.html', {'data': data,'messages':msg})
 
 
 
@@ -441,6 +770,7 @@ def admin_mdelete(request, member_id):
     
 
 def admin_medit(request, member_id):
+    msg = messages.objects.all()
     edit = registerm.objects.get(pk=member_id)
 
     if request.method == "POST":
@@ -469,7 +799,7 @@ def admin_medit(request, member_id):
             error_message = str(e)
             return redirect(error_message)
 
-    return render(request, 'back/admin_medit.html', {'edit': edit})
+    return render(request, 'back/admin_medit.html', {'edit': edit,'messages':msg})
 
 
 def admin_tdetail(request,trainer_id):
@@ -491,6 +821,7 @@ def admin_tdelete(request, trainer_id):
         return redirect('admin_trainer')
     
 def admin_tedit(request,trainer_id):
+    msg = messages.objects.all()
     edit = Trainer.objects.get(pk=trainer_id)
     error = ""  # Define error variable
 
@@ -513,18 +844,21 @@ def admin_tedit(request,trainer_id):
 
             # Redirect with success message
         return redirect(reverse('admin_trainer') + f'?trainer_id={edit.trainer_id}&trainer_name={edit.tname}')
-    return render(request, 'back/admin_tedit.html', {'edit': edit, 'error': error})
+    return render(request, 'back/admin_tedit.html', {'edit': edit, 'error': error,'messages':msg})
 
 def admin_reg_trainer(request):
-    return render(request,'back/admin_reg_trainer.html')
+    msg = messages.objects.all()
+    return render(request,'back/admin_reg_trainer.html',{'messages':msg})
 
 
 
 
 def error(request):
-    return render(request,'back/error.html')
+    msg = messages.objects.all()
+    return render(request,'back/error.html',{'messages':msg})
 
 def gym_imga_upload(request):
+    msg = messages.objects.all()
     if request.method == 'POST':
         files = request.FILES.getlist('image')
         for file in files:
@@ -537,7 +871,7 @@ def gym_imga_upload(request):
             GymImages.objects.create(image=os.path.join('gymmedia', filename))
         return redirect('gym_imga_upload')
     images = GymImages.objects.all()
-    return render(request, 'back/gym_imga_upload.html', {'images': images})
+    return render(request, 'back/gym_imga_upload.html', {'images': images,'messages':msg})
     
 def gym_imgdelete(request,image_id):
     try:
@@ -552,6 +886,7 @@ def gym_imgdelete(request,image_id):
     
 
 def custom_site(request):
+    msg = messages.objects.all()
     if request.method == "POST":
         # Retrieve form data
         gymname = request.POST.get("gymname")
@@ -619,12 +954,13 @@ def custom_site(request):
         return render(request, 'back/error.html', {'error': error}) 
 
     gym = GymImage.objects.all()  # Query all GymImage objects
-    return render(request, 'back/custom_site.html', {'gym_images': gym})
+    return render(request, 'back/custom_site.html', {'gym_images': gym,'messages':msg})
 
         
 def display_gym_info(request):
+    msg = messages.objects.all()
     gym_images = GymImage.objects.all()
-    return render(request, 'back/custom_site.html', {'gym_images': gym_images})        
+    return render(request, 'back/custom_site.html', {'gym_images': gym_images,'messages':msg})        
 
 
 
@@ -632,7 +968,8 @@ def display_gym_info(request):
 
 
 
-def admin_mdetail(request,member_id):    
+def admin_mdetail(request,member_id): 
+    msg = messages.objects.all()   
    # Retrieve the member with the given ID
     member = registerm.objects.get(pk=member_id)
     end_date = calculateEndDate(member.start.strftime('%Y-%m-%d'), member.membershipplan)
@@ -641,9 +978,10 @@ def admin_mdetail(request,member_id):
     member.duedays = due_days
             
         # Pass the member data to the template
-    return render(request, 'back/admin_mdetail.html', {'details': member})
+    return render(request, 'back/admin_mdetail.html', {'details': member,'messages':msg})
 
 def admin_expaire(request):
+    msg = messages.objects.all()
         # Get all members
     all_members = registerm.objects.all()
     
@@ -659,11 +997,12 @@ def admin_expaire(request):
                 member.status = "Expaire"
                 active_members.append(member)
 
-    return render(request, 'back/admin_active.html', {'data': active_members})
+    return render(request, 'back/admin_active.html', {'data': active_members,'messages':msg})
 
 
 
 def admin_active(request):
+    msg = messages.objects.all()
     # Get all members
     all_members = registerm.objects.all()
     
@@ -679,11 +1018,12 @@ def admin_active(request):
                 member.status = "Active"
                 active_members.append(member)
 
-    return render(request, 'back/admin_active.html', {'data': active_members})
+    return render(request, 'back/admin_active.html', {'data': active_members,'messages':msg})
 
                 
     
 def admin_total(request):
+    msg = messages.objects.all()
     # Get all members
     all_members = registerm.objects.all()
     
@@ -702,15 +1042,16 @@ def admin_total(request):
             else:
                 total_inactive_members += 1
 
-    return render(request, 'back/admin_total.html', {'total_members': total_members,'total_active_members': total_active_members,'total_inactive_members': total_inactive_members
-    })
+    return render(request, 'back/admin_total.html', {'total_members': total_members,'total_active_members': total_active_members,'total_inactive_members': total_inactive_members,'messages':msg})
 def admin_siteuser(request):
+    msg = messages.objects.all()
     datasite = Onsite.objects.all()
 
-    return render(request, 'back/admin_siteuser.html', {'datasite': datasite})
+    return render(request, 'back/admin_siteuser.html', {'datasite': datasite,'messages':msg})
 
 
 def memberfromsite(request):
+    msg = messages.objects.all()
     if request.method == "POST":
         # Handle form submission
         name = request.POST.get("name")
@@ -718,33 +1059,39 @@ def memberfromsite(request):
         email = request.POST.get("email")
         gender = request.POST.get("gender")
         
-        # Check if a user with similar name and mobile already exists
-        existing_user = Onsite.objects.filter(name=name, mobile=mobile).exists()
-        if existing_user:
+        # Check if a user with similar name and mobile already exists in registerm
+        existing_user_registerm = registerm.objects.filter(name=name, mobile=mobile).exists()
+        
+        # Check if a user with similar name and mobile already exists in Onsite
+        existing_user_onsite = Onsite.objects.filter(name=name, mobile=mobile).exists()
+        
+        if existing_user_registerm or existing_user_onsite:
             error="! User already exists with similar Name and Mobile number."
             return render(request, 'front/membership.html', {'error': error})
         
         # Save form data to the Onsite table
         Onsite.objects.create(name=name, email=email, mobile=mobile, gender=gender)
         
-        # Query all Onsite objects including the newly added one
-        datasite = Onsite.objects.all()
-
-        return render(request, 'back/admin_siteuser.html', {'datasite': datasite})
+       # Redirect to admin_siteuser.html
+        error_msg = " submitted successfully! Contect with Owner to provide ID"
+        return render(request,'front/membership.html',{'error':error_msg,'messages':msg})
     else:
         # If it's a GET request, render the empty form
-        return render(request, 'back/admin_siteuser.html')
+        return render(request, 'front/membership.html')
 
 
 def admin_onsitereg(request,siteuser_id):
+    msg = messages.objects.all()
     siteuser = Onsite.objects.get(pk=siteuser_id)
+    trainer =Trainer.objects.all()
 
-    return render(request, 'back/admin_onsitereg.html', {'siteuser': siteuser})    
+    return render(request, 'back/admin_onsitereg.html', {'siteuser': siteuser,'messages':msg,'trainer':trainer})    
     
 
 def admin_onsiteedit(request):
     if request.method == "POST":
         # Retrieve form data
+        
         name = request.POST.get("name")
         mobile = request.POST.get("mobile")
         email = request.POST.get("email")
@@ -807,6 +1154,7 @@ def admin_onsiteedit(request):
 
 
 def add_product(request):
+    msg = messages.objects.all()
     if request.method == 'POST':
         # Get form data
         name = request.POST.get('name')
@@ -825,7 +1173,7 @@ def add_product(request):
         return redirect('product_list')
     else:
         # Render the form page if it's a GET request
-        return render(request, 'back/add_product.html')
+        return render(request, 'back/add_product.html',{'messages':msg})
 
 def edit_product(request, product_id):
     product = Product.objects.get(id=product_id)
@@ -854,6 +1202,7 @@ def delete_product(request, product_id):
     return redirect('product_list')  # Redirect to product list page
 
 def product_list(request):
+    msg = messages.objects.all()
     products = Product.objects.all()
     return render(request, 'back/product_list.html', {'products': products})
 
@@ -925,10 +1274,64 @@ def protein_list(request):
 
 
 
+def quick_view(request, product_id):
+    # Retrieve the equipment object for the given product_id
+    try:
+        equipment_instance = equipment.objects.get(id=product_id)
+    except equipment.DoesNotExist:
+        equipment_instance = None
+    
+    # Pass the equipment object to the template
+    return render(request, "front/quick_view.html", {'equipment_instance': equipment_instance})
 
 
+def quick_protein(request, product_id):
+    # Retrieve the equipment object for the given product_id
+    try:
+        protein_instance = supliment.objects.get(id=product_id)
+    except supliment.DoesNotExist:
+        protein_instance = None
+    
+    # Pass the equipment object to the template
+    return render(request, "front/quick_protein.html", {'protein_instance': protein_instance})
+    
+    
+def quick_product(request, product_id):
+    # Retrieve the equipment object for the given product_id
+    try:
+        product_instance = Product.objects.get(id=product_id)
+    except Product.DoesNotExist:
+        product_instance = None
 
+    if request.method == 'POST':
+        product_instance = request.POST.get('product_id')  # Retrieve the product instance
+        customer_name = request.POST.get('name')
+        email = request.POST.get('email')
+        mobile = request.POST.get('mobile')
+        address = request.POST.get('address')
+        price = request.POST.get('price')  # Added to retrieve price from form
 
+        # Create the order with the product instance
+        Orderpoduct.objects.create(
+            product=product_instance,
+            customer_name=customer_name,
+            mobile=mobile,
+            address=email + address,
+            price=price
+        )
+
+        # Send email confirmation to the user
+        send_mail(
+            'Order Confirmation',
+            f'Your order has been confirmed. Thank you for shopping with us!',
+            'from@example.com',
+            [email],
+            fail_silently=False,
+        )    
+    
+    # Pass the equipment object to the template
+    return render(request, "front/quick_product.html", {'product_instance': product_instance})    
+    
 
 
 
@@ -946,7 +1349,7 @@ def add_equipment(request):
 
         # Create ProductImage instances for each uploaded image
         for image in images:
-            equipmentImage.objects.create(equipment=product, eimage=image)
+            equipmentImage.objects.create(eproduct=product, eimage=image)
 
         # Redirect to the product list page or another page
         return redirect('equipment_list')
@@ -994,6 +1397,7 @@ def add_blog(request):
         author = request.POST.get('author')
         date = request.POST.get('date')
         categories = request.POST.get('categories')
+        details = request.POST.get('details')
         image = request.FILES.get('image')
 
         # Create a new blog object
@@ -1003,6 +1407,7 @@ def add_blog(request):
             author=author,
             date=datetime.strptime(date, '%Y-%m-%d').date(),  # Assuming date is in 'YYYY-MM-DD' format
             categories=categories,
+            extra = details,
             image=image
         )
         blog.save()

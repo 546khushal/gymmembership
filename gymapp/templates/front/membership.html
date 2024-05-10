@@ -90,9 +90,9 @@
 </head>
 {% include "front/navbar.html" %}
 <body >
-    <div class="alert alert-warning" role="alert">
+    <div id="error-alert" class="alert alert-warning" role="alert" style="display: none;">
         {{ error }}
-      </div>
+    </div>
 
     <div class="container-fluid member" style="background-image: url('/static/front/product_images/gym1.jpg');background-color: black; background-repeat: no-repeat; color: white;" >
         <div class="row">
@@ -125,7 +125,7 @@
         <p>Unlock a healthier, fitter you!</p>
     </header>
 
-    <div class="container membership-plans">
+    <div class="container membership-plans text-dark">
         <div class="row">
             <div class="col-md-4">
                 <div class="plan">
@@ -184,7 +184,7 @@
         </ul>
     </section>
 
-    <section class="container signup-form row " style="margin-left: auto; margin-right: auto;" >
+    <section id="membership-section" class="container signup-form row " style="margin-left: auto; margin-right: auto;" >
         <div class="col-md-4"  style="background-image: url('/static/front/product_images/sform.jpg'); background-size: cover; color: white;">
             
         </div>
@@ -243,5 +243,14 @@
 <script src="{% static 'back/js/demo/chart-area-demo.js' %}"></script>
 <script src="{% static 'back/js/demo/chart-pie-demo.js' %}"></script>
 <!-- Add this script to handle overall page search functionality -->
+<script>
+    // Show the alert message
+    document.getElementById("error-alert").style.display = "block";
+    
+    // Hide the alert message after 6 seconds
+    setTimeout(function() {
+        document.getElementById("error-alert").style.display = "none";
+    }, 6000);
+</script>
 </body>
 </html>

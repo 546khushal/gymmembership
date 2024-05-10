@@ -1,0 +1,65 @@
+{% load static %}
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Order Success - Your Gym Name</title>
+    <!-- Bootstrap CSS -->
+    <link href="{% static 'back/vendor/fontawesome-free/css/all.min.css' %}" rel="stylesheet" type="text/css">
+    <link href="{% static 'back/vendor/bootstrap/css/bootstrap.min.css' %}" rel="stylesheet">
+    <!-- Custom CSS -->
+    <style>
+        /* Center the content vertically */
+        html, body {
+            height: 100%;
+        }
+        body {
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+        /* Style the container */
+        .container {
+            max-width: 600px;
+            border: 2px solid #ccc;
+            border-radius: 10px;
+            padding: 20px;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <h1 class="text-center mb-4" style="color: gold;"> Your Gym Name</h1>
+        <p class="text-center">Your order has been placed successfully!</p>
+        
+        <h2 class="text-center">Order Details</h2>
+        <div class="text-center">
+            <p><strong>Order ID:</strong> #@$#{{ order.id }}</p>
+            <p><strong>Product price:</strong> {{ order.price }}</p>
+            <p><strong>Product:</strong> {{ order.product.name }}</p>
+            <p><strong>Customer Name:</strong> {{ order.customer_name }}</p>
+            <p><strong>Email & Address:</strong> {{ order.email }} - {{ order.address }}</p>
+            <p><strong>Mobile:</strong> {{ order.mobile }}</p>
+            <!-- Add more details here as needed -->
+        </div>
+
+        <h2 class="text-center mt-4">Terms & Conditions</h2>
+        <ul>
+            <li>Your order Delivery within 6 days .</li>
+            <li>Membership is non-transferable.</li>
+            <li>No refund or exchange for unused membership.</li>
+            <li>The gym is not responsible for  helth regarding .</li>
+            <li>Members must follow gym rules and regulations.</li>
+            <!-- Add more terms and conditions here -->
+        </ul>
+
+        <div class="text-center mt-3">
+            <a href="{% url 'download_slip' order.id %}" class="btn btn-primary">Download Order Slip</a>
+        </div>
+    </div>
+
+    <!-- Bootstrap JS (optional) -->
+    <script src="{% static 'back/vendor/bootstrap/js/bootstrap.bundle.min.js' %}"></script>
+</body>
+</html>

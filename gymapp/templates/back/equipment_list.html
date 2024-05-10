@@ -5,7 +5,7 @@
 
 {% block mainblock %}
 <div class="container">
-    <h1 class="mt-5 mb-3">Equipment List</h1>
+    <h1 class="mt-5 mb-3">Equipment List</h1><a href="{% url 'add_equipment'%}">ADD</a>
     <table class="table">
         <thead class="thead-dark">
             <tr>
@@ -23,9 +23,13 @@
                 <th scope="row">{{ forloop.counter }}</th>
                 <!-- Loop through all product images -->
                 <td>
-                    {% for image in product.images.all %}
-                        <img src="{{ image.eimage.url }}" alt="{{ product.ename }}" style="max-width: 100px;">
-                    {% endfor %}
+                    {% with product.images.first as first_image %}
+                    {% if first_image %}
+                        <img src="{{ first_image.eimage.url }}" alt="{{ product.name }}" style="max-width: 100px;">
+                    {% else %}
+                        No image available
+                    {% endif %}
+                {% endwith %}
                 </td>
                 <td>{{ product.ename }}</td>
                 <td>${{ product.eprice }}</td>

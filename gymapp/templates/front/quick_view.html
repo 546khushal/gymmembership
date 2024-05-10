@@ -1,0 +1,283 @@
+{% load static %}
+
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <title>Product</title>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <!--===============================================================================================-->
+    <link rel="icon" type="image/png" href="{% static 'front/pro_images/icons/favicon.png' %}" />
+    <!--===============================================================================================-->
+    <link rel="stylesheet" type="text/css" href="{% static 'front/pro_vendor/bootstrap/css/bootstrap.min.css' %}">
+    <!--===============================================================================================-->
+    <link rel="stylesheet" type="text/css"
+        href="{% static 'front/pro_fonts/font-awesome-4.7.0/css/font-awesome.min.css' %}">
+    <!--===============================================================================================-->
+    <link rel="stylesheet" type="text/css"
+        href="{% static 'front/pro_fonts/iconic/css/material-design-iconic-font.min.css' %}">
+    <!--===============================================================================================-->
+    <link rel="stylesheet" type="text/css" href="{% static 'front/pro_fonts/linearicons-v1.0.0/icon-font.min.css' %}">
+    <!--===============================================================================================-->
+    <link rel="stylesheet" type="text/css" href="{% static 'front/pro_vendor/animate/animate.css' %}">
+    <!--===============================================================================================-->
+    <link rel="stylesheet" type="text/css" href="{% static 'front/pro_vendor/css-hamburgers/hamburgers.min.css' %}">
+    <!--===============================================================================================-->
+    <link rel="stylesheet" type="text/css" href="{% static 'front/pro_vendor/animsition/css/animsition.min.css' %}">
+    <!--===============================================================================================-->
+    <link rel="stylesheet" type="text/css" href="{% static 'front/pro_vendor/select2/select2.min.css' %}">
+    <!--===============================================================================================-->
+    <link rel="stylesheet" type="text/css" href="{% static 'front/pro_vendor/daterangepicker/daterangepicker.css' %}">
+    <!--===============================================================================================-->
+    <link rel="stylesheet" type="text/css" href="{% static 'front/pro_vendor/slick/slick.css' %}">
+    <!--===============================================================================================-->
+    <link rel="stylesheet" type="text/css" href="{% static 'front/pro_vendor/MagnificPopup/magnific-popup.css' %}">
+    <!--===============================================================================================-->
+    <link rel="stylesheet" type="text/css"
+        href="{% static 'front/pro_vendor/perfect-scrollbar/perfect-scrollbar.css' %}">
+    <!--===============================================================================================-->
+    <link rel="stylesheet" type="text/css" href="{% static 'front/pro_css/util.css' %}">
+    <link rel="stylesheet" type="text/css" href="{% static 'front/pro_css/main.css' %}">
+
+    <!--===============================================================================================-->
+    <style>
+         .container {
+            height: 500px;
+            width: 1000px;
+            margin: auto;
+            border: 2px solid black;
+            background-color: white;
+            padding: 20px;
+            border-radius: 10px;
+            box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            position: relative; /* Make the container position relative */
+        }
+        form {
+            position: absolute;
+            top: 50%; /* Position form at vertical center */
+            left: 50%; /* Position form at horizontal center */
+            transform: translate(-50%, -50%); /* Center the form precisely */
+            width: 100%;
+            max-width: 1000px;
+            display: none;
+            background-color: rgba(255, 255, 255);
+            padding: 20px;
+            border: 2px solid gray;
+            border-radius: 10px;
+           
+            z-index: 999; /* Ensure the form is above other content */
+            color: black;
+        }
+        form.show {
+            display: block;
+        }
+        form input,
+        form textarea {
+            width: 100%;
+            margin-bottom: 10px;
+            padding: 10px;
+            border: 1px solid #ccc;
+            border-radius: 5px;
+            box-sizing: border-box;
+        }
+        #payment-process {
+            display: none;
+            text-align: center;
+            margin-top: 20px;
+        }
+        .btn {
+            background-color: #007bff;
+            color: #fff;
+            border: none;
+            padding: 10px 20px;
+            border-radius: 5px;
+            cursor: pointer;
+        }
+        /* Blur effect */
+        .blur {
+            filter: blur(5px);
+        }
+    </style>
+</head>
+
+<body
+    style="background-image: url('/static/front/product_images/bgp.png'); background-size: cover; width: 100%; height: 100%; ">
+    <div>
+        <div
+            style="height: 500px; width: 1000px; margin: auto; border: 2px solid black; background-color: white; ">
+            <div class="row col-12" >
+                <div class="col-md-2 mt-4">
+                    {% for image in equipment_instance.images.all %}
+                    <div class="  ">
+                        <img src="{{ image.eimage.url }}"
+                            style="height: 70px; width: 90px; margin-top: 20px;padding: 4px; border:1px solid rgb(165, 163, 163) "
+                            alt="IMG-PRODUCT" class="img-fluid">
+                    </div>
+                    {% endfor %}
+
+                </div>
+                <div class="col-md-4 mt-5 ">
+                    <div class="slick-slider">
+                        {% for image in equipment_instance.images.all %}
+                        <div class="item border">
+                            <img src="{{ image.eimage.url }}" style="height: 250px; width: 450px;" alt="IMG-PRODUCT"
+                                class="img-fluid">
+                        </div>
+                        {% endfor %}
+                    </div>
+
+                </div>
+                <div class="col-md-6 mt-5">
+                    <div class="p-r-50 p-t-5 p-lr-0-lg">
+                        <h4 class="mtext-105 cl2 js-name-detail p-b-14">{{ equipment_instance.ename }}</h4>
+                        <span class="mtext-106 cl2">${{ equipment_instance.eprice }}</span>
+                        <p class="stext-102 cl3 p-t-23">{{ equipment_instance.edetails }}</p>
+                        <!-- Your additional content here -->
+                    </div>
+                    <div class="notification ">
+                        <span>Item added to your cart! </span>
+                        <i class="fas fa-check-circle"></i>
+
+
+                    </div>
+
+                    <div class="quantity-select mt-5">
+                        <label for="quantity" class="mr-3">Quantity:</label>
+                        <div class="input-group">
+                            <input type="number" id="quantity" name="quantity" value="1" min="1" class="form-control">
+                            <div class="input-group-append">
+                                <button class="btn btn-dark" type="button" id="quantity-increment">+</button>
+                                <button class="btn btn-dark" type="button" id="quantity-decrement">-</button>
+                            </div>
+                        </div>
+                    </div>
+                    <button class="btn btn-primary mt-3 add-to-cart-btn" id="buy-now-btn">Buy Now</button>
+                <!-- Form for collecting customer details -->
+                <div id="customer-details-form" style="display: none;margin-top: 180px;">
+                    <form action="{% url 'buy_nowe' %}" method="post"  class="show">
+                        {% csrf_token %}
+                        <input type="hidden" name="product_id" value="{{ equipment_instance.id }}">
+                        <input type="text"  name="pname" value="{{ equipment_instance.ename }}">
+                        <input type="hidden" name="price" value="{{ equipment_instance.eprice }}"> <!-- Assuming it's a product -->
+                        <input type="text" name="name" placeholder="Name" required><br>
+                        <input type="email" name="email" placeholder="Email" required><br>
+                        <input type="text" name="mobile" placeholder="Mobile" required><br>
+                        <textarea name="address" placeholder="Address" required></textarea><br>
+                        <label for="cash-on-delivery" style="display: inline;">Cash On Delivery</label>
+                        <input type="checkbox" id="cash-on-delivery" name="cash_on_delivery" required style="vertical-align: left; margin-left: -80px; height: 18px; margin-top: -21px;">
+                    
+                        <button type="submit" class="btn btn-primary">Book product</button>
+                    </form>
+                </div>
+                <!-- Payment process -->
+                <div id="payment-process" style="display: none;">
+                    <!-- Add your payment process UI here -->
+                    <h3>Payment Process</h3>
+                </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!--===============================================================================================-->
+    <script src="{% static 'front/pro_vendor/jquery/jquery-3.2.1.min.js' %}"></script>
+    <!--===============================================================================================-->
+    <script src="{% static 'front/pro_vendor/animsition/js/animsition.min.js' %}"></script>
+    <!--===============================================================================================-->
+    <script src="{% static 'front/pro_vendor/bootstrap/js/popper.js' %}"></script>
+    <script src="{% static 'front/pro_vendor/bootstrap/js/bootstrap.min.js' %}"></script>
+    <!--===============================================================================================-->
+    <script src="{% static 'front/pro_vendor/select2/select2.min.js' %}"></script>
+    <!--===============================================================================================-->
+    <script src="{% static 'front/pro_vendor/daterangepicker/moment.min.js' %}"></script>
+    <script src="{% static 'front/pro_vendor/daterangepicker/daterangepicker.js' %}"></script>
+    <!--===============================================================================================-->
+    <script src="{% static 'front/pro_vendor/slick/slick.min.js' %}"></script>
+    <script src="{% static 'front/pro_js/slick-custom.js' %}"></script>
+    <!--===============================================================================================-->
+    <script src="{% static 'front/pro_vendor/parallax100/parallax100.js' %}"></script>
+    <script>
+        $('.parallax100').parallax100();
+    </script>
+    <!--===============================================================================================-->
+    <script src="{% static 'front/pro_vendor/MagnificPopup/jquery.magnific-popup.min.js' %}"></script>
+    <!--===============================================================================================-->
+    <script src="{% static 'front/pro_vendor/isotope/isotope.pkgd.min.js' %}"></script>
+    <!--===============================================================================================-->
+    <script src="{% static 'front/pro_vendor/sweetalert/sweetalert.min.js' %}"></script>
+    <!--===============================================================================================-->
+    <script src="{% static 'front/pro_vendor/perfect-scrollbar/perfect-scrollbar.min.js' %}"></script>
+    <script>
+        $(document).ready(function () {
+            $('.slick-slider').slick({
+                dots: false,
+                arrows: true,
+                infinite: true,
+                speed: 300,
+                slidesToShow: 1,
+                slidesToScroll: 1,
+
+                nextArrow: '<button type="button" class="slick-next  border-dark">Next</button>'
+            });
+        });
+    </script>
+    <script>
+        document.addEventListener('DOMContentLoaded', function () {
+            var addToCartBtn = document.querySelector('.add-to-cart-btn');
+            addToCartBtn.addEventListener('click', function (event) {
+                event.preventDefault(); // Prevent the default form submission behavior
+                var quantity = document.getElementById('quantity').value;
+                var itemName = "{{ equipment_instance.ename }}";
+                var itemPrice = "{{ equipment_instance.eprice }}";
+                var itemDetails = "{{ equipment_instance.edetails }}";
+
+                // Hide notification after 3 seconds
+                setTimeout(function () {
+                    notification.style.display = 'none';
+                    notification.remove(); // Remove notification element from DOM
+                }, 3000);
+            });
+        });
+    </script>
+<script>
+    document.addEventListener('DOMContentLoaded', function() {
+        var quantityInput = document.getElementById('quantity');
+        var incrementButton = document.getElementById('quantity-increment');
+        var decrementButton = document.getElementById('quantity-decrement');
+
+        incrementButton.addEventListener('click', function() {
+            // Increase the value of the input field by 1
+            quantityInput.value = parseInt(quantityInput.value) + 1;
+        });
+
+        decrementButton.addEventListener('click', function() {
+            // Decrease the value of the input field by 1, but not below the minimum value
+            if (parseInt(quantityInput.value) > 1) {
+                quantityInput.value = parseInt(quantityInput.value) - 1;
+            }
+        });
+    });
+</script>
+<script>
+    document.getElementById('buy-now-btn').addEventListener('click', function() {
+        document.getElementById('customer-details-form').style.display = 'block';
+        
+    });
+
+    document.getElementById('customer-form').addEventListener('submit', function(event) {
+        event.preventDefault();
+        document.getElementById('payment-process').style.display = 'block';
+        // Simulate payment process completion
+        setTimeout(function() {
+            alert('Payment successful!');
+            // Redirect to thank you page or perform other actions
+        }, 2000);
+    });
+</script>
+</body>
+
+</html>

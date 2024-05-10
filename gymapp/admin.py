@@ -17,6 +17,7 @@ from .models import suplimentImage
 from .models import equipment
 from .models import equipmentImage
 from .models import Blog
+from .models import messages,Orderpoduct, Ordersupli, Orderequ
  
 admin.site.register(NewMemberData)
 
@@ -32,3 +33,8 @@ admin.site.register(suplimentImage)
 admin.site.register(equipment)
 admin.site.register(equipmentImage)
 admin.site.register(Blog)
+admin.site.register(messages)
+admin.site.register(Orderpoduct)
+admin.site.register(Ordersupli)
+admin.site.register(Orderequ)
+

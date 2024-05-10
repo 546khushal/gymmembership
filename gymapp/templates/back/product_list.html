@@ -23,9 +23,13 @@
                 <th scope="row">{{ forloop.counter }}</th>
                 <!-- Loop through all product images -->
                 <td>
-                    {% for image in product.images.all %}
-                        <img src="{{ image.image.url }}" alt="{{ product.name }}" style="max-width: 100px;">
-                    {% endfor %}
+                    {% with product.images.first as first_image %}
+                        {% if first_image %}
+                            <img src="{{ first_image.image.url }}" alt="{{ product.name }}" style="max-width: 100px;">
+                        {% else %}
+                            No image available
+                        {% endif %}
+                    {% endwith %}
                 </td>
                 <td>{{ product.name }}</td>
                 <td>${{ product.price }}</td>

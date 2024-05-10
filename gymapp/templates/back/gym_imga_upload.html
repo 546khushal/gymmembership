@@ -7,7 +7,7 @@
     <form action="{% url 'gym_imga_upload' %}" method="post" enctype="multipart/form-data">
         {% csrf_token %}
         <div class=" col-md-6">
-            <input type="file" class="custom-file-input" id="image" name="image" >
+            <input type="file" class="custom-file-input" id="image" name="image"   multiple>
             <label class="custom-file-label" for="image">Choose file...</label>
         </div>
         <button type="submit" class="btn btn-primary mt-3">Upload</button>

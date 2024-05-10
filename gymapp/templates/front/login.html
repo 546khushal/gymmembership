@@ -1,20 +1,19 @@
-<?php include 'navbar.php';?>
+{% load static %}
 <!DOCTYPE html>
 <html lang="en">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Gym Login Page</title>
-    <style>
+    <!-- Bootstrap CSS -->
+    <link rel="stylesheet" type="text/css" href="{% static 'front/pro_vendor/bootstrap/css/bootstrap.min.css' %}">
+  <style>
         body {
-            margin: 0;
-            padding: 0;
-            font-family: 'Arial', sans-serif;
             background-color: #f5f5f5;
-            
+            height: 100vh;
+            display: flex;
             align-items: center;
             justify-content: center;
-            height: 100vh;
         }
 
         .login-container {
@@ -23,48 +22,39 @@
             border-radius: 8px;
             padding: 20px;
             width: 300px;
-            text-align: center;
-            margin-left:auto;
-            margin-right:auto;
-        }
-
-        input {
-            width: 100%;
-            margin-bottom: 15px;
-            padding: 10px;
-            box-sizing: border-box;
-        }
-
-        button {
-            background-color: #333;
-            color: #fff;
-            padding: 10px 20px;
-            border: none;
-            border-radius: 5px;
-            cursor: pointer;
-        }
-
-        button:hover {
-            background-color: #555;
         }
     </style>
 </head>
 
 <body>
-
-<div class="login-container">
-    <h2>Membership Management</h2>
-    <form action="#" method="post">
-        <input type="text" placeholder="Member ID" name="loginID" required>
-        <input type="password" placeholder="Password" name="password" required>
-      
-        <button type="submit">Manage</button>
-        <button type="reset">Reset</button></br>
-        <h5>If you are already member of marudhar gym</h5>
-        <h5>For New user <a href=home.php>Sign up </a></h5>
-        
-    </form>
-</div>
-
+       
+        <div class="row justify-content-center col-mb-12 border border-secondary" >
+            <div class="col-md-6" >
+               <img src="{% static 'front/product_images/sform.jpg' %}" style="height: 500px;">
+            </div>
+            <div class="col-md-6">
+                
+                    <h2 class="text-center mb-4 mt-3">Login Your Membership </h2>
+                    <form action="{% url 'login' %}" method="post">
+                        {% csrf_token %}
+                        <div class="form-group mt-5">
+                            <input type="text" class="form-control" placeholder="Member ID" name="memberid" required>
+                        </div>
+                        <div class="form-group mt-3">
+                            <input type="password" class="form-control" placeholder="Password" name="password" required>
+                        </div>
+                        <div class="form-group mt-4">
+                            <button type="submit" class="btn btn-primary btn-block">Login</button>
+                  
+                        </div>
+                    </form>
+                    <div class="text-center">
+                        <p>If you are already a member </p>
+                        <p>For New user <a href="{% url 'membership' %}#membership-section">Sign up</a></p>
+                    </div>
+                
+            </div>
+        </div>
+   
 </body>
 </html>

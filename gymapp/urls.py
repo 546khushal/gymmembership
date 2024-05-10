@@ -5,34 +5,33 @@ from gymapp import views
 
 urlpatterns = [
     path('', views.index, name='index'),
-    path('calculate_bmi/', views.calculate_bmi, name='calculate_bmi'),
+    
     path('terms_and_conditions/', views.terms_and_conditions_view, name='terms_and_conditions'),
     path('about/', views.about, name='about'),
     path('ActivatedMember/', views.ActivatedMember, name='ActivatedMember'),
     path('ActivateMember/', views.ActivateMember, name='ActivateMember'),
     path('AddMember/', views.AddMember, name='AddMember'),
-    path('data/', views.data, name='data'),
+   
     path('footer/', views.footer, name='footer'),
     path('location/', views.location, name='location'),
     path('login/', views.login, name='login'),
-    path('memberdata/', views.memberdata, name='memberdata'),
-    path('Memberlist/', views.Memberlist, name='Memberlist'),
+
     path('Membership/', views.Membership, name='membership'),
     path('detail_login/',  views.detail_login, name='detail_login'),
     path('memberfromsite/',  views.memberfromsite, name='memberfromsite'),
+    path('track/<int:member_id>/', views.track, name='track'),
 
    
   #  path('navbar/', views.navbar, name='navbar'),
     path('owner/', views.owner, name='owner'),
     path('ownerwork/', views.ownerwork, name='ownerwork'),
-    path('product/', views.product, name='product'),
-    path('productdata/', views.productdata, name='productdata'),
-    path('signup/', views.signup, name='signup'),
+   
+    
+   
     path('trainer/', views.trainer, name='trainer'),
 
     path('pro_about/', views.pro_about, name='pro_about'),
-    path('pro_home2/', views.pro_home2, name='pro_home2'),
-    path('pro_home3/', views.pro_home3, name='pro_home3'),
+    
     path('pro_blog_detail/<int:blog_id>/', views.pro_blog_detail, name='pro_blog_detail'),
     path('pro_blog/', views.pro_blog, name='pro_blog'),
     path('pro_contact/', views.pro_contact, name='pro_contact'),
@@ -40,8 +39,16 @@ urlpatterns = [
     path('pro_product_detail/', views.pro_product_detail, name='pro_product_detail'),
     path('pro_product/', views.pro_product, name='pro_product'),
     path('pro_shoping_cart/', views.pro_shoping_cart, name='pro_shoping_cart'),
-   
-   
+    path('quick_view/<int:product_id>/', views.quick_view, name='quick_view'),
+    path('quick_protein/<int:product_id>/', views.quick_protein, name='quick_protein'),
+    path('quick_product/<int:product_id>/', views.quick_product, name='quick_product'), 
+     path('buy_nowp/', views.buy_nowp, name='buy_nowp'),
+     path('buy_nowe/', views.buy_nowe, name='buy_nowe'),
+     path('buy_nows/', views.buy_nows, name='buy_nows'),
+     path('order_list/', views.order_list, name='order_list'),
+      path('delete_order_item/<int:order_id>/', views.delete_order_item, name='delete_order_item'),
+      path('order_success/', views.order_success, name='order_success'),
+       path('download_slip/<int:order_id>/', views.download_slip, name='download_slip'),
    
    #admin back ke liye
     path('panel/', views.panel, name='panel'),
@@ -52,6 +59,7 @@ urlpatterns = [
     path('admin_forgot_password/', views.admin_forgot_password, name='admin_forgot_password'),
     path('admin_home/', views.admin_home, name='admin_home'),
     path('admin_index/', views.admin_index, name='admin_index'),
+    path('admin_base/', views.admin_base, name='admin_base'),
     path('admin_login/', views.admin_login, name='admin_login'),
     path('admin_register/', views.admin_register, name='admin_register'),
     path('admin_tables/', views.admin_tables, name='admin_tables'),
@@ -100,6 +108,7 @@ urlpatterns = [
     
     path('add_blog/', views.add_blog, name='add_blog'),
     path('delete_blog/<int:blog_id>/', views.delete_blog, name='delete_blog'),
+    path('delete_message/<int:message_id>/', views.delete_message, name='delete_message'),
     
    
     # Add other URL patterns as needed

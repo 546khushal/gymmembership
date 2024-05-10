@@ -193,7 +193,36 @@ class Blog(models.Model):
     date = models.DateField(null=True)
     categories = models.CharField(max_length=200)
     image = models.ImageField(upload_to='blog_images/') 
-    extra  =  models.CharField(max_length=200)        
+    extra  =  models.CharField(max_length=5000)    
 
-def __str__(self):
-    return self.tname 
+class messages(models.Model):
+    msgfrom = models.TextField() 
+    msg = models.CharField(max_length=100)  
+    msgextra = models.CharField(max_length=60)  
+    msgdate = models.DateTimeField(auto_now_add=True) 
+class Orderpoduct(models.Model):
+    product = models.ForeignKey(Product, on_delete=models.CASCADE)
+    customer_name = models.CharField(max_length=100)
+    product_name = models.CharField(max_length=100)
+    mobile = models.CharField(max_length=15)
+    address = models.TextField()
+    order_date = models.DateTimeField(auto_now_add=True)
+    price = models.DecimalField(max_digits=10, decimal_places=2)  # Add price field
+
+class Ordersupli(models.Model):
+    product = models.ForeignKey(supliment, on_delete=models.CASCADE)
+    customer_name = models.CharField(max_length=100)
+    product_name = models.CharField(max_length=100)
+    mobile = models.CharField(max_length=15)
+    address = models.TextField()
+    order_date = models.DateTimeField(auto_now_add=True)
+    price = models.DecimalField(max_digits=10, decimal_places=2)  # Add price field
+
+class Orderequ(models.Model):
+    product = models.ForeignKey(equipment, on_delete=models.CASCADE)
+    customer_name = models.CharField(max_length=100)
+    product_name = models.CharField(max_length=100)
+    mobile = models.CharField(max_length=15)
+    address = models.TextField()
+    order_date = models.DateTimeField(auto_now_add=True)
+    price = models.DecimalField(max_digits=10, decimal_places=2)  # Add price field

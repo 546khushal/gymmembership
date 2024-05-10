@@ -1,0 +1,40 @@
+{% extends 'back/admin_base.html' %}
+
+{% load static %}
+{% block mainblock %}
+<h1>Order List</h1>
+    <table class="table">
+        <thead>
+            <tr>
+                <th>Order ID</th>
+                <th>Order Date</th>
+                <th>Customer</th>
+                <th>Mobile</th>
+                <th>Email&Address</th>
+                <th>Product</th>
+                <th>Price</th>
+                <th>Action</th>
+            </tr>
+        </thead>
+        <tbody>
+            {% for order in all_orders %}
+                <tr>
+                    <td>{{ order.id }}</td>
+                    <td>{{ order.order_date }}</td>
+                    <td>{{ order.customer_name }}</td>
+                    <td>{{ order.mobile }}</td>
+                    <td>{{ order.address  }}</td>
+                    <td>{{ order.product_name  }}</td>
+                    <td>{{ order.price  }}</td>
+                    <td>
+                        <form action="{% url 'delete_order_item' order.id %}" method="post">
+                            {% csrf_token %}
+                            <button type="submit" class="btn btn-danger btn-sm">Delete</button>
+                        </form>
+                    </td>
+                </tr>
+            {% endfor %}
+        </tbody>
+    </table>
+
+{% endblock %}

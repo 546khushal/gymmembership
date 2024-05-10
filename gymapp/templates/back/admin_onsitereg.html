@@ -11,7 +11,7 @@
          
 
 
-				<form action="{% url 'admin_onsiteedit'  %}" method="post" enctype="multipart/form-data">
+				<form action="{% url 'admin_onsiteedit'   %}" method="post" enctype="multipart/form-data">
                     {% csrf_token %} <!--security k liye -->
 					<div class="col-sm-12">
 						<div class="row">
@@ -90,7 +90,7 @@
                                   
                                   <option value="None">None</option> 
                                   {% for t in trainer %}
-                                      <option value="{{ siteuser.name }}">{{ siteuser.tname }}</option>
+                                      <option value="{{ t.name }}">{{ t.tname }}</option>
                                   {% endfor %}
                               </select>
                           </div>

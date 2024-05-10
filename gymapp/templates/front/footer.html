@@ -99,7 +99,7 @@
                     <ul>
                         <li class="text-white"><a href="{% url 'about' %}">About Us</a></li>
                         <li class="text-white"><a href="{% url 'membership' %}">Membership</a></li>
-                        <li class="text-white"><a href="{% url 'product' %}">Product</a></li>
+                        <li class="text-white"><a href="{% url 'pro_product' %}">Product</a></li>
                         <li class="text-white"><a href="{% url 'location' %}">Location</a></li>
                         <li class="text-white"><a href="{% url 'terms_and_conditions' %}">Terms & Conditions</a></li>
                         <li class="text-white"><a href="{% url 'owner' %}">Owner</a></li>
@@ -112,13 +112,15 @@
                         <p class="text-white">Monday-saturady</p>
                         <p class="text-white">Morning: {{ gym.mgymtime }}AM </p>
                         <p class="text-white">Evining:  {{ gym.egymtime }} PM </p>
+                        <p class="text-white"><a href="{% url 'pro_contact' %}" class="mt-2" >CONTECT </a></p>
+
                 </div>
                 
                    
                         <div class="col-md-4 footer-section">
                         <div class="container">
                             <h3 class="h2">Message Box</h2>
-                            <form id="messageForm" method="POST" action="{% url 'admin_index' %}">
+                            <form id="messageForm" method="POST" action="{% url 'footer' %}">
                                 {% csrf_token %}
                                 <div class="form-group">
                                     <label for="mobileNumber" class="text-white">Mobile Number:</label>

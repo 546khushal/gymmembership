@@ -1,11 +1,42 @@
+
 {% load static %} <!-- Add this line if you're using static files -->
+
+
+	
+	
+</body>
+</html>
 <!DOCTYPE html>
 <html lang="en">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>About Gym</title>
+    <link rel="icon" type="image/png" href="{% static 'front/pro_images/icons/favicon.png' %}"/>
+<!--===============================================================================================-->
+	<link rel="stylesheet" type="text/css" href="{% static 'front/pro_vendor/bootstrap/css/bootstrap.min.css' %}">
+<!--===============================================================================================-->
+	<link rel="stylesheet" type="text/css" href="{% static 'front/pro_fonts/font-awesome-4.7.0/css/font-awesome.min.css' %}">
+<!--===============================================================================================-->
+	<link rel="stylesheet" type="text/css" href="{% static 'front/pro_fonts/iconic/css/material-design-iconic-font.min.css' %}">
+<!--===============================================================================================-->
+	<link rel="stylesheet" type="text/css" href="{% static 'front/pro_fonts/linearicons-v1.0.0/icon-font.min.css' %}">
+<!--===============================================================================================-->
+	<link rel="stylesheet" type="text/css" href="{% static 'front/pro_vendor/animate/animate.css' %}">
+<!--===============================================================================================-->	
+	<link rel="stylesheet" type="text/css" href="{% static 'front/pro_vendor/css-hamburgers/hamburgers.min.css' %}">
+<!--===============================================================================================-->
+	<link rel="stylesheet" type="text/css" href="{% static 'front/pro_vendor/animsition/css/animsition.min.css' %}">
+<!--===============================================================================================-->
+	<link rel="stylesheet" type="text/css" href="{% static 'front/pro_vendor/select2/select2.min.css' %}">
+<!--===============================================================================================-->
+	<link rel="stylesheet" type="text/css" href="{% static 'front/pro_vendor/perfect-scrollbar/perfect-scrollbar.css' %}">
+<!--===============================================================================================-->
+	<link rel="stylesheet" type="text/css" href="{% static 'front/pro_css/util.css' %}">
+	<link rel="stylesheet" type="text/css" href="{% static 'front/pro_css/main.css' %}">
+<!--===============================================================================================-->
     <style>
+        
       /* Global styles */
 body {
     font-family: Arial, sans-serif;
@@ -23,7 +54,7 @@ body {
 
 /* Header */
 header {
-    background-color: #ffd700; /* Golden color */
+   
     color: #fff;
     text-align: center;
     padding: 10px;
@@ -91,25 +122,32 @@ header {
 </head>
 <body>
     {% include 'front/navbar.html' %}
+    
     {% for gym in gyms %}
     <header>
-        <h1>About {{ gym.gymname }} FITNESS Gym</h1>
+        	<!-- Title page -->
+	<section class="bg-img1 txt-center p-lr-15 p-tb-92" style="background-image: url('/static/front/pro_images/bg-01.jpg');">
+		<h2 class="ltext-105 cl0 txt-center">
+			About
+		</h2>
+	</section>
     </header>
 
     <section id="owner-details">
         <div class="container">
-            <h2>Gym Owner</h2>
+            <h2>Gym Owner</h2></br>
            
             <div class="owner">
-                <img src="{{ gym.picurl }}" alt="Gym Owner">
-                <div class="owner-info">
-                    <h3>{{ gym.ownername }}</h3>
-                    <p>"Owner of {{ gym.gymname }} FITNESS GYM {{ gym.ownername }}, with {{ gym.experience }} of gym experience, he is the driving force behind our fitness community. With his expertise and dedication, he has transformed countless lives, inspiring them to achieve their fitness goals."</p>
+                <img src="{{ gym.picurl }}" alt="Gym Owner"></br>
+                <div class="owner-info"></br>
+                    <h3>{{ gym.ownername }}</h3></br>
+                    <p>"Owner of {{ gym.gymname }} FITNESS GYM {{ gym.ownername }}, with {{ gym.experience }} of gym experience, he is the driving force behind our fitness community. With his expertise and dedication, he has transformed countless lives, inspiring them to achieve their fitness goals."</p></br></br>
                 </div>
             </div>
         
-<table cellspacing="8" cellpadding="8" style="color:black; font-size:17px;">
-            <tr>
+<table cellspacing="38" cellpadding="28" style="color:black; font-size:17px;">
+</br></br>
+            <tr style="height: 20px;">
               <th>Name:</th>
               <td>{{ gym.ownername }}</td>
             </tr>
@@ -146,6 +184,75 @@ header {
             <!-- Add more gym details here -->
         </div>
     </section>
+    	
+
+
+	<!-- Content page -->
+	<section class="bg0 p-t-75 p-b-120">
+		<div class="container">
+			<div class="row p-b-148">
+				<div class="col-md-7 col-lg-8">
+					<div class="p-t-7 p-r-85 p-r-15-lg p-r-0-md">
+						<h3 class="mtext-111 cl2 p-b-16">
+							Our Story
+						</h3>
+
+						<p class="stext-113 cl6 p-b-26">
+							Lorem ipsum dolor sit amet, consectetur adipiscing elit. Mauris consequat consequat enim, non auctor massa ultrices non. Morbi sed odio massa. Quisque at vehicula tellus, sed tincidunt augue. Orci varius natoque penatibus et magnis dis parturient montes, nascetur ridiculus mus. Maecenas varius egestas diam, eu sodales metus scelerisque congue. Pellentesque habitant morbi tristique senectus et netus et malesuada fames ac turpis egestas. Maecenas gravida justo eu arcu egestas convallis. Nullam eu erat bibendum, tempus ipsum eget, dictum enim. Donec non neque ut enim dapibus tincidunt vitae nec augue. Suspendisse potenti. Proin ut est diam. Donec condimentum euismod tortor, eget facilisis diam faucibus et. Morbi a tempor elit.
+						</p>
+
+						<p class="stext-113 cl6 p-b-26">
+							Donec gravida lorem elit, quis condimentum ex semper sit amet. Fusce eget ligula magna. Aliquam aliquam imperdiet sodales. Ut fringilla turpis in vehicula vehicula. Pellentesque congue ac orci ut gravida. Aliquam erat volutpat. Donec iaculis lectus a arcu facilisis, eu sodales lectus sagittis. Etiam pellentesque, magna vel dictum rutrum, neque justo eleifend elit, vel tincidunt erat arcu ut sem. Sed rutrum, turpis ut commodo efficitur, quam velit convallis ipsum, et maximus enim ligula ac ligula. 
+						</p>
+
+						<p class="stext-113 cl6 p-b-26">
+							Any questions? Let us know in store at 8th floor, 379 Hudson St, New York, NY 10018 or call us on (+1) 96 716 6879
+						</p>
+					</div>
+				</div>
+
+				<div class="col-11 col-md-5 col-lg-4 m-lr-auto">
+					<div class="how-bor1 ">
+						<div class="hov-img0">
+							<img src="{% static 'front/pro_images/about-01.jpg'  %}" style="height: 350px; border-radius: 0px;"  alt="IMG">
+						</div>
+					</div>
+				</div>
+			</div>
+			
+			<div class="row">
+				<div class="order-md-2 col-md-7 col-lg-8 p-b-30">
+					<div class="p-t-7 p-l-85 p-l-15-lg p-l-0-md">
+						<h3 class="mtext-111 cl2 p-b-16">
+							Our Mission
+						</h3>
+
+						<p class="stext-113 cl6 p-b-26">
+							Mauris non lacinia magna. Sed nec lobortis dolor. Vestibulum rhoncus dignissim risus, sed consectetur erat. Pellentesque habitant morbi tristique senectus et netus et malesuada fames ac turpis egestas. Nullam maximus mauris sit amet odio convallis, in pharetra magna gravida. Praesent sed nunc fermentum mi molestie tempor. Morbi vitae viverra odio. Pellentesque ac velit egestas, luctus arcu non, laoreet mauris. Sed in ipsum tempor, consequat odio in, porttitor ante. Ut mauris ligula, volutpat in sodales in, porta non odio. Pellentesque tempor urna vitae mi vestibulum, nec venenatis nulla lobortis. Proin at gravida ante. Mauris auctor purus at lacus maximus euismod. Pellentesque vulputate massa ut nisl hendrerit, eget elementum libero iaculis.
+						</p>
+
+						<div class="bor16 p-l-29 p-b-9 m-t-22">
+							<p class="stext-114 cl6 p-r-40 p-b-11">
+								Creativity is just connecting things. When you ask creative people how they did something, they feel a little guilty because they didn't really do it, they just saw something. It seemed obvious to them after a while.
+							</p>
+
+							<span class="stext-111 cl8">
+								- Steve Job’s 
+							</span>
+						</div>
+					</div>
+				</div>
+
+				<div class="order-md-1 col-11 col-md-5 col-lg-4 m-lr-auto p-b-30">
+					<div class="how-bor2">
+						<div class="hov-img0">
+							<img src="{% static 'front/pro_images/about-02.jpg'  %}" style="height: 350px; border-radius: 0px;" alt="IMG">
+						</div>
+					</div>
+				</div>
+			</div>
+		</div>
+	</section>	
 
     <section id="equipment">
         <div class="container">
@@ -186,6 +293,51 @@ header {
         </div>
     </section>
     {% endfor %}
+    <!-- Back to top -->
+	<div class="btn-back-to-top" id="myBtn">
+		<span class="symbol-btn-back-to-top">
+			<i class="zmdi zmdi-chevron-up"></i>
+		</span>
+	</div>
+
+    <!--===============================================================================================-->	
+	<script src="{% static 'front/pro_vendor/jquery/jquery-3.2.1.min.js' %}"></script>
+    <!--===============================================================================================-->
+        <script src="{% static 'front/pro_vendor/animsition/js/animsition.min.js' %}"></script>
+    <!--===============================================================================================-->
+        <script src="{% static 'front/pro_vendor/bootstrap/js/popper.js' %}"></script>
+        <script src="{% static 'front/pro_vendor/bootstrap/js/bootstrap.min.js' %}"></script>
+    <!--===============================================================================================-->
+        <script src="{% static 'front/pro_vendor/select2/select2.min.js' %}"></script>
+        <script>
+            $(".js-select2").each(function(){
+                $(this).select2({
+                    minimumResultsForSearch: 20,
+                    dropdownParent: $(this).next('.dropDownSelect2')
+                });
+            })
+        </script>
+    <!--===============================================================================================-->
+        <script src="{% static 'front/pro_vendor/MagnificPopup/jquery.magnific-popup.min.js' %}"></script>
+    <!--===============================================================================================-->
+        <script src="{% static 'front/pro_vendor/perfect-scrollbar/perfect-scrollbar.min.js' %}"></script>
+        <script>
+            $('.js-pscroll').each(function(){
+                $(this).css('position','relative');
+                $(this).css('overflow','hidden');
+                var ps = new PerfectScrollbar(this, {
+                    wheelSpeed: 1,
+                    scrollingThreshold: 1000,
+                    wheelPropagation: false,
+                });
+    
+                $(window).on('resize', function(){
+                    ps.update();
+                })
+            });
+        </script>
+    <!--===============================================================================================-->
+        <script src="{% static 'front/pro_js/main.js' %}"></script>
 
     {% include 'front/footer.html' %}  
 </body>

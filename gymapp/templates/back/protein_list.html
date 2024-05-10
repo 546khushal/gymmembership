@@ -5,7 +5,7 @@
 
 {% block mainblock %}
 <div class="container">
-    <h1 class="mt-5 mb-3">protein List</h1>
+    <h1 class="mt-5 mb-3">protein List </h1><a href="{% url 'add_protein'%}">ADD</a>
     <table class="table">
         <thead class="thead-dark">
             <tr>
@@ -20,13 +20,19 @@
         <tbody>
             {% for product in supliment %}
             <tr>
-                <th scope="row">{{ forloop.counter }}</th>
+                <td scope="row">{{ forloop.counter }}</td>
                 <!-- Loop through all product images -->
                 <td>
-                    {% for image in product.images.all %}
-                        <img src="{{ image.simage.url }}" alt="{{ product.sname }}" style="max-width: 100px;">
-                    {% endfor %}
+                     
+                    {% with product.images.first as first_image %}
+                        {% if first_image %}
+                            <img src="{{ first_image.simage.url }}" alt="{{ product.name }}" style="max-width: 100px;">
+                        {% else %}
+                            No image available
+                        {% endif %}
+                    {% endwith %}
                 </td>
+                
                 <td>{{ product.sname }}</td>
                 <td>${{ product.sprice }}</td>
                 <td>{{ product.sdetails }}</td>
