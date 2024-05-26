@@ -85,7 +85,7 @@
                             </div>
                             <div class="dropdown col-sm-6 form-group">
                               <label>Personal Trainer</label><br>
-                              <select id="trainer" name="trainer" value="{{ edit.trainer}}">
+                              <select id="trainer" name="trainer" value="{{ edit.trainer}}" required>
                                   <option class="dropdown-menu" selected="selected" disabled>Select Trainer</option>
                                   <option value="None">None</option> 
                                   {% for trainer in trainers %}

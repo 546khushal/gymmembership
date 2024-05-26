@@ -97,29 +97,38 @@
 </div>
 <script>
     function searchTable() {
-        // Declare variables
-        var input, filter, table, tr, td, i, txtValue;
+        var input, filter, table, tr, td_id, td_name, i, txtValue_id, txtValue_name, noResults;
         input = document.getElementById("searchInput");
         filter = input.value.toUpperCase();
         table = document.getElementById("dataTable");
         tr = table.getElementsByTagName("tr");
-    
-        // Loop through all table rows, and hide those who don't match the search query
+        noResults = true; // Initialize noResults flag to true
+
+        // Loop through all table rows
         for (i = 0; i < tr.length; i++) {
-            // Search by ID (first column)
-            td_id = tr[i].getElementsByTagName("td")[0];
-            // Search by Name (third column)
-            td_name = tr[i].getElementsByTagName("td")[2];
-            if (td_id || td_name) {
+            td_id = tr[i].getElementsByTagName("td")[0]; // Get the ID column
+            td_name = tr[i].getElementsByTagName("td")[2]; // Get the Name column
+            if (td_id && td_name) { // Check if both columns exist
                 txtValue_id = td_id.textContent || td_id.innerText;
                 txtValue_name = td_name.textContent || td_name.innerText;
+                // Check if the search query matches ID or Name
                 if (txtValue_id.toUpperCase().indexOf(filter) > -1 || txtValue_name.toUpperCase().indexOf(filter) > -1) {
-                    tr[i].style.display = "";
+                    tr[i].style.display = ""; // Show the row
+                    noResults = false; // Set noResults flag to false
                 } else {
-                    tr[i].style.display = "none";
+                    tr[i].style.display = "none"; // Hide the row
                 }
             }
         }
+
+        // Show or hide "No results found" message
+        var message = document.getElementById("noResultsMessage");
+        if (noResults) {
+            message.style.display = "block";
+        } else {
+            message.style.display = "none";
+        }
     }
-    </script>
+</script>
+
 {% endblock %}

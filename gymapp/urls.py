@@ -38,7 +38,7 @@ urlpatterns = [
     path('pro_index/', views.pro_index, name='pro_index'),
     path('pro_product_detail/', views.pro_product_detail, name='pro_product_detail'),
     path('pro_product/', views.pro_product, name='pro_product'),
-    path('pro_shoping_cart/', views.pro_shoping_cart, name='pro_shoping_cart'),
+    
     path('quick_view/<int:product_id>/', views.quick_view, name='quick_view'),
     path('quick_protein/<int:product_id>/', views.quick_protein, name='quick_protein'),
     path('quick_product/<int:product_id>/', views.quick_product, name='quick_product'), 
@@ -52,10 +52,7 @@ urlpatterns = [
    
    #admin back ke liye
     path('panel/', views.panel, name='panel'),
-    path('admin_404/', views.admin_404, name='admin_404'),
-    path('admin_blank/', views.admin_blank, name='admin_blank'),
-   
-    path('admin_charts/', views.admin_charts, name='admin_charts'),
+
     path('admin_forgot_password/', views.admin_forgot_password, name='admin_forgot_password'),
     path('admin_home/', views.admin_home, name='admin_home'),
     path('admin_index/', views.admin_index, name='admin_index'),

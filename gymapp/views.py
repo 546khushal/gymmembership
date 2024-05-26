@@ -498,8 +498,7 @@ def pro_product(request):
     equipments =equipment.objects.all()
     return render(request, 'front/pro_product.html',{'products': products,'gyms':gyms,'supliments':supliments,'equipments':equipments})
 
-def pro_shoping_cart(request):
-    return render(request, 'front/pro_shoping_cart.html')
+
 
 
 
@@ -511,20 +510,12 @@ def pro_shoping_cart(request):
 def panel(request):
     msg = messages.objects.all()
     return render(request,'back/admin_home.html',{'messages':msg})
-def admin_404(request):
-    msg = messages.objects.all()
-    return render(request,'back/admin_404.html',{'messages':msg})
 
-def admin_blank(request):
-    msg = messages.objects.all()
-    return render(request,'back/admin_blank.html',{'messages':msg})
 def admin_base(request):
     msg = messages.objects.all()
     return render(request,'back/admin_base.html',{'messages':msg})
 
-def admin_charts(request):
-    msg = messages.objects.all()
-    return render(request,'back/admin_charts.html',{'messages':msg})
+
 
 def admin_forgot_password(request):
     return render(request,'back/admin_forgot_password.html')
@@ -537,19 +528,20 @@ def calculate_annual_earnings():
     # Get the current year
     current_year = datetime.now().year
     
+    
     # Initialize total earnings for the year
-    total_earnings = 0
+    total_earnings = 0  
     
     # Iterate over each month of the year
     for month in range(1, 13):
         # Filter the registerm table based on the criteria for the current month and year
-        online_earnings = registerm.objects.filter(start__month=month, start__year=current_year, pay='online').aggregate(total=Sum('feeamount'))['total'] or 0
-        cash_earnings = registerm.objects.filter(start__month=month, start__year=current_year, pay='cash').aggregate(total=Sum('feeamount'))['total'] or 0
+        yonline_earnings = registerm.objects.filter(start__month=month, start__year=current_year, pay='online').aggregate(total=Sum('feeamount'))['total'] or 0
+        ycash_earnings = registerm.objects.filter(start__month=month, start__year=current_year, pay='cash').aggregate(total=Sum('feeamount'))['total'] or 0
         
         # Accumulate the earnings for the current month
-        total_earnings += (online_earnings + cash_earnings)
+        total_earnings += (yonline_earnings + ycash_earnings)
     
-    return total_earnings
+    return total_earnings,yonline_earnings,ycash_earnings
 
 def calculate_monthly_earnings():
     # Get the current month and year
@@ -560,21 +552,45 @@ def calculate_monthly_earnings():
     monthly_records = registerm.objects.filter(start__month=current_month, start__year=current_year)
     
     # Calculate earnings for cash payments
-    cash_earnings = monthly_records.filter(pay='Cash').aggregate(total_cash=Sum('feeamount'))['total_cash'] or 0
+    mcash_earnings = monthly_records.filter(pay='Cash').aggregate(total_cash=Sum('feeamount'))['total_cash'] or 0
     
     # Calculate earnings for online payments
-    online_earnings = monthly_records.filter(pay='Online').aggregate(total_online=Sum('feeamount'))['total_online'] or 0
+    monline_earnings = monthly_records.filter(pay='Online').aggregate(total_online=Sum('feeamount'))['total_online'] or 0
     
     # Calculate total earnings for the month
-    total_earnings = cash_earnings + online_earnings
+    total_earnings = mcash_earnings + monline_earnings
     
-    return total_earnings
+    return total_earnings,monline_earnings,mcash_earnings
+
+ 
 
 def admin_index(request):
     msg = messages.objects.all()
     all_members = registerm.objects.all()
-    monthly_earnings = calculate_monthly_earnings()
-    annual_earnings = calculate_annual_earnings()
+    
+    # Calculate total members
+    total_members = all_members.count()
+    
+    # Initialize counters for active and inactive members
+    total_active_members = 0
+    total_inactive_members = 0
+    
+    # Calculate active and inactive members
+    for member in all_members:
+        if member.start:
+            end_date = calculateEndDate(member.start.strftime('%Y-%m-%d'), member.membershipplan)
+            due_days = calculateDueDays(end_date)
+            if due_days is not None and due_days > 0:
+                total_active_members += 1
+            else:
+                total_inactive_members += 1
+    
+    # Calculate monthly and annual earnings
+    monthly_earnings, monline_earnings, mcash_earnings = calculate_monthly_earnings()  
+    annual_earnings, yonline_earnings, ycash_earnings = calculate_annual_earnings()
+    tt = annual_earnings + monthly_earnings
+    yonline_earnings += monline_earnings
+    ycash_earnings += mcash_earnings
     
     # Filter active members
     active_members = []
@@ -582,11 +598,24 @@ def admin_index(request):
         if memb.start:
             end_date = calculateEndDate(memb.start.strftime('%Y-%m-%d'), memb.membershipplan)
             due_days = calculateDueDays(end_date)
-            if  due_days <= 4 and due_days >=0:
+            if due_days <= 4 and due_days >= 0:
                 memb.duedays = due_days
-                active_members.append(memb)  # Append member to active_members list
-
-    return render(request, 'back/admin_index.html', {'messages': msg, 'active_members': active_members, 'data': all_members,'mtotalearn': monthly_earnings,'ytotalearn':annual_earnings})
+                active_members.append(memb)
+    
+    return render(request, 'back/admin_index.html', {
+        'messages': msg,
+        'active_members': active_members,
+        'data': all_members,
+        'mtotalearn': monthly_earnings,
+        'ytotalearn': tt,
+        'monline': monline_earnings,
+        'mcash': mcash_earnings,
+        'yonline': yonline_earnings,
+        'ycash': ycash_earnings,
+        'total_members': total_members,
+        'total_active_members': total_active_members,
+        'total_inactive_members': total_inactive_members
+    })
 
 
 def admin_login(request):
@@ -772,6 +801,7 @@ def admin_mdelete(request, member_id):
 def admin_medit(request, member_id):
     msg = messages.objects.all()
     edit = registerm.objects.get(pk=member_id)
+    trainer = Trainer.objects.all()
 
     if request.method == "POST":
         # Update other fields
@@ -799,7 +829,7 @@ def admin_medit(request, member_id):
             error_message = str(e)
             return redirect(error_message)
 
-    return render(request, 'back/admin_medit.html', {'edit': edit,'messages':msg})
+    return render(request, 'back/admin_medit.html', {'edit': edit,'messages':msg,'trainers':trainer})
 
 
 def admin_tdetail(request,trainer_id):
@@ -1041,7 +1071,7 @@ def admin_total(request):
                 total_active_members += 1
             else:
                 total_inactive_members += 1
-
+    
     return render(request, 'back/admin_total.html', {'total_members': total_members,'total_active_members': total_active_members,'total_inactive_members': total_inactive_members,'messages':msg})
 def admin_siteuser(request):
     msg = messages.objects.all()
