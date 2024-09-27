@@ -1,8 +1,14 @@
 #!/bin/bash
 echo "BUILD START"
-python3.9 -m pip install -r requirements.txt
-python3.9 manage.py collectstatic --noinput --clear
-echo "BUILD END"
 
-mkdir -p staticfiles_build
-cp -r static/* staticfiles_build/
+# Ensure pip is installed
+python3.9 -m ensurepip --upgrade
+
+# Install the dependencies from the requirements.txt file
+python3.9 -m pip install --upgrade pip
+python3.9 -m pip install -r requirements.txt
+
+# Run collectstatic to gather static files
+python3.9 manage.py collectstatic --noinput --clear
+
+echo "BUILD END"
