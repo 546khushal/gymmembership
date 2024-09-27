@@ -95,7 +95,6 @@ def about(request):
     return render(request,'front/about.html',{'gyms':gyms,'images':images})
 
 def login(request):
-    return HttpResponse("<h1>Django deployed</h1>")
     if request.method == 'POST':
         member_id = request.POST.get('memberid')
         password = request.POST.get('password')
