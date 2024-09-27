@@ -1,5 +1,6 @@
 [build]
-  publish = "gymapp/templates/front" 
+  publish = "gymapp/templates/front"  
+  command = "python manage.py collectstatic --noinput"
 
 [[redirects]]
   from = "/*"
