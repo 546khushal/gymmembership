@@ -2,9 +2,13 @@ from django.urls import path
 from django.conf.urls.static import static
 from django.conf import settings
 from gymapp import views
+from django_distill import distill_path
+
+def get_index():
+    return None
 
 urlpatterns = [
-    path('', views.index, name='index'),
+        distill_path('', views.index, name='index', distill_func=get_index),
     
     path('terms_and_conditions/', views.terms_and_conditions_view, name='terms_and_conditions'),
     path('about/', views.about, name='about'),
