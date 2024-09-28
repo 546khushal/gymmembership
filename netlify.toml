@@ -1,8 +1,8 @@
 [build]
-publish = "staticfiles_build"
+publish = "gymapp"  # Point to the directory containing both templates and static files
 command = "python manage.py collectstatic --noinput"
 
 [[redirects]]
 from = "/*"
-to = "/index.html"
+to = "/templates/front/index.html"
 status = 200
